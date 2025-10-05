@@ -1,0 +1,51 @@
+OIWS kolokvij
+
+Zone važnosti (7. stranica) - Gornja lijeva najvažnija pa gornja desna pa donja lijeva pa donja desna
+Skeumorfizam (11. stranica) - Vrsta web sučelja koja oponaša objekte u čovjekovoj okolini; elementi na web stranici izgledaju kao stvarni objekti
+User first (18.stranica) - Potrebno oblikovati stranicu za korisnika u odnosu gdje se on trenutno nalazi
+Call to action (22. stranica) - Stranice na kojima se nešto prodaje; cilj takvih stranica je da posjetitelj obavi određenu aktivnost
+Landing stranice (23. stranica) - Samostalna web stranica koja je prvenstveno oblikovana u marketinške svrhe; posjetu pretvaraju u nekakav tip prodaje
+Sitemap (26. stranica; prepoznat sliku)
+Skiciranje (28. stranica) - Kreativno stvaranje olovkom na papiru; pomaže pri organiziranju velike količine informacija u manja područja kojima je lakše upravljati
+Wireframe (29. stranica) - Okvir/okruženje za spremanje vizualnog dizajna web mjesta i elemenata sadržaja; definira osnovni layout, strukturu i organizaciju stranice;
+                           pokazuje tip sadržaja, funkcionalnosti i veze
+Mockup (30. stranica) - Orijentiran na vizualni dio i prestavlja statički prikaz vizualnog izgleda finalnog preoizvoda (sheme boja, tipografije, stilovi); popunjava
+                        wireframe sa vizualnim detaljima
+Prototip (31. stranica) - Izrada prototipa je prva koja omogućava interakciju sa sučeljem, ukazujući na područja koja jako dobro funkcioniraju i na područja koja bi
+                          mogla stvoriti probleme
+F layout (32.stranica) - Prati normalan način kretnje ljudskog oka pri promatranju ili skeniranju web stranice; najznačajniji elementi web stranice se postavljaju na
+                         lijevu stranu ekrana
+Z layout (33. stranica) - Uobičajen i najunčikovitiji kompozicijski layout za skoro sve vrste web stranica; nemaju puno teksta, a na stranici se nalazi nekoliko
+                          ključnih elemenata koji privlače pozornost korisnika
+Single page (36. stranica) - Cijelokupna web stranica koja se nalazi na jednoj umjesto na više web stranica, a najbolje odgovara za manja web mjesta; jednostavno
+                             korištenje (beskonačno skrolanje), nema složene navigacije gdje se korisnik može lako izgubiti, stranicu je puno lakše održavati
+Magazine layout (40.stranica) - Najviše se koristi kod stranica magazina, vijesti, blogova, i ostalih web stranica koje objavljuju puno sadrćaja i kod stranica koje
+                                redovito objavljuju nove vijesti; snažnija vizualna ravnoteža zbog različitih kategorija stranica (cards)
+Konzistentnost dizajna (43. stranica) - Odnosi se na stil i izgled, a bitno je zbog stvaranja jače i jasnije poruke odrešenog branda gdje se koriste iste boje, ikone
+                                        kod svih marketinških materijala; doprinosi usklađenosti i akciji; najvažnija upotrebljiviost i mogućnost učenja
+Prazan prostor (49. stranica) - (negativan prostor; white space) Predstavlja prostor oko elementa; Neiskorišteni prostor koji ima svoju funkciju; spaja i razdvaja
+                                elemente, stvara ravnotežu i čitljivost te je zbog toga bitan kod stvaranja kompozicije
+Principi dizajna (50. stranica) - Pravila po kojima se elementi dizajna koriste; Elementi dizajna su točke, linije, površine/oblici, boje, uzorci/teksture, prostor,
+                                  vrijednost i veličina
+Zlatni omjer (60. stranica) - Najintuitivniji omjer koji omogućava harmoniju, a predstavlja savršenu simetričnu vezu između dvije proporcije
+Pravilo trećine (62. stranica) - Tehnika kompozicije u fotogrtafiji, a prestavlja pojednostavljenu verziju zlatnog omjera; područje (slika) se dijeli u jednake trećine
+                                 vertikalno i horizontalno, a sjecišta linija pružaju prirodne fokuse točke oblika na koje se postavlja subjekt slike ili uzdužno
+Gestalt principi (65. stranica) - Skup principa iz psihologije, osnovni skup bitnih principa koji utječu na učinkovitost dizajna; postoje zbog mogućnosti ljudskog mozga
+                                  da raspoznaje određene uzorke pod djelovanjem odreženih situacija i pravila (Nastanak, Konkretizacija, Više stabilnost, nepromjenjivost)
+Primarni font (78. stranica) - (Display type) Obuhvaća naslove, podnaslove, logotipove te je obično veći i deblji od okolnog teksta kako bi ostvario osnovni cilj, odnosno 
+                               privući i zadržati pozornost čitatelja, a ako se taj tip koristi kod standardnog teksta tada takav tekst obično nije dovoljno čitljiv
+Sekundarni font (78. stranica) - (Text type, Body copy) Obuhvaća tekst web stranice, osnovni sadržaj, odnosno hijerarhijski gledano uvijek se nalazi ispod naslova i obično
+                                 je manje veličine, obično se taj tekst nalazi na većem području nego li naslovi i sl.
+Boje (101. stranica) - (eng. Hue) Temeljna komponenta dizajna, a postoji samo kod osvjetljenih područja; boja pruža hijerarhijsku vrijednost, kontrast, vizualnu teksturu
+Minimalistički dizajn (115. stranica) - Jednostavan dizajn bez nepotrebnih detalja; fokus na bojama i tipografiji; minimalistička shema najviše koristi super zasićene, 
+                                        intenzivne i vedre boje, retro i monotone boje
+Rasterska grafika (123. stranica) - Sastoji se od piksela; pikseli su informacije koji prikazuju određenu boju, svijetlo ili pigment; ovisi o rezoluciji
+Vektorska grafika (123. stranica) - Koriste se vektorski objekti, a stvara se korištenjem točaka i linija, odnosno matematičkim formulama; ima visoku rezoluciju,
+                                    transparentnu podlogu, može se pretvoriti u rastersku; ne ovisi o rezoluciji
+Logotip (132. stranica) - Predstavlja stilski način uporabe tipografije i/ili grafike; vizualni izgled igra ključnu ulogu u stvaranju doživljaja prema njemu i povezujući
+                          ga prema određenom proizvodu/kompaniji
+Redizajn web stranice (143. stranica) - Promjenjivost principa web dizajna, dizajn stranice prkosi smjernicama dobrog web dizajna, često se mijenjaju timovi web dizajna
+                                        koji oblikuju određena web mjesta, koristi se zastarjela tehnologija, sadržaj nije ažuriran, ...
+Optimizacija web stranice (148. stranica) - SEO - cilj optimizacije web stranice za tražilice je povećanje ciljane posjećenosti web stranica sa tražilicama čime se povećava
+                                          kontakata ili izravna prodaja
+                                          - SMO - omogućava pronalaženje publike, upoznati ih sa uslugom i proizvodom 

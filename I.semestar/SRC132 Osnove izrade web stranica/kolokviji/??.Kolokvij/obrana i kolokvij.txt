@@ -1,0 +1,64 @@
+4 
+
+kaskadnost -kolokvij
+pravilno important
+
+kako napravit tablicu
+border-collapse
+rowspan
+colspan
+
+thead
+tbody  
+tfoot
+
+colgroup
+
+forme, cemu sluzi
+input typovi 
+
+textarea
+
+select
+button
+
+datalist povezivanja
+
+fieldset i legend
+
+responzivni dizajn def
+
+
+view port
+struktura html dokoumenta
+
+blok i linijski dokumenti
+
+semanticka struktura stranica, nove html5 oznake
+
+oznake naucit
+
+figcaption
+
+box model i sizing
+
+6
+
+svojstvo position
+
+z index
+
+svojstvo float /clear
+
+medijski upiti!!! prepoznat width
+
+7
+
+sta je flex box - diplay svosjstvo vrijednost flex
+
+osnovni koncept / allign items etc
+
+boostrap, pojam mobile first
+
+
+ovo je sve za obranu, dovoljno za proc kolokvij 

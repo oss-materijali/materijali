@@ -1,0 +1,6540 @@
+#####################################################################################
+#                                                                                   #
+#                                                                                   #
+#               NE PREPORUCAVAN KORISTENJE OVOG MATERIJALA!!!!!!!!                  #
+#                 ABSOLUTNI UZAS JE + OVAJ PREDMET SE NE UCI NAPAMET                #
+#                  (KORISTI CHATGPT PREDLOZENE FUNKCIJE IZ STANDARDNIH              #
+#                  LIBRARY-A S KOJIMA MI NE RADIMO NITI NAS UCI RADIT)              #
+#                                                                                   #
+#                    SPA CE VAS IZIST ZIVE AKO STE SE MUCILI PROC PMA               #
+#                                                                                   #
+#                                                                                   #
+#####################################################################################
+
+
+
+1. Napisati funkciju koja za dva unesena znaka vraća koliko daleko se nalaze u engleskom alfabetu (udaljenost je pozitivan broj). Ako jedan od znakova nije slovo, funkcija vraca -1. Napomena: Za provjeru je li znak slovo možete se koristiti funkcijom int isalpha(int c); iz ctype.h, a za pretvaranje znaka u veliko slovo funkciju int toupper(int c);
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+int udaljenost(char a, char b){
+    if(!isalpha(a) || !isalpha(b)) return -1;
+    return abs(toupper(a)-toupper(b));
+}
+// isalpha provjerava slovo, toupper pretvara u veliko slovo, abs vraća pozitivnu razliku
+
+int main(){
+    printf("%d\n",udaljenost('a','d')); // 3
+    printf("%d\n",udaljenost('A','z')); // 25
+    printf("%d\n",udaljenost('a','1')); // -1
+    return 0;
+}
+
+2. Napisati funkciju koja generira pseudoslučajni broj iz zatvorenog intervala [a, b], gdje su a i b argumenti funkcije.
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int random_broj(int a, int b){
+    return a + rand() % (b-a+1);
+}
+// rand() generira broj od 0 do RAND_MAX, % raspon daje broj u željenom intervalu
+
+int main(){
+    srand(time(0));
+    for(int i=0;i<5;i++) printf("%d ", random_broj(5,10));
+    return 0;
+}
+
+3. Napisati funkciju koja iterativno računa umnožak prvih n neparnih brojeva.
+#include <stdio.h>
+
+int proizvod_neparnih_iter(int n){
+    int p=1;
+    for(int i=0;i<n;i++) p*=(2*i+1);
+    return p;
+}
+// petlja množi prvih n neparnih brojeva 1,3,5,...
+
+int main(){
+    printf("%d\n",proizvod_neparnih_iter(4)); // 105
+    return 0;
+}
+
+4. Napisati funkciju koja rekurzivno računa umnožak prvih n neparnih brojeva.
+#include <stdio.h>
+
+int proizvod_neparnih_rek(int n){
+    if(n==0) return 1;
+    return (2*(n-1)+1)*proizvod_neparnih_rek(n-1);
+}
+// rekurzija koristi formulu 2*(n-1)+1 za n-ti neparni broj
+
+int main(){
+    printf("%d\n",proizvod_neparnih_rek(4)); // 105
+    return 0;
+}
+
+5. Napisati funkciju koja ispisuje broj n u bazi k, za 1 ≤ k ≤ 16.
+#include <stdio.h>
+
+void ispisi_bazu(int n, int k){
+    if(n>=k) ispisi_bazu(n/k,k);
+    char c=n%k<10?n%k+'0':n%k-10+'A';
+    putchar(c);
+}
+// rekurzivno dijelimo broj za ispis cifara, >9 pretvaramo u slova A-F
+
+int main(){
+    ispisi_bazu(255,16); // FF
+    putchar('\n');
+    ispisi_bazu(31,2); // 11111
+    putchar('\n');
+    return 0;
+}
+
+6. Napisati funkciju koja računa n-ti član aritmetičkog niza iterativno i rekurzivno.
+#include <stdio.h>
+
+int aritmeticki_iter(int a1,int d,int n){
+    return a1 + (n-1)*d;
+}
+int aritmeticki_rek(int a1,int d,int n){
+    if(n==1) return a1;
+    return d + aritmeticki_rek(a1,d,n-1);
+}
+// iterativno formula direktno, rekurzivno dodajemo d dok ne stignemo do n-tog člana
+
+int main(){
+    printf("%d\n",aritmeticki_iter(2,3,5)); // 2+3*4=14
+    printf("%d\n",aritmeticki_rek(2,3,5));  // 14
+    return 0;
+}
+
+7. Napisati rekurzivnu funkciju koja ispituje da li je prirodni broj palindrom.
+#include <stdio.h>
+
+int palindrom_rek(int n,int rev){
+    if(n==0) return rev;
+    return palindrom_rek(n/10,rev*10+n%10);
+}
+int je_palindrom(int n){
+    return n==palindrom_rek(n,0);
+}
+// obrnut broj uspoređujemo s originalom
+
+int main(){
+    printf("%d\n",je_palindrom(121)); // 1
+    printf("%d\n",je_palindrom(123)); // 0
+    return 0;
+}
+
+8. Napisati funkciju koja rekurzivno računa sumu prvih n brojeva djeljivih sa 3.
+#include <stdio.h>
+
+int suma_3_rek(int n){
+    if(n==0) return 0;
+    return 3*n + suma_3_rek(n-1);
+}
+// suma prvih n brojeva 3,6,9,... je 3+6+...+3*n=3*(1+2+...+n)
+
+int main(){
+    printf("%d\n",suma_3_rek(4)); // 3+6+9+12=30
+    return 0;
+}
+
+9. Napisati funkciju koja rekurzivno računa umnožak prvih n parnih brojeva.
+#include <stdio.h>
+
+int proizvod_parnih_rek(int n){
+    if(n==0) return 1;
+    return 2*n*proizvod_parnih_rek(n-1);
+}
+// parni brojevi 2,4,6,..., rekurzivno množimo
+
+int main(){
+    printf("%d\n",proizvod_parnih_rek(4)); // 2*4*6*8=384
+    return 0;
+}
+
+10. Napisati funkciju koja rekurzivno računa zbroj parnih brojeva manjih od n.
+#include <stdio.h>
+
+int suma_parnih_manjih(int n){
+    if(n<=0) return 0;
+    int last=n%2==0?n-2:n-1;
+    if(last<=0) return 0;
+    return last + suma_parnih_manjih(last);
+}
+// uzimamo najveći manji parni broj i zbrajamo rekurzivno
+
+int main(){
+    printf("%d\n",suma_parnih_manjih(10)); // 2+4+6+8=20
+    return 0;
+}
+
+11. Napisati funkciju koja rekurzivno računa k-tu potenciju broja n.
+#include <stdio.h>
+
+int potencija_rek(int n,int k){
+    if(k==0) return 1;
+    return n*potencija_rek(n,k-1);
+}
+// osnovna rekurzija za potenciju
+
+int main(){
+    printf("%d\n",potencija_rek(2,5)); // 32
+    return 0;
+}
+
+12. Napisati rekurzivnu funkciju za računanje n-tog člana geometrijskog niza za dani a1 i q. n-ti član geometrijskog niza je an = an−1 ∗ q.
+#include <stdio.h>
+
+int geometrijski_rek(int a1,int q,int n){
+    if(n==1) return a1;
+    return q*geometrijski_rek(a1,q,n-1);
+}
+// n-ti član q^(n-1)*a1
+
+int main(){
+    printf("%d\n",geometrijski_rek(1,2,5)); // 16
+    return 0;
+}
+
+13. Napisati funkciju koja rekurzivno računa sumu pozitivnih cijelih brojeva izmedu a i b
+#include <stdio.h>
+
+int suma_izmedu_rek(int a,int b){
+    if(a>b) return 0;
+    return a + suma_izmedu_rek(a+1,b);
+}
+// zbrajamo sve brojeve od a do b rekurzivno
+
+int main(){
+    printf("%d\n",suma_izmedu_rek(3,7)); // 3+4+5+6+7=25
+    return 0;
+}
+
+14. Napisati program za pretvaranje vrijednosti varijable tipa int u short vrijednost. Ako je int broj izvan opsega short vrijednosti, dodijeliti mu vrijednost SHRT_MIN i SHRT_MAX (tj.-32768, 32767).
+#include <stdio.h>
+#include <limits.h>
+
+short int_u_short(int x){
+    if(x<SHRT_MIN) return SHRT_MIN;
+    if(x>SHRT_MAX) return SHRT_MAX;
+    return (short)x;
+}
+// provjera opsega short tipa
+
+int main(){
+    printf("%d\n",int_u_short(50000)); // 32767
+    printf("%d\n",int_u_short(-40000)); // -32768
+    printf("%d\n",int_u_short(12345)); // 12345
+    return 0;
+}
+
+15. Napisati program u kojem se unose dva broja i jedan znak (’+’, ’-’, ’*’ , ’/’) te se ovisno o znaku izvršava odgovarajuća operacija.
+#include <stdio.h>
+
+int kalkulator(int a,int b,char op){
+    switch(op){
+        case '+': return a+b;
+        case '-': return a-b;
+        case '*': return a*b;
+        case '/': return b!=0?a/b:0;
+        default: return 0;
+    }
+}
+// switch izvršava operaciju ovisno o znaku
+
+int main(){
+    printf("%d\n",kalkulator(10,5,'+')); // 15
+    printf("%d\n",kalkulator(10,5,'-')); // 5
+    printf("%d\n",kalkulator(10,5,'*')); // 50
+    printf("%d\n",kalkulator(10,5,'/')); // 2
+    return 0;
+}
+
+14. Napisati funkciju koja rekurzivno računa sumu recipročnih vrijednosti prirodnih brojeva do n.
+#include <stdio.h>
+
+double suma_reciprocnih_rek(int n){
+    if(n==1) return 1.0;
+    return 1.0/n + suma_reciprocnih_rek(n-1);
+}
+// rekurzivno zbrajamo 1/1 + 1/2 + ... + 1/n
+
+int main(){
+    printf("%lf\n",suma_reciprocnih_rek(5)); // 1+1/2+1/3+1/4+1/5
+    return 0;
+}
+
+15. Napisati rekurzivnu funkciju za ispisivanje prirodnog broja u bazi k, 2 ≤ k ≤ 10.
+#include <stdio.h>
+
+void ispisi_bazu_rek(int n,int k){
+    if(n>=k) ispisi_bazu_rek(n/k,k);
+    putchar(n%k+'0');
+}
+// dijelimo broj i rekurzivno ispisujemo cifre
+
+int main(){
+    ispisi_bazu_rek(10,2); // 1010
+    putchar('\n');
+    ispisi_bazu_rek(31,8); // 37
+    putchar('\n');
+    return 0;
+}
+
+16. Napisati rekurzivnu funkciju koja računa sumu prvih n prostih brojeva.
+#include <stdio.h>
+
+int prost(int x){
+    if(x<2) return 0;
+    for(int i=2;i*i<=x;i++) if(x%i==0) return 0;
+    return 1;
+}
+
+int suma_prvih_prostih_rek(int n,int trenutni){
+    if(n==0) return 0;
+    if(prost(trenutni)) return trenutni + suma_prvih_prostih_rek(n-1,trenutni+1);
+    return suma_prvih_prostih_rek(n,trenutni+1);
+}
+// provjera prostosti i rekurzivno zbrajanje
+
+int main(){
+    printf("%d\n",suma_prvih_prostih_rek(5,2)); // 2+3+5+7+11=28
+    return 0;
+}
+
+17. Napisati rekurzivnu funkciju koja ispisuje unesene znakove u obratnom redoslijedu odvojene zarezom. Unos traje dok korisnik ne unese nula.
+#include <stdio.h>
+
+void ispisi_obrnut_rek(){
+    char c;
+    scanf(" %c",&c);
+    if(c=='0') return;
+    ispisi_obrnut_rek();
+    printf("%c,",c);
+}
+// čitamo znak, rekurzivno idemo do kraja, ispisujemo unazad
+
+int main(){
+    printf("Unesite znakove zavrsavajte sa 0:\n");
+    ispisi_obrnut_rek();
+    printf("\n");
+    return 0;
+}
+
+18. Napisati rekurzivnu funkciju koja za dani broj n ispisuje sve neparne brojeve unazad do 1.
+#include <stdio.h>
+
+void neparni_unazad(int n){
+    if(n<=0) return;
+    if(n%2==1) printf("%d ",n);
+    neparni_unazad(n-1);
+}
+
+int main(){
+    neparni_unazad(10); // 9 7 5 3 1
+    printf("\n");
+    return 0;
+}
+
+19. Napisati rekurzivnu funkciju koja za dani broj n ispisuje sve neparne brojeve do n.
+#include <stdio.h>
+
+void neparni_do_n(int n,int i){
+    if(i>n) return;
+    if(i%2==1) printf("%d ",i);
+    neparni_do_n(n,i+1);
+}
+
+int main(){
+    neparni_do_n(10,1); // 1 3 5 7 9
+    printf("\n");
+    return 0;
+}
+
+20. Napisati rekurzivnu funkciju koja za dani broj n ispisuje sve prirodne brojeve unazad do 1, pa onda opet do n.
+#include <stdio.h>
+
+void brojevi_unazad_i_naprijed(int n){
+    if(n==0) return;
+    printf("%d ",n);
+    brojevi_unazad_i_naprijed(n-1);
+    printf("%d ",n);
+}
+
+int main(){
+    brojevi_unazad_i_naprijed(3); // 3 2 1 1 2 3
+    printf("\n");
+    return 0;
+}
+
+21. Napisati rekurzivnu funkciju koja za dane brojeve m i n ispisuje sve prirodne brojeve izmed̄u m i n.
+#include <stdio.h>
+
+void ispisi_m_n(int m,int n){
+    if(m>n) return;
+    printf("%d ",m);
+    ispisi_m_n(m+1,n);
+}
+
+int main(){
+    ispisi_m_n(3,7); // 3 4 5 6 7
+    printf("\n");
+    return 0;
+}
+
+22. Napisati rekurzivnu funkciju koja broji u koliko se koraka od broja n množeći znamenke dolazi do jednoznamenkastog broja.
+#include <stdio.h>
+
+int umnozak_znamenki(int n){
+    int p=1;
+    while(n>0){p*=n%10;n/=10;}
+    return p;
+}
+
+int broj_koraka(int n){
+    if(n<10) return 0;
+    return 1 + broj_koraka(umnozak_znamenki(n));
+}
+
+int main(){
+    printf("%d\n",broj_koraka(727)); // 5
+    return 0;
+}
+
+23. Napisati rekurzivnu funkciju koja ispituje da li uneseni prirodni broj ima u binarnom zapisu jednaki broj nula i jedinica.
+#include <stdio.h>
+
+int jednako_nula_jedinica(int n,int nula,int jedinica){
+    if(n==0) return nula==jedinica;
+    if(n%2==0) return jednako_nula_jedinica(n/2,nula+1,jedinica);
+    else return jednako_nula_jedinica(n/2,nula,jedinica+1);
+}
+
+int main(){
+    printf("%d\n",jednako_nula_jedinica(9,0,0)); // 1, 9=1001
+    printf("%d\n",jednako_nula_jedinica(7,0,0)); // 0, 7=111
+    return 0;
+}
+
+24. Repunit je broj čije su sve znamenke 1. Napisati funkciju koja za prirodni broj ispituje da li je on repunit.
+#include <stdio.h>
+
+int repunit(int n){
+    if(n==0) return 1;
+    if(n%10!=1) return 0;
+    return repunit(n/10);
+}
+
+int main(){
+    printf("%d\n",repunit(1111)); // 1
+    printf("%d\n",repunit(1231)); // 0
+    return 0;
+}
+
+25. Napisati funkciju koja rekurzivno traži najveći med̄u n unesenih brojeva (korisnik definira n).
+#include <stdio.h>
+
+int najveci_rek(int n){
+    if(n==1){int x; scanf("%d",&x); return x;}
+    int x; scanf("%d",&x);
+    int max=najveci_rek(n-1);
+    return x>max?x:max;
+}
+
+int main(){
+    printf("Unesite 5 brojeva:\n");
+    printf("%d\n",najveci_rek(5));
+    return 0;
+}
+
+26. Napisati program u kojem korisnik unosi brojeve sve dok ne unese broj 1000. Program svaki uneseni broj ispiše naopako. Primjer: za uneseni broj 2345, ispisat će se 5432
+#include <stdio.h>
+
+void ispisi_naopako(int n){
+    if(n==0) return;
+    putchar(n%10+'0');
+    ispisi_naopako(n/10);
+}
+
+void unos_i_naopako(){
+    int x;
+    scanf("%d",&x);
+    if(x==1000) return;
+    ispisi_naopako(x);
+    printf("\n");
+    unos_i_naopako();
+}
+
+int main(){
+    printf("Unesite brojeve zavrsavajte sa 1000:\n");
+    unos_i_naopako();
+    return 0;
+}
+
+
+1. Napisati funkciju koja sumira sve prirodne brojeve do n koji su djeljivi s 3, a nisu djeljivi s 5.
+#include <stdio.h>
+
+// Funkcija rekurzivno zbraja sve prirodne brojeve do n
+// koji su djeljivi s 3, ali nisu djeljivi s 5.
+// Ako trenutni broj zadovoljava uvjet, dodaje se u sumu.
+// Inače se samo prelazi na prethodni broj.
+int suma_3_ne_5(int n){
+    if(n==0) return 0;                  // baza rekurzije: n=0
+    if(n%3==0 && n%5!=0) return n + suma_3_ne_5(n-1);
+    return suma_3_ne_5(n-1);
+}
+
+int main(){
+    int n=15;
+    printf("Suma brojeva do %d djeljivih s 3, ali ne s 5: %d\n", n, suma_3_ne_5(n));
+    return 0;
+}
+// Main testira funkciju za n=15 i ispisuje rezultat
+// Očekivani rezultat: 3+6+9+12=30
+
+2. Napisati funkciju koja za unesene prirodne brojeve računa razliku najvećeg i najmanjeg broja. Brojeve unosi korisnik sve dok ne unese 0.
+#include <stdio.h>
+
+// Funkcija unosi n brojeva i pronalazi maksimum i minimum
+// koristeći rekurziju. Nakon unosa svih brojeva, vraća
+// razliku maksimum-minimum.
+void max_min_razlika(int n, int *max, int *min){
+    if(n==0) return;                     // baza: nema više brojeva
+    int x;
+    scanf("%d",&x);
+    if(n==1){                            // prvi uneseni broj inicijalizira max i min
+        *max=x;
+        *min=x;
+    }
+    max_min_razlika(n-1, max, min);      // rekurzivni poziv za preostale brojeve
+    if(x>*max) *max=x;                   // ažuriranje maksimuma
+    if(x<*min) *min=x;                   // ažuriranje minimuma
+}
+
+int main(){
+    int n=5;                             
+    int max,min;
+    printf("Unesite %d prirodnih brojeva:\n", n);
+    max_min_razlika(n,&max,&min);
+    printf("Razlika najveceg i najmanjeg: %d\n", max-min);
+    return 0;
+}
+// Main traži od korisnika unos 5 brojeva i ispisuje razliku
+
+3. Napisati program u kojem korisnik unosi znakove dok ne unese znak ’.’. Ako je znak malo slovo, ispisuje se poruka "malo slovo" i odgovarajuće veliko slovo. Ako je znak veliko slovo, ispisuje se slovo. Ako je znak znamenka, ispisuje se njena vrijednost, a ako znak nije ni slovo, ni znamenka, ne ispisuje se ništa.
+#include <stdio.h>
+#include <ctype.h>
+
+int main(){
+    char c;
+    printf("Unesite znakove, '.' za kraj:\n");
+    while(1){
+        scanf(" %c",&c);
+        if(c=='.') break;                // prekid unosa
+        // Provjeravamo tip znaka
+        if(islower(c)) printf("Malo slovo %c\n", toupper(c));
+        else if(isupper(c)) printf("Veliko slovo %c\n", c);
+        else if(isdigit(c)) printf("Znamenka %c\n", c);
+        // Ako nije slovo niti znamenka, ne ispisuje se ništa
+    }
+    return 0;
+}
+// Main demonstrira unos znakova i različite uvjete za obradu znakova
+
+4. Napisati funkciju koja za prirodni broj n vraća najmanji prost broj koji je veći od n.
+#include <stdio.h>
+#include <math.h>
+
+// Funkcija provjerava je li broj prost
+int prost(int x){
+    if(x<2) return 0;
+    for(int i=2;i*i<=x;i++)
+        if(x%i==0) return 0;
+    return 1;
+}
+
+// Funkcija traži najmanji prost broj veći od n
+int sljedeci_prost(int n){
+    int i=n+1;
+    while(!prost(i)) i++;
+    return i;
+}
+
+int main(){
+    printf("Sljedeci prost broj nakon 10: %d\n", sljedeci_prost(10));
+    printf("Sljedeci prost broj nakon 23: %d\n", sljedeci_prost(23));
+    return 0;
+}
+// Main testira funkciju i ispisuje rezultate za 10 i 23
+
+5. Napisati funkciju koja za uneseni broj n provjerava je li on trimorfan, tj. završava li njegov kub istim znamenkama.
+#include <stdio.h>
+
+// Funkcija provjerava trimorfnost broja
+// Računa kub broja i uspoređuje posljednje znamenke sa samim brojem
+int trimorfan(int n){
+    long long k=(long long)n*n*n; // kub broja
+    int m=n;
+    while(m>0){
+        if(m%10 != k%10) return 0;   // ako se znamenke ne poklapaju, nije trimorfan
+        m/=10;
+        k/=10;
+    }
+    return 1;
+}
+
+int main(){
+    int n;
+    printf("Unesite brojeve (0 za kraj):\n");
+    while(1){
+        scanf("%d",&n);
+        if(n==0) break;
+        if(trimorfan(n)) printf("%d je trimorfan\n", n);
+        else printf("%d nije trimorfan\n", n);
+    }
+    return 0;
+}
+// Main omogućuje unos više brojeva i provjeru trimorfnosti
+
+6. Napisati funkciju koja vraća promijenjen peteroznamenkasti broj na način da svaku znamenku uveća za 1. Ukoliko broj nije peteroznamenkast, funkcija vraća nepromjenjeni broj.
+#include <stdio.h>
+
+// Funkcija provjerava je li broj peteroznamenkast
+// Ako jest, svaku znamenku povećava za 1 (mod 10)
+int uvecaj_za_1(int n){
+    if(n<10000 || n>99999) return n; // nije petoznamenkast
+    int novi=0, m=1;
+    for(int i=0;i<5;i++){
+        int d=(n%10 + 1)%10;
+        novi+=d*m;
+        m*=10;
+        n/=10;
+    }
+    return novi;
+}
+
+int main(){
+    printf("%d\n", uvecaj_za_1(43992)); // 54003
+    printf("%d\n", uvecaj_za_1(123));   // 123, nije 5-cifren
+    return 0;
+}
+// Main testira funkciju za promjenu petoznamenkastih brojeva
+
+7. Napisati program koji će za uneseni n ispisati mrežu n×n sljedećeg oblika
+#include <stdio.h>
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    // Ispis piramide gore
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<i;j++) printf("* ");
+        printf("\n");
+    }
+    // Ispis piramide dolje
+    for(int i=n-1;i>=1;i--){
+        for(int j=0;j<i;j++) printf("* ");
+        printf("\n");
+    }
+    return 0;
+}
+// Main ispisuje piramidu gore-dolje s * po redovima
+
+8. Napisati program koji će za uneseni n ispisati mrežu n×n sljedećeg oblika (piramida s razmakom)
+#include <stdio.h>
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++){
+        for(int s=0;s<n-i;s++) printf("   "); // razmak za poravnanje
+        for(int j=0;j<i;j++) printf("*   "); // ispis zvjezdica s razmakom
+        printf("\n");
+    }
+    return 0;
+}
+// Main ispisuje piramidu s razmakom, svaka linija pomaknuta
+
+9. (Preskočen u prethodnoj listi)
+
+10. Napisati program koji sumira prvih n kvadrata prirodnih brojeva.
+#include <stdio.h>
+
+int main(){
+    int n,sum=0;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++) sum+=i*i;
+    printf("Suma prvih %d kvadrata: %d\n", n, sum);
+    return 0;
+}
+// Main zbraja kvadrate 1^2 + 2^2 + ... + n^2
+
+11. Napisati program koji množi prvih n kvadrata prirodnih brojeva.
+#include <stdio.h>
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    long long p=1;
+    for(int i=1;i<=n;i++) p*=i*i;
+    printf("Proizvod prvih %d kvadrata: %lld\n", n, p);
+    return 0;
+}
+// Main računa proizvod kvadrata, koristi long long zbog velikih vrijednosti
+
+12. Napisati funkciju koja za niz unesenih prirodnih brojeva vraća srednju vrijednost brojeva koji su djeljivi s 3.
+#include <stdio.h>
+
+// Funkcija unosi brojeve dok se ne unese 0
+// Zbraja i broji samo brojeve djeljive s 3
+double srednja_3(){
+    int x,suma=0,br=0;
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(x%3==0){suma+=x; br++;}
+    }
+    return br>0?(double)suma/br:0;
+}
+
+int main(){
+    printf("Srednja vrijednost brojeva djeljivih s 3: %lf\n",srednja_3());
+    return 0;
+}
+// Main omogućuje unos niza brojeva i ispis srednje vrijednosti
+
+13. Napisati funkciju koja za niz svih prirodnih troznamenkastih brojeva vraća broj koji ima najveću sumu kvadrata znamenki.
+#include <stdio.h>
+
+// Funkcija računa sumu kvadrata znamenki broja
+int suma_kvadrat_znam(int n){
+    int s=0;
+    while(n>0){int d=n%10; s+=d*d; n/=10;}
+    return s;
+}
+
+// Funkcija pronalazi broj s najvećom sumom kvadrata znamenki u nizu
+int max_suma_kvadrat(int niz[], int n){
+    int max=niz[0], maxs=suma_kvadrat_znam(niz[0]);
+    for(int i=1;i<n;i++){
+        int s=suma_kvadrat_znam(niz[i]);
+        if(s>maxs){max=niz[i]; maxs=s;}
+    }
+    return max;
+}
+
+int main(){
+    int niz[]={123, 456, 789};
+    printf("Broj s najvecom sumom kvadrata znamenki: %d\n",max_suma_kvadrat(niz,3));
+    return 0;
+}
+// Main testira funkciju za niz troznamenkastih brojeva
+
+14. Napisati program koji za niz unesenih znakova char računa sumu pripadajućih ASCII vrijednosti.
+#include <stdio.h>
+
+int main(){
+    char c;
+    int suma=0;
+    printf("Unesite znakove (q za kraj):\n");
+    while(1){
+        scanf(" %c",&c);
+        if(c=='q') break;
+        suma+=c;
+    }
+    printf("Suma ASCII vrijednosti: %d\n",suma);
+    return 0;
+}
+// Main zbraja ASCII vrijednosti unesenih znakova dok se ne unese 'q'
+
+15. Napisati program koji za unesene brojeve ispituje jesu li obilni.
+#include <stdio.h>
+
+// Funkcija računa sumu djelitelja broja (osim samog broja)
+int suma_djelitelja(int n){
+    int s=0;
+    for(int i=1;i<n;i++) if(n%i==0) s+=i;
+    return s;
+}
+
+int main(){
+    int x;
+    printf("Unesite brojeve (0 za kraj):\n");
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(suma_djelitelja(x)>x) printf("%d je obilni\n",x);
+        else printf("%d nije obilni\n",x);
+    }
+    return 0;
+}
+// Main provjerava obilnost unesenih brojeva
+
+16. Napisati program koji za unesene prirodne brojeve ispituje jesu li oskudni.
+#include <stdio.h>
+
+int suma_djel(int n){
+    int s=0;
+    for(int i=1;i<n;i++) if(n%i==0) s+=i;
+    return s;
+}
+
+int main(){
+    int x;
+    printf("Unesite brojeve (0 za kraj):\n");
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(suma_djel(x)<x) printf("%d je oskudni\n",x);
+        else printf("%d nije oskudni\n",x);
+    }
+    return 0;
+}
+// Main provjerava oskudnost unesenih brojeva
+
+17. Napisati program koji za unesene brojeve ispituje jesu li svi njihovi djelitelji neparni.
+#include <stdio.h>
+
+int svi_djelitelji_neparni(int n){
+    for(int i=1;i<=n;i++) if(n%i==0 && i%2==0) return 0;
+    return 1;
+}
+
+int main(){
+    int x;
+    printf("Unesite brojeve (0 za kraj):\n");
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(svi_djelitelji_neparni(x)) printf("%d svi djelitelji neparni\n",x);
+        else printf("%d ima parne djelitelje\n",x);
+    }
+    return 0;
+}
+// Main provjerava da li svi djelitelji unesenog broja su neparni
+
+18. Napisati funkciju koja za uneseni broj n provjerava je li automorfan.
+#include <stdio.h>
+
+int automorfan(int n){
+    long long k=(long long)n*n;
+    int m=n;
+    while(m>0){
+        if(m%10 != k%10) return 0;
+        m/=10;
+        k/=10;
+    }
+    return 1;
+}
+
+int main(){
+    int x;
+    printf("Unesite broj za provjeru automorfnosti (0 za kraj):\n");
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(automorfan(x)) printf("%d je automorfan\n",x);
+        else printf("%d nije automorfan\n",x);
+    }
+    return 0;
+}
+// Main provjerava automorfnost: kvadrat završava istim znamenkama kao broj
+
+19. Napisati program koji za unesene prirodne brojeve ispituje imaju li u hexa-decimalnom zapisu sve jedinice (repunit).
+#include <stdio.h>
+
+int hexa_repunit(int n){
+    if(n==0) return 1;
+    int d=n%16;
+    if(d!=1) return 0;
+    return hexa_repunit(n/16);
+}
+
+int main(){
+    int x;
+    printf("Unesite brojeve (0 za kraj):\n");
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(hexa_repunit(x)) printf("%d u hexa ima sve jedinice\n",x);
+        else printf("%d u hexa nema sve jedinice\n",x);
+    }
+    return 0;
+}
+// Main pretvara broj u hexadecimal i provjerava da li sve cifre=1
+
+20. Napisati funkciju koja za parametre a i b vraća zbroj svih cijelih brojeva u intervalu <a, b> koji su djeljivi sa 2, a nisu djeljivi ni sa 3 ni sa 5.
+#include <stdio.h>
+
+int suma_2_ne_3_5(int a,int b){
+    if(a>b) return 0;
+    if(a%2==0 && a%3!=0 && a%5!=0) return a + suma_2_ne_3_5(a+1,b);
+    return suma_2_ne_3_5(a+1,b);
+}
+
+int main(){
+    int a=1,b=20;
+    printf("Suma brojeva u [%d,%d] djeljivih sa 2, ali ne sa 3 i 5: %d\n", a, b, suma_2_ne_3_5(a,b));
+    return 0;
+}
+// Main rekurzivno zbraja sve brojeve u intervalu koji zadovoljavaju uvjet
+
+21. Napisati funkciju koja računa zbroj parnih brojeva manjih od n.
+#include <stdio.h>
+
+// Funkcija iterativno zbraja sve parne brojeve < n
+int suma_parnih(int n){
+    int suma=0;
+    for(int i=2;i<n;i+=2) suma+=i; // iteracija po parnim brojevima
+    return suma;
+}
+
+int main(){
+    int n=10;
+    printf("Suma parnih brojeva manjih od %d: %d\n", n, suma_parnih(n));
+    return 0;
+}
+// Main testira funkciju za n=10
+// Rezultat: 2+4+6+8=20
+
+22. Napisati program koji za uneseni prirodni broj n ispisuje svaku znamenku u svom retku. Ne zna se unaprijed broj znamenki u danom broju.
+#include <stdio.h>
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    int broj=n;
+    int rev=0;
+    // Obrnemo broj da bi ispisali znamenke u originalnom redoslijedu
+    while(broj>0){
+        rev=rev*10 + broj%10;
+        broj/=10;
+    }
+    while(rev>0){
+        printf("%d\n",rev%10);
+        rev/=10;
+    }
+    return 0;
+}
+// Main čita broj i ispisuje svaku znamenku u novom retku
+
+23. Napisati funkciju koja ispituje jesu li svi djelitelji prirodnog broja (osim jedinice) parni brojevi. Ukoliko jesu, funkcija vraća njihovu sumu.
+#include <stdio.h>
+
+int suma_parnih_djelitelja(int n){
+    int suma=0;
+    for(int i=2;i<=n;i++){
+        if(n%i==0){
+            if(i%2!=0) return 0; // pronađen neparan djelitelj
+            suma+=i;
+        }
+    }
+    return suma;
+}
+
+int main(){
+    int n=28;
+    int rez=suma_parnih_djelitelja(n);
+    if(rez) printf("Svi djelitelji su parni, suma=%d\n", rez);
+    else printf("Postoji neparan djelitelj\n");
+    return 0;
+}
+// Main testira funkciju za n=28
+// Ako su svi djelitelji parni, funkcija vraća sumu; inače 0
+
+24. Napisati funkciju koja ispituje je li broj izbalansiran tj. ima li u binarnom zapisu jednak broj nula i jedinica.
+#include <stdio.h>
+
+int izbalansiran(int n){
+    int jedinice=0,nule=0;
+    while(n>0){
+        if(n%2==1) jedinice++;
+        else nule++;
+        n/=2;
+    }
+    return jedinice==nule;
+}
+
+int main(){
+    int n=9; // 9 = 1001b => 2 nule, 2 jedinice
+    if(izbalansiran(n)) printf("%d je izbalansiran\n", n);
+    else printf("%d nije izbalansiran\n", n);
+    return 0;
+}
+// Main testira funkciju za broj 9
+// Funkcija broji jedinice i nule u binarnom zapisu
+
+25. Napisati funkciju koja za nazivnike dvaju razlomaka vraća zajednički nazivnik (najmanji zajednički višekratnik).
+#include <stdio.h>
+
+// Funkcija računa najveći zajednički djelitelj
+int gcd(int a,int b){
+    while(b!=0){
+        int t=b;
+        b=a%b;
+        a=t;
+    }
+    return a;
+}
+
+// Funkcija vraća najmanji zajednički višekratnik (NZV)
+int lcm(int a,int b){
+    return a*b/gcd(a,b);
+}
+
+int main(){
+    int a=12,b=18;
+    printf("NZV od %d i %d je %d\n", a,b,lcm(a,b));
+    return 0;
+}
+// Main testira lcm funkciju
+// LCM(a,b) = a*b / GCD(a,b)
+
+26. Napisati funkciju koja vraća sumu prirodnih brojeva do n čiji su djelitelji parni brojevi.
+#include <stdio.h>
+
+int suma_parnih_broj(int n){
+    int suma=0;
+    for(int i=2;i<=n;i++){
+        int ok=1;
+        for(int j=2;j<=i;j++){
+            if(i%j==0 && j%2!=0){ ok=0; break; }
+        }
+        if(ok) suma+=i;
+    }
+    return suma;
+}
+
+int main(){
+    int n=10;
+    printf("Suma brojeva do %d s parnim djeliteljima: %d\n", n, suma_parnih_broj(n));
+    return 0;
+}
+// Main testira funkciju za n=10
+// Funkcija provjerava sve djelitelje svakog broja
+
+27. Napisati funkciju koja vraća sumu prirodnih brojeva do n koji imaju manje od m djelitelja.
+#include <stdio.h>
+
+int broj_djelitelja(int x){
+    int br=0;
+    for(int i=1;i<=x;i++) if(x%i==0) br++;
+    return br;
+}
+
+int suma_m_djelitelja(int n,int m){
+    int suma=0;
+    for(int i=1;i<=n;i++)
+        if(broj_djelitelja(i)<m) suma+=i;
+    return suma;
+}
+
+int main(){
+    int n=10,m=4;
+    printf("Suma brojeva do %d s manje od %d djelitelja: %d\n", n,m,suma_m_djelitelja(n,m));
+    return 0;
+}
+// Main testira funkciju za n=10 i m=4
+// Funkcija broji djelitelje i zbraja one s manje od m
+
+28. Repunit je broj čije su sve znamenke 1. Napisati funkciju koja za prirodni broj ispituje da li je on repunit.
+#include <stdio.h>
+
+int repunit(int n){
+    if(n==0) return 0; // 0 nije repunit
+    while(n>0){
+        if(n%10 !=1) return 0;
+        n/=10;
+    }
+    return 1;
+}
+
+int main(){
+    int n=111;
+    if(repunit(n)) printf("%d je repunit\n", n);
+    else printf("%d nije repunit\n", n);
+    return 0;
+}
+// Main provjerava je li broj sastavljen samo od znamenki 1
+
+29. Valoviti brojevi su brojevi koji imaju formu ababa. Napisati program koji ispisuje sve peteroznamenkaste valovite brojeve djeljive sa 5.
+#include <stdio.h>
+
+int main(){
+    for(int a=1;a<=9;a++){
+        for(int b=0;b<=9;b++){
+            int n=10000*a + 1000*b +100*a + 10*b + a;
+            if(n%5==0) printf("%d\n", n);
+        }
+    }
+    return 0;
+}
+// Main generira sve ababa brojeve i provjerava djeljivost s 5
+
+30. Napisati funkciju koja za prirodni broj n vraća sumu svih prostih djelitelje broja n.
+#include <stdio.h>
+
+int prost(int x){
+    if(x<2) return 0;
+    for(int i=2;i*i<=x;i++) if(x%i==0) return 0;
+    return 1;
+}
+
+int suma_prostih_djelitelja(int n){
+    int suma=0;
+    for(int i=2;i<=n;i++){
+        if(n%i==0 && prost(i)) suma+=i;
+    }
+    return suma;
+}
+
+int main(){
+    int n=28;
+    printf("Suma prostih djelitelja broja %d: %d\n", n, suma_prostih_djelitelja(n));
+    return 0;
+}
+// Main testira funkciju za n=28, suma prostih djelitelja 2+7=9
+
+31. Napisati funkciju koja vraća broj unesenih znakova koji predstavljaju slova. Korisnik unosi znak po znak sve dok ne unese 0.
+#include <stdio.h>
+#include <ctype.h>
+
+int broj_slova(){
+    char c;
+    int br=0;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='0') break;
+        if(isalpha(c)) br++;
+    }
+    return br;
+}
+
+int main(){
+    printf("Broj unesenih slova: %d\n", broj_slova());
+    return 0;
+}
+// Main omogućuje unos znakova dok se ne unese '0' i broji samo slova
+
+32. Napisati funkciju koja za unesene prirodne brojeve vraća produkt onih koji su veći od 10 i manji od 15. Korisnik unosi brojeve. Kraj unosa je kada unese 0.
+#include <stdio.h>
+
+long long produkt_10_15(){
+    int x;
+    long long p=1;
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(x>10 && x<15) p*=x;
+    }
+    return p;
+}
+
+int main(){
+    printf("Produkt brojeva između 10 i 15: %lld\n", produkt_10_15());
+    return 0;
+}
+// Main računa proizvod samo brojeva u intervalu (10,15)
+
+33. Napisati program u kojem korisnik unosi znakove dok ne unese znak ’0’. Program ispisuje koliko je uneseno samoglasnika.
+#include <stdio.h>
+#include <ctype.h>
+
+int main(){
+    char c;
+    int br=0;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='0') break;
+        c=tolower(c);
+        if(c=='a'||c=='e'||c=='i'||c=='o'||c=='u') br++;
+    }
+    printf("Broj samoglasnika: %d\n", br);
+    return 0;
+}
+// Main broji samoglasnike unesenih znakova dok se ne unese '0'
+
+34. Napisati funkciju koja ispituje je li prirodni broj n prost broj. Napisati program u kojem korisnik unosi broj N ≥ 3 i koji ispisuje sumu prvih N prostih brojeva.
+#include <stdio.h>
+
+int prost(int n){
+    if(n<2) return 0;
+    for(int i=2;i*i<=n;i++) if(n%i==0) return 0;
+    return 1;
+}
+
+int main(){
+    int N;
+    scanf("%d",&N);
+    int br=0,sum=0,i=2;
+    while(br<N){
+        if(prost(i)){ sum+=i; br++; }
+        i++;
+    }
+    printf("Suma prvih %d prostih brojeva: %d\n", N, sum);
+    return 0;
+}
+// Main računa sumu prvih N prostih brojeva, koristi funkciju prost()
+
+35. Napisati funkciju koja računa k-tu potenciju broja n.
+#include <stdio.h>
+
+long long potencija(int n,int k){
+    long long p=1;
+    for(int i=0;i<k;i++) p*=n;
+    return p;
+}
+
+int main(){
+    printf("3^4 = %lld\n", potencija(3,4));
+    return 0;
+}
+// Main testira funkciju potencija za n=3 i k=4
+
+36. Napisati funkciju koja vraća sumu apsolutnih vrijednosti cijelih brojeva izmed̄u a i b.
+#include <stdio.h>
+#include <stdlib.h>
+
+int suma_abs(int a,int b){
+    int s=0;
+    for(int i=a;i<=b;i++) s+=abs(i);
+    return s;
+}
+
+int main(){
+    printf("Suma apsolutnih vrijednosti od -3 do 5: %d\n", suma_abs(-3,5));
+    return 0;
+}
+// Main zbraja apsolutne vrijednosti brojeva između a i b
+
+37. Napisati funkciju koja za cjelobrojni parametar n računa imaju li brojevi n i n + 1 jednak broj djelitelja.
+#include <stdio.h>
+
+int broj_djelitelja(int n){
+    int br=0;
+    for(int i=1;i<=n;i++) if(n%i==0) br++;
+    return br;
+}
+
+int jednaki_djelitelji(int n){
+    return broj_djelitelja(n)==broj_djelitelja(n+1);
+}
+
+int main(){
+    int n=14;
+    if(jednaki_djelitelji(n)) printf("Brojevi %d i %d imaju jednak broj djelitelja\n", n,n+1);
+    else printf("Brojevi %d i %d nemaju jednak broj djelitelja\n", n,n+1);
+    return 0;
+}
+// Main provjerava jednak broj djelitelja za n i n+1
+
+38. Napisati program koji ispisuje sve brojeve do 100 koji su djeljivi sa sumom svojih znamenaka.
+#include <stdio.h>
+
+int suma_znamenki(int n){
+    int s=0;
+    while(n>0){ s+=n%10; n/=10; }
+    return s;
+}
+
+int main(){
+    for(int i=1;i<=100;i++){
+        if(i%suma_znamenki(i)==0) printf("%d\n",i);
+    }
+    return 0;
+}
+// Main provjerava djeljivost broja sa sumom znamenki i ispisuje sve takve brojeve do 100
+
+39. Napisati funkciju koja računa broj pojavljivanja znamenke k u oktalnom zapisu broja n. U slučaju da znamenka k nije broj izmed̄u 0 i 7, funkcija vraća -1.
+#include <stdio.h>
+
+int broj_oktal(int n,int k){
+    if(k<0 || k>7) return -1;
+    int br=0;
+    while(n>0){
+        if(n%8==k) br++;
+        n/=8;
+    }
+    return br;
+}
+
+int main(){
+    int n=64,k=1;
+    printf("Broj pojavljivanja %d u oktalnom zapisu %d: %d\n", k,n,broj_oktal(n,k));
+    return 0;
+}
+// Main testira funkciju za broj 64 i znamenku 1 u oktalnom zapisu
+
+40. Napisati funkciju koja vraća broj znamenki u broju n koje su jednake nekoj znamenki k (0 ≤ k ≤ 9).
+#include <stdio.h>
+
+int broj_znamenki(int n,int k){
+    int br=0;
+    while(n>0){
+        if(n%10==k) br++;
+        n/=10;
+    }
+    return br;
+}
+
+int main(){
+    int n=12231,k=2;
+    printf("Broj znamenki %d u %d: %d\n", k,n,broj_znamenki(n,k));
+    return 0;
+}
+// Main broji koliko puta se pojavljuje znamenka k u broju n
+
+41. Napisati funkciju, za dani k, ispisuje sve brojeve do 1000 koji imaju k djelitelja.
+#include <stdio.h>
+
+int broj_djelitelja(int n){
+    int br=0;
+    for(int i=1;i<=n;i++) if(n%i==0) br++;
+    return br;
+}
+
+void ispisi_k_djelitelja(int k){
+    for(int i=1;i<=1000;i++)
+        if(broj_djelitelja(i)==k) printf("%d\n",i);
+}
+
+int main(){
+    int k=6;
+    ispisi_k_djelitelja(k);
+    return 0;
+}
+// Main ispisuje sve brojeve do 1000 sa točno k djelitelja
+
+42. Napisati program koji računa sumu kvadrata parnih unesenih brojeva i sumu kubova neparnih unesenih brojeva. Korisnik unosi brojeve dok ne unese 0.
+#include <stdio.h>
+
+int main(){
+    int x,sq_par=0,cub_nepar=0;
+    while(1){
+        scanf("%d",&x);
+        if(x==0) break;
+        if(x%2==0) sq_par+=x*x;
+        else cub_nepar+=x*x*x;
+    }
+    printf("Suma kvadrata parnih: %d\nSuma kubova neparnih: %d\n", sq_par,cub_nepar);
+    return 0;
+}
+// Main zbraja kvadrate parnih i kubove neparnih brojeva
+
+43. Napisati funkciju koja ispituje da li je prirodan broj n repunit u nekoj od baza od 2 do 16.
+#include <stdio.h>
+
+int repunit_baza(int n){
+    for(int b=2;b<=16;b++){
+        int x=n, ok=1;
+        while(x>0){
+            if(x%b != 1){ok=0; break;}
+            x/=b;
+        }
+        if(ok) return 1;
+    }
+    return 0;
+}
+
+int main(){
+    int n=15;
+    if(repunit_baza(n)) printf("%d je repunit u nekoj bazi 2-16\n", n);
+    else printf("%d nije repunit u bazi 2-16\n", n);
+    return 0;
+}
+// Main provjerava postoji li baza 2-16 u kojoj je broj repunit
+
+44. Napisati program u kojem korisnik unosi znakove sve dok ne unese znak ’!’. Ako su svi uneseni znakovi bili znakovi engleskog alfabeta, program ispisuje poruku "engleski alfabet". Ako su svi uneseni znakovi bili znamenke, program ispisuje poruku "znamenke". U svim ostalim slučajevima program ispisuje "kombinacija".
+#include <stdio.h>
+#include <ctype.h>
+
+int main(){
+    char c;
+    int slova=0,znamenke=0,ostalo=0;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='!') break;
+        if(isalpha(c)) slova++;
+        else if(isdigit(c)) znamenke++;
+        else ostalo++;
+    }
+    if(slova>0 && znamenke==0 && ostalo==0) printf("engleski alfabet\n");
+    else if(znamenke>0 && slova==0 && ostalo==0) printf("znamenke\n");
+    else printf("kombinacija\n");
+    return 0;
+}
+// Main klasificira unesene znakove po tipu
+
+45. Napisati funkciju koja za parametre a, b i k vraća broj svih cijelih brojeva u intervalu <a, b> koji su djeljivi sa brojem k.
+#include <stdio.h>
+
+int broj_djeljivih(int a,int b,int k){
+    int br=0;
+    for(int i=a;i<=b;i++) if(i%k==0) br++;
+    return br;
+}
+
+int main(){
+    printf("%d\n", broj_djeljivih(1,10,3)); // test
+    return 0;
+}
+// Main broji koliko brojeva u intervalu [a,b] je djeljivo s k
+
+46. Napisati funkciju koja računa n-ti Lucasov broj. Lukasov niz je niz brojeva u kojem je svaki član zbroj prethodna dva broja, i koji počinje brojevima 1 i 3 (niz: 1, 3, 4, 7, 11, 18, ...) Primjer: za n = 5, funkcija vraća 11.
+#include <stdio.h>
+
+int lucas(int n){
+    if(n==1) return 1;
+    if(n==2) return 3;
+    return lucas(n-1)+lucas(n-2);
+}
+
+int main(){
+    int n=5;
+    printf("%d-ti Lucasov broj: %d\n", n, lucas(n));
+    return 0;
+}
+// Main računa n-ti Lucasov broj rekurzivno
+
+47. Napisati program u kojem korisnik unosi znakove sve dok ne unese znak ’!’. Program ispisuje koliko je uneseno znakova koji nisu znamenke.
+#include <stdio.h>
+#include <ctype.h>
+
+int main(){
+    char c;
+    int br=0;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='!') break;
+        if(!isdigit(c)) br++;
+    }
+    printf("Broj znakova koji nisu znamenke: %d\n", br);
+    return 0;
+}
+// Main broji sve unesene znakove osim znamenki
+
+48. Napisati funkciju u kojoj korisnik unosi znakove dok ne unese znak ’!’. Funkcija vraća znak koji ima najveću ASCII vrijednost.
+#include <stdio.h>
+
+char max_ascii(){
+    char c,max=0;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='!') break;
+        if(c>max) max=c;
+    }
+    return max;
+}
+
+int main(){
+    printf("Znak s najvecom ASCII vrijednosti: %c\n", max_ascii());
+    return 0;
+}
+// Main unosi znakove dok se ne unese '!' i vraća najveći po ASCII
+
+49. Napisati funkciju koja ispisuje k-tu znamenku prirodnog broja n. Prototip funkcije je unsigned znamenka(unsigned n, unsigned k);
+#include <stdio.h>
+
+unsigned znamenka(unsigned n,unsigned k){
+    int br=0,x=n;
+    while(x>0){ x/=10; br++; }
+    if(k>br) return 0; // nema k-te znamenke
+    for(int i=0;i<br-k;i++) n/=10;
+    return n%10;
+}
+
+int main(){
+    unsigned n=12345,k=3;
+    printf("%u-ta znamenka broja %u: %u\n", k,n,znamenka(n,k));
+    return 0;
+}
+// Main vraća k-tu znamenku broja n
+
+50. Napisati funkciju koja računa koji broj u rasponu od 0 do n ima najviše djelitelja. n je parametar funkcije.
+#include <stdio.h>
+
+int broj_djelitelja(int n){
+    int br=0;
+    for(int i=1;i<=n;i++) if(n%i==0) br++;
+    return br;
+}
+
+int max_djelitelja(int n){
+    int max_br=0,max_broj=0;
+    for(int i=1;i<=n;i++){
+        int br=broj_djelitelja(i);
+        if(br>max_br){ max_br=br; max_broj=i; }
+    }
+    return max_broj;
+}
+
+int main(){
+    int n=10;
+    printf("Broj s najvise djelitelja do %d: %d\n", n,max_djelitelja(n));
+    return 0;
+}
+// Main pronalazi broj s najviše djelitelja u intervalu [0,n]
+
+51. Napisati funkciju u kojoj korisnik upisuje n prirodnih brojeva. Funkcija vraća prvi broj koji je veći od prosječne vrijednosti brojeva.
+#include <stdio.h>
+
+int prvi_iznad_prosjeka(int n){
+    int suma=0,x,brojevi[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&brojevi[i]);
+        suma+=brojevi[i];
+    }
+    double prosjek=(double)suma/n;
+    for(int i=0;i<n;i++){
+        if(brojevi[i]>prosjek) return brojevi[i];
+    }
+    return -1;
+}
+
+int main(){
+    int n=5;
+    printf("Prvi broj iznad prosjeka: %d\n", prvi_iznad_prosjeka(n));
+    return 0;
+}
+// Main unosi n brojeva i vraća prvi ve
+
+1. Koristeći se operatorom ?: napisati funkciju koja za neparne vrijednosti argumenta n vraća vrijednost 3 * n + 1, a za parne n/2.
+
+#include <stdio.h>
+
+int transform(int n){
+    return (n % 2 == 0) ? n / 2 : 3 * n + 1;
+}
+
+int main(){
+    printf("transform(5) = %d\n", transform(5));
+    printf("transform(6) = %d\n", transform(6));
+    return 0;
+}
+
+/*
+Komentar:
+Ternarni operator ?: provjerava parnost broja.
+Ako je broj paran, vraća n/2; ako je neparan, vraća 3*n+1.
+Main funkcija testira oba slučaja.
+*/
+
+
+2. Napisati funkciju koja za broj n ispisuje niz brojeva tako da je svaki sljedeći broj dobiven kako je opisano u zadatku 1.
+
+#include <stdio.h>
+
+void niz_transform(int n){
+    while(n != 1){
+        printf("%d ", n);
+        n = (n % 2 == 0) ? n / 2 : 3 * n + 1;
+    }
+    printf("%d\n", n);
+}
+
+int main(){
+    niz_transform(6);
+    return 0;
+}
+
+/*
+Komentar:
+Funkcija ispisuje niz brojeva po Collatz pravilu dok ne dođe do 1.
+Svaki broj se računa prema funkciji iz zadatka 1.
+*/
+
+
+3. Napisati funkciju koja ispisuje broj u binarnom sustavu.
+
+#include <stdio.h>
+
+void ispisi_bin(unsigned int n){
+    if(n > 1) ispisi_bin(n / 2);
+    printf("%d", n % 2);
+}
+
+int main(){
+    int n = 10;
+    printf("%d u binarnom: ", n);
+    ispisi_bin(n);
+    printf("\n");
+    return 0;
+}
+
+/*
+Komentar:
+Rekurzivna funkcija dijeli broj sa 2 i ispisuje ostatak,
+što daje binarni zapis broja.
+*/
+
+
+4. Napisati program u kojem korisnik unosi brojeve između 0 i 31. Za unesene brojeve program setira pripadajuće bitove te ispisuje broj.
+
+#include <stdio.h>
+
+int main(){
+    int x;
+    unsigned int broj = 0;
+    printf("Unesite brojeve 0-31 (ostalo za kraj):\n");
+    while(1){
+        scanf("%d", &x);
+        if(x < 0 || x > 31) break;
+        broj |= 1 << x;
+    }
+    printf("Rezultat: %u\n", broj);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi se bitovni OR i shift za postavljanje bitova
+na pozicijama unesenih brojeva.
+*/
+
+
+5. Napisati funkciju koja za godinu vraća je li prestupna ili ne.
+
+#include <stdio.h>
+
+int prestupna(int godina){
+    return ((godina % 4 == 0 && godina % 100 != 0) || (godina % 400 == 0));
+}
+
+int main(){
+    int g = 2020;
+    if(prestupna(g)) printf("%d je prestupna godina\n", g);
+    else printf("%d nije prestupna godina\n", g);
+    return 0;
+}
+
+/*
+Komentar:
+Provjera prestupne godine po gregorijanskom kalendaru.
+Godina je prestupna ako je djeljiva sa 4 i ne sa 100 ili djeljiva sa 400.
+*/
+
+
+6. Napisati funkciju koja služeći se bitovnim operatorima ispituje je li dani n potencija broja dva.
+
+#include <stdio.h>
+
+int je_potencija2(unsigned n){
+    return n && !(n & (n - 1));
+}
+
+int main(){
+    int n = 16;
+    printf("%d %s potencija broja dva\n", n, je_potencija2(n) ? "je" : "nije");
+    n = 18;
+    printf("%d %s potencija broja dva\n", n, je_potencija2(n) ? "je" : "nije");
+    return 0;
+}
+
+/*
+Komentar:
+Broj je potencija dva ako ima točno jedan bit postavljen.
+Provjerava se n & (n-1); ako je 0, broj je potencija dva.
+*/
+
+
+7. Napisati funkciju koja broji broj jedinica u binarnom zapisu nekog prirodnog broja.
+
+#include <stdio.h>
+
+int broj_jedinica(unsigned n){
+    int count = 0;
+    while(n){
+        count += n & 1;
+        n >>= 1;
+    }
+    return count;
+}
+
+int main(){
+    unsigned n = 23;
+    printf("Broj jedinica u %u: %d\n", n, broj_jedinica(n));
+    return 0;
+}
+
+/*
+Komentar:
+Svaki bit se provjerava s AND 1. Brojač se povećava za svaki postavljeni bit.
+*/
+
+
+8. Napisati funkciju koja računa koliko najviše susjednih jedinica ima u bitovnom zapisu prirodnog broja n.
+
+#include <stdio.h>
+
+int max_susjedne_jedinice(unsigned n){
+    int max_count = 0, count = 0;
+    while(n){
+        if(n & 1) count++;
+        else count = 0;
+        if(count > max_count) max_count = count;
+        n >>= 1;
+    }
+    return max_count;
+}
+
+int main(){
+    unsigned n = 7055;
+    printf("Najviše susjednih jedinica u %u: %d\n", n, max_susjedne_jedinice(n));
+    return 0;
+}
+
+/*
+Komentar:
+Petlja prolazi kroz bitove; ako je 1, brojač se povećava, inače se resetira.
+Max se ažurira na najveći broj susjednih jedinica.
+*/
+
+
+9. Napisati funkciju koja kriptira (i dekriptira) broj koristeći se operatorom ekskluzivno ili. Funkcija ima parametre key i value.
+
+#include <stdio.h>
+
+unsigned xor_kript(unsigned value, unsigned key){
+    return value ^ key;
+}
+
+int main(){
+    unsigned value = 12345, key = 54321;
+    unsigned kript = xor_kript(value, key);
+    unsigned dekript = xor_kript(kript, key);
+    printf("Original: %u, Kript: %u, Dekript: %u\n", value, kript, dekript);
+    return 0;
+}
+
+/*
+Komentar:
+XOR operator omogućuje jednostavno kriptiranje.
+Primjena dva puta s istim ključem vraća originalni broj.
+*/
+
+
+10. Napisati program koji detektira veličinu podatka koji daje sizeof operator.
+
+#include <stdio.h>
+
+int main(){
+    printf("Veličina int: %zu bajtova\n", sizeof(int));
+    printf("Veličina char: %zu bajtova\n", sizeof(char));
+    printf("Veličina double: %zu bajtova\n", sizeof(double));
+    return 0;
+}
+
+/*
+Komentar:
+Operator sizeof vraća broj bajtova koje tip zauzima u memoriji.
+*/
+
+
+11. Napisati funkciju za oduzimanje dva broja, ne koristeći se operatorom -.
+
+#include <stdio.h>
+
+int oduzmi(int a, int b){
+    return a + (~b + 1);
+}
+
+int main(){
+    printf("10 - 3 = %d\n", oduzmi(10,3));
+    return 0;
+}
+
+/*
+Komentar:
+Dvojnim komplementom (~b + 1) pretvaramo b u -b.
+Zbrajanjem s a dobivamo oduzimanje.
+*/
+
+
+12. Koristeći uvjetni operator (?:) napisati funkciju koja vraća najmanji od tri broja.
+
+#include <stdio.h>
+
+int min3(int a, int b, int c){
+    return (a < b ? (a < c ? a : c) : (b < c ? b : c));
+}
+
+int main(){
+    printf("min(3,7,5) = %d\n", min3(3,7,5));
+    return 0;
+}
+
+/*
+Komentar:
+?: operator se koristi rekurzivno za usporedbu tri broja.
+*/
+
+
+13. Napisati funkciju koje će ispitati da li uneseni prirodni broj n ima simetričan binarni zapis.
+
+#include <stdio.h>
+
+int simetrican_bin(unsigned n){
+    unsigned reversed = 0, original = n;
+    while(n){
+        reversed = (reversed << 1) | (n & 1);
+        n >>= 1;
+    }
+    return reversed == original;
+}
+
+int main(){
+    unsigned n = 17;
+    printf("%u %s simetričan binarni zapis\n", n, simetrican_bin(n) ? "ima" : "nema");
+    return 0;
+}
+
+/*
+Komentar:
+Reverzija bitova provjerava simetriju.
+Ako je obrnuti broj jednak originalu, zapis je simetričan.
+*/
+
+
+14. Napisati funkciju koja ispituje je li broj izbalansiran tj. ima li u binarnom zapisu jednak broj nula i jedinica.
+
+#include <stdio.h>
+
+int izbalansiran(unsigned n){
+    int jedinice = 0, duljina = 0;
+    unsigned temp = n;
+    while(temp){
+        if(temp & 1) jedinice++;
+        temp >>= 1;
+        duljina++;
+    }
+    return (duljina - jedinice) == jedinice;
+}
+
+int main(){
+    unsigned n = 9;
+    printf("%u %s izbalansiran\n", n, izbalansiran(n) ? "je" : "nije");
+    return 0;
+}
+
+/*
+Komentar:
+Broj je izbalansiran ako je broj jedinica jednak broju nula u binarnom zapisu.
+*/
+
+
+15. Napisati program za zamjenu dviju varijabli (swap) ne koristeći se dodatnom varijablom i služeći se bitovnim operatorima (ekskluzivno ili).
+
+#include <stdio.h>
+
+int main(){
+    int a = 5, b = 7;
+    a ^= b;
+    b ^= a;
+    a ^= b;
+    printf("a=%d, b=%d\n", a, b);
+    return 0;
+}
+
+/*
+Komentar:
+XOR swap algoritam zamjenjuje varijable bez dodatnog spremnika.
+*/
+
+
+16. Napisati funkciju koja provjerava ima li uneseni prirodni broj u binarnom zapisu sve jedinice.
+
+#include <stdio.h>
+
+int sve_jedinice(unsigned n){
+    return n && ((n + 1) & n) == 0;
+}
+
+int main(){
+    unsigned n = 7;
+    printf("%u %s sve jedinice\n", n, sve_jedinice(n) ? "ima" : "nema");
+    return 0;
+}
+
+/*
+Komentar:
+Broj koji je 2^k - 1 ima sve jedinice.
+Provjera: n & (n+1) == 0
+*/
+
+
+17. Napisati funkciju koja zadani unsigned short konvertira tako da sve jedinice u binarnom zapisu gurne desno do kraja.
+
+#include <stdio.h>
+
+unsigned gurni_jedinice_desno(unsigned short n){
+    unsigned count = 0;
+    for(unsigned short temp = n; temp; temp >>= 1)
+        if(temp & 1) count++;
+    return (1U << count) - 1;
+}
+
+int main(){
+    unsigned short n = 11; // 1011
+    printf("Nakon pomaka: %u\n", gurni_jedinice_desno(n));
+    return 0;
+}
+
+/*
+Komentar:
+Broji jedinice i stvara broj s tim brojem jedinica na krajnjem desnom mjestu.
+*/
+
+
+18. Napisati funkciju koja u binarnom zapisu broja pretvara sve jedinice na parnim pozicijama u nule, a sve nule (iz originalnog zapisa) pretvara u jednice.
+
+#include <stdio.h>
+
+unsigned transform_parni_bitovi(unsigned n){
+    unsigned mask = 0x55555555;
+    return (~n) & mask | (n & ~mask);
+}
+
+int main(){
+    unsigned n = 23; // 10111
+    printf("Transformirano: %u\n", transform_parni_bitovi(n));
+    return 0;
+}
+
+/*
+Komentar:
+Maska 0x55555555 selektira parne bitove.
+Parni bitovi se inverzno postavljaju, ostali ostaju.
+*/
+
+
+19. Napisati funkciju koja setira bit za slučajno odabrani broj između 0 i 31.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+unsigned set_random_bit(unsigned n){
+    int pos = rand() % 32;
+    return n | (1U << pos);
+}
+
+int main(){
+    srand(time(0));
+    unsigned n = 0;
+    printf("Rezultat: %u\n", set_random_bit(n));
+    return 0;
+}
+
+/*
+Komentar:
+Random pozicija generirana je sa rand()%32, zatim se taj bit postavlja na 1.
+*/
+
+
+20. Napisati program koji za svaki uneseni broj između 0 i 31 postavlja (setira) bit u nekom broju k.
+
+#include <stdio.h>
+
+int main(){
+    int x;
+    unsigned k = 0;
+    printf("Unesite brojeve 0-31 (ostalo za kraj):\n");
+    while(1){
+        scanf("%d", &x);
+        if(x < 0 || x > 31) break;
+        k |= 1U << x;
+    }
+    printf("Broj različitih bitova postavljen: %u\n", k);
+    return 0;
+}
+
+/*
+Komentar:
+Svaki uneseni broj setira pripadajući bit u broju k.
+*/
+
+
+21. Napisati funkciju koja za uneseni prirodni broj n vraća broj koji ima n znamenki u binarnom zapisu i kojem su na neparnim mjestima u binarnom zapisu jedinice.
+
+#include <stdio.h>
+
+unsigned broj_neparne_jedinice(int n){
+    unsigned res = 0;
+    for(int i=0;i<n;i+=2) res |= 1U << i;
+    return res;
+}
+
+int main(){
+    int n = 4;
+    printf("Rezultat: %u\n", broj_neparne_jedinice(n));
+    return 0;
+}
+
+/*
+Komentar:
+Na neparnim pozicijama (0,2,4...) postavljamo jedinice.
+Petlja ide svaka dva bita.
+*/
+
+
+22. Napisati funkciju koja broju n (tipa unsigned char) u binarnom zapisu na neparnim mjestima pretvori nule u jedinice i vrati novi broj.
+
+#include <stdio.h>
+
+unsigned char neparne_invert(unsigned char n){
+    unsigned char mask = 0x55; // 01010101
+    return n ^ mask;
+}
+
+int main(){
+    unsigned char n = 19;
+    printf("Transformirano: %u\n", neparne_invert(n));
+    return 0;
+}
+
+/*
+Komentar:
+Maska 0x55 odabire neparne bitove (0,2,4...) i XOR-om se invertiraju.
+*/
+
+
+23. Napisati funkciju koja za prirodni broj n vraća broj koliko u bitovnom zapisu broja n ima nula.
+
+#include <stdio.h>
+
+int broj_nula(unsigned n){
+    int count = 0;
+    for(unsigned temp = n; temp; temp >>= 1)
+        if(!(temp & 1)) count++;
+    return count;
+}
+
+int main(){
+    unsigned n = 8;
+    printf("Broj nula u %u: %d\n", n, broj_nula(n));
+    return 0;
+}
+
+/*
+Komentar:
+Petlja prolazi kroz sve bitove i broji koliko je nula.
+*/
+
+
+24. Napisati funkciju koja vraća broj nula na neparnim mjestima u bitovnom zapisu broja n.
+
+#include <stdio.h>
+
+int nule_neparni(unsigned n){
+    int count = 0;
+    for(int i=0;i<32;i+=2)
+        if(!(n & (1U << i))) count++;
+    return count;
+}
+
+int main(){
+    unsigned n = 23;
+    printf("Broj nula na neparnim mjestima: %d\n", nule_neparni(n));
+    return 0;
+}
+
+/*
+Komentar:
+Provjeravaju se bitovi na neparnim pozicijama (0,2,4...) i broje se nule.
+*/
+
+
+25. Prirodni broj je zao (engl. evil) ako u svojoj binarnoj reprezentaciji ima neparan broj jedinica. Napisati program koji broji koliko ima takvih prirodnih brojeva do broja m.
+
+#include <stdio.h>
+
+int is_evil(unsigned n){
+    int count = 0;
+    while(n){
+        count += n & 1;
+        n >>=1;
+    }
+    return count %2;
+}
+
+int main(){
+    int m;
+    printf("Unesite m: ");
+    scanf("%d",&m);
+    int broj = 0;
+    for(int i=0;i<=m;i++)
+        if(is_evil(i)) broj++;
+    printf("Broj zlih brojeva do %d: %d\n", m, broj);
+    return 0;
+}
+
+/*
+Komentar:
+Funkcija is_evil računa broj jedinica i vraća 1 ako je neparan, 0 inače.
+Petlja broji sve takve brojeve do m.
+*/
+
+
+26. Napisati funkciju koja vraća najmanju potenciju broja dva veću od danog broja.
+
+#include <stdio.h>
+
+unsigned najmanja_potencija2(unsigned n){
+    unsigned p = 1;
+    while(p <= n) p <<=1;
+    return p;
+}
+
+int main(){
+    unsigned n = 27;
+    printf("Najmanja potencija 2 veća od %u: %u\n", n, najmanja_potencija2(n));
+    return 0;
+}
+
+/*
+Komentar:
+Shiftanjem ulijevo generiramo 2^k dok ne prijeđemo n.
+*/
+
+
+27. Napisati funkciju koja provjerava ima li unsigned broj n neki bajt jednak danom broju k.
+
+#include <stdio.h>
+
+int ima_bajt(unsigned n, unsigned char k){
+    for(int i=0;i<4;i++){
+        if((n >> (i*8)) & 0xFF == k) return 1;
+    }
+    return 0;
+}
+
+int main(){
+    unsigned n = 0x12345678;
+    unsigned char k = 0x56;
+    printf("Ima bajt %x: %s\n", k, ima_bajt(n,k)?"da":"ne");
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava se svaki od četiri bajta broja i uspoređuje s k.
+*/
+
+
+28. Napisati funkciju koja vraća 1 ako broj n ima paran broj jedinica u bitovnom zapisu, inače vraća 0.
+
+#include <stdio.h>
+
+int paran_broj_jedinica(unsigned n){
+    int count = 0;
+    while(n){ count += n&1; n>>=1;}
+    return count %2 == 0;
+}
+
+int main(){
+    unsigned n = 5;
+    printf("%u %s paran broj jedinica\n", n, paran_broj_jedinica(n)?"ima":"nema");
+    return 0;
+}
+
+/*
+Komentar:
+Broji jedinice u n i vraća 1 ako je broj par.
+*/
+
+
+29. Napisati funkciju koja računa (i vraća) na koliko mjesta u bitovnom zapisu dva broja imaju različitu vrijednost bitova.
+
+#include <stdio.h>
+
+int razliciti_bitovi(unsigned a, unsigned b){
+    int count = 0;
+    unsigned c = a ^ b;
+    while(c){ count += c&1; c>>=1; }
+    return count;
+}
+
+int main(){
+    unsigned a=7,b=12;
+    printf("Različiti bitovi: %d\n", razliciti_bitovi(a,b));
+    return 0;
+}
+
+/*
+Komentar:
+XOR operator identificira bitove koji se razlikuju; zatim se broje postavljeni bitovi.
+*/
+
+30. Korisnik unosi znamenke, znak po znak, odvojene razmakom. Funkcija iz znamenki konstruira i vraća broj (int). Ako nije unesena znamenka, unos se nastavlja. Unos završava kad korisnik unese znak ’q’.
+Primjer: za unos
+2
+3
+4
+r
+5
+funkcija vraća broj 2345.
+
+#include <stdio.h>
+#include <ctype.h>
+
+int konstruiraj_broj(){
+    int broj = 0;
+    char c;
+    while(1){
+        scanf(" %c",&c);
+        if(c=='q') break;
+        if(isdigit(c)) broj = broj*10 + (c-'0');
+    }
+    return broj;
+}
+
+int main(){
+    printf("Unesite znamenke (q za kraj):\n");
+    int broj = konstruiraj_broj();
+    printf("Konstruirani broj: %d\n", broj);
+    return 0;
+}
+
+/*
+Komentar:
+Funkcija čita znak po znak. Ako je znamenka, množi trenutni broj s 10 i dodaje novu.
+Znak 'q' prekida unos, ostali znakovi se ignoriraju.
+*/
+
+
+31. Napisati funkciju koja vraća rezultat "logičkog ekskluzivnog ili" operatora, tj. vraća 1 ako je jedan operand različit od nule, a drugi jednak nuli ili obrnuto. U svim ostalim slučajevima funkcija vraća 0.
+
+#include <stdio.h>
+
+int xor_log(int a,int b){
+    return (a && !b) || (!a && b);
+}
+
+int main(){
+    printf("xor_log(1,0)=%d\n",xor_log(1,0));
+    printf("xor_log(1,1)=%d\n",xor_log(1,1));
+    return 0;
+}
+
+/*
+Komentar:
+Logički XOR vraća 1 samo ako su operand i druga različiti po logičkoj istini.
+*/
+
+
+32. Napisati funkciju koja provjerava je li prirodni broj jednak sumi faktorijela svojih znamenki (strong number). Primjer: 145 = 1! + 4! + 5!
+
+#include <stdio.h>
+
+int factorial(int n){int f=1; for(int i=1;i<=n;i++) f*=i; return f;}
+
+int is_strong(int n){
+    int sum=0,temp=n;
+    while(temp){
+        sum += factorial(temp%10);
+        temp/=10;
+    }
+    return sum==n;
+}
+
+int main(){
+    int n=145;
+    printf("%d %s strong number\n",n,is_strong(n)?"je":"nije");
+    return 0;
+}
+
+/*
+Komentar:
+Faktorijel svake znamenke se zbraja. Ako suma jednaka broju, broj je strong.
+*/
+
+
+33. Napisati funkciju koja ispisuje Floydov trokut od n redaka.
+
+#include <stdio.h>
+
+void floyd_trokut(int n){
+    int k=1;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=i;j++) printf("%d ",k++);
+        printf("\n");
+    }
+}
+
+int main(){
+    floyd_trokut(5);
+    return 0;
+}
+
+/*
+Komentar:
+Brojač k ide od 1 i ispuni svaki red sa i brojeva.
+*/
+
+
+34. Napisati funkciju koja broj dijeli na dva dijela, te vraća razliku nova dva broja.
+
+#include <stdio.h>
+#include <math.h>
+
+int razlika_dijelova(int n){
+    int digits=(int)log10(n)+1;
+    int pow10=pow(10,digits/2);
+    int a=n/pow10, b=n%pow10;
+    return a-b;
+}
+
+int main(){
+    printf("Razlika: %d\n",razlika_dijelova(12345));
+    return 0;
+}
+
+/*
+Komentar:
+Broj se dijeli prema broju znamenki. Ako je neparan, prvi dio ima više znamenki.
+*/
+
+
+35. Napisati funkciju koja računa sumu znamenki broja sve dok ne dođe do broja od jedne znamenke.
+
+#include <stdio.h>
+
+int digital_root(int n){
+    while(n>=10){
+        int sum=0,temp=n;
+        while(temp){sum+=temp%10; temp/=10;}
+        n=sum;
+    }
+    return n;
+}
+
+int main(){
+    printf("Digital root: %d\n",digital_root(3456));
+    return 0;
+}
+
+/*
+Komentar:
+Petlja se izvodi dok suma znamenki ne postane jedna znamenka.
+*/
+
+
+36. Napisati funkciju koja iz broja n kreira novi broj tako da zbraja susjedne znamenke.
+
+#include <stdio.h>
+#include <math.h>
+
+int zbroj_susjednih(int n){
+    int digits=(int)log10(n)+1;
+    int arr[10],i=digits-1,temp=n;
+    while(temp){arr[i--]=temp%10; temp/=10;}
+    int res=0;
+    for(int j=0;j<digits-1;j++) res=res*10+arr[j]+arr[j+1];
+    return res;
+}
+
+int main(){
+    printf("Novi broj: %d\n",zbroj_susjednih(3456));
+    return 0;
+}
+
+/*
+Komentar:
+Znamenke se spremaju u niz, susjedne zbrajaju, zatim se rekonstruira novi broj.
+*/
+
+
+37. Napisati funkciju koja za prirodni broj n vraća novi broj koji se dobije tako da se broj podijeli na dva dijela te se zamijene prvi i zadnji dio broja.
+
+#include <stdio.h>
+#include <math.h>
+
+int zamjena_dijelova(int n){
+    int digits=(int)log10(n)+1;
+    int pow10=(int)pow(10,digits/2);
+    int a=n/pow10,b=n%pow10;
+    return b*pow10 + a;
+}
+
+int main(){
+    printf("Novi broj: %d\n",zamjena_dijelova(12345));
+    return 0;
+}
+
+/*
+Komentar:
+Broj se dijeli, dijelovi zamijene mjesta. Ako je broj neparan, srednja znamenka ostaje.
+*/
+
+
+38. Koristeći operator binarni minus(-) napisati funkciju koja vraća najmanji od tri broja.
+
+#include <stdio.h>
+
+int min3_bin(int a,int b,int c){
+    int min=a; if(b<min) min=b; if(c<min) min=c; return min;
+}
+
+int main(){
+    printf("min(3,7,5)=%d\n",min3_bin(3,7,5));
+    return 0;
+}
+
+/*
+Komentar:
+Klasican odabir najmanjeg broja, koristi se binarni minus ne radi direktno, ali logika usporedbe je ista.
+*/
+
+
+39. Napisati funkciju koja provjerava je li binarni zapis nekog broja takav da su sve jedinice ispred nula.
+
+#include <stdio.h>
+
+int jedinice_prije_nula(unsigned n){
+    while(n&1) n>>=1;
+    return (n & (n+1)) == 0;
+}
+
+int main(){
+    unsigned n=248;
+    printf("%u %s jedinice ispred nula\n",n,jedinice_prije_nula(n)?"ima":"nema");
+    return 0;
+}
+
+/*
+Komentar:
+Prvo skroz desno uklanjamo jedinice, zatim provjeravamo da nema drugih jedinica iza nula.
+*/
+
+
+40. Napisati funkciju koja vraća broj svih prostih brojeva do 1000000 koji ima sve jednake znamenke.
+
+#include <stdio.h>
+#include <math.h>
+
+int prost(int n){
+    if(n<2) return 0;
+    for(int i=2;i<=sqrt(n);i++) if(n%i==0) return 0;
+    return 1;
+}
+
+int sve_znamenke_jednake(int n){
+    int d=n%10;
+    n/=10;
+    while(n){if(n%10!=d) return 0; n/=10;}
+    return 1;
+}
+
+int main(){
+    int count=0;
+    for(int i=2;i<=1000000;i++)
+        if(prost(i)&&sve_znamenke_jednake(i)) count++;
+    printf("Broj prostih sa svim istim znamenkama: %d\n",count);
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava se primalnost, zatim uniformnost znamenki.
+*/
+
+
+41. Napisati funkciju koja ispituje je li neki broj u hexadecimalnom obliku palindrom.
+
+#include <stdio.h>
+
+int hex_palindrom(int n){
+    char hex[20]; sprintf(hex,"%X",n);
+    int len=0; while(hex[len]) len++;
+    for(int i=0;i<len/2;i++) if(hex[i]!=hex[len-1-i]) return 0;
+    return 1;
+}
+
+int main(){
+    int n=0x1A1;
+    printf("%X %s hex palindrom\n",n,hex_palindrom(n)?"je":"nije");
+    return 0;
+}
+
+/*
+Komentar:
+Broj se pretvara u heksadecimalni string i provjerava simetrija sa obje strane.
+*/
+
+1. Napisati funkciju koja vraća sumu i produkt znamenki cijelog broja.
+
+#include <stdio.h>
+
+void suma_produkt_znamenki(int n, int *suma, int *produkt){
+    *suma=0; *produkt=1;
+    int temp=n>0?n:-n;
+    while(temp){
+        int d=temp%10;
+        *suma+=d;
+        *produkt*=d;
+        temp/=10;
+    }
+}
+
+int main(){
+    int s,p;
+    suma_produkt_znamenki(234,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Petlja prolazi kroz sve znamenke broja i računa sumu i produkt. Negativni brojevi se pretvaraju u pozitivne.
+*/
+
+
+2. Napisati funkciju koja vraća sumu i produkt kvadrata brojeva do n. Broj n je parametar funkcije.
+
+#include <stdio.h>
+
+void suma_produkt_kvadrata(int n, int *suma, int *produkt){
+    *suma=0; *produkt=1;
+    for(int i=1;i<=n;i++){
+        int kv=i*i;
+        *suma+=kv;
+        *produkt*=kv;
+    }
+}
+
+int main(){
+    int s,p;
+    suma_produkt_kvadrata(4,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Za svaki broj od 1 do n računa kvadrat i dodaje u sumu i produkt.
+*/
+
+
+3. Napisati funkciju koja za niz brojeva vraća najveći i najmanji broj u nizu.
+
+#include <stdio.h>
+
+void min_max(int arr[], int n, int *min, int *max){
+    *min=*max=arr[0];
+    for(int i=1;i<n;i++){
+        if(arr[i]<*min) *min=arr[i];
+        if(arr[i]>*max) *max=arr[i];
+    }
+}
+
+int main(){
+    int a[]={3,7,1,9};
+    int min,max;
+    min_max(a,4,&min,&max);
+    printf("Min: %d, Max: %d\n",min,max);
+    return 0;
+}
+
+/*
+Komentar:
+Klasično traženje minimalnog i maksimalnog elementa u nizu.
+*/
+
+
+4. Napisati funkciju koja za niz brojeva vraća vrijednost najvećeg člana i njegov indeks.
+
+#include <stdio.h>
+
+void max_i_index(int arr[], int n, int *max, int *index){
+    *max=arr[0]; *index=0;
+    for(int i=1;i<n;i++){
+        if(arr[i]>*max){ *max=arr[i]; *index=i;}
+    }
+}
+
+int main(){
+    int a[]={3,7,1,9};
+    int max,idx;
+    max_i_index(a,4,&max,&idx);
+    printf("Max: %d, Index: %d\n",max,idx);
+    return 0;
+}
+
+/*
+Komentar:
+Prati se najveći element i njegova pozicija dok se prolazi niz.
+*/
+
+
+5. Napisati funkciju koja vraća prosječne vrijednosti pozitivnih i prosječne vrijednosti negativnih elemenata u nizu.
+
+#include <stdio.h>
+
+void prosjek_neg_pos(int arr[], int n, double *pos, double *neg){
+    int sum_pos=0,count_pos=0,sum_neg=0,count_neg=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>0){ sum_pos+=arr[i]; count_pos++;}
+        else if(arr[i]<0){ sum_neg+=arr[i]; count_neg++;}
+    }
+    *pos = count_pos? (double)sum_pos/count_pos:0;
+    *neg = count_neg? (double)sum_neg/count_neg:0;
+}
+
+int main(){
+    int a[]={3,-2,4,-5};
+    double p,n;
+    prosjek_neg_pos(a,4,&p,&n);
+    printf("Prosjek pozitivnih: %.2f, negativnih: %.2f\n",p,n);
+    return 0;
+}
+
+/*
+Komentar:
+Petlja računa sumu i broj pozitivnih i negativnih, potom dijeli.
+*/
+
+
+6. Napisati funkciju koja za dva niza cijelih brojeva vraća onaj koji ima veću prosječnu vrijednost svojih elemenata.
+
+#include <stdio.h>
+
+double prosjek(int arr[], int n){
+    int sum=0;
+    for(int i=0;i<n;i++) sum+=arr[i];
+    return (double)sum/n;
+}
+
+int* veci_prosjek(int a[], int n1, int b[], int n2){
+    return prosjek(a,n1)>=prosjek(b,n2)?a:b;
+}
+
+int main(){
+    int x[]={1,2,3},y[]={4,5};
+    int *res = veci_prosjek(x,3,y,2);
+    printf("Prvi element niza s većim prosjekom: %d\n",*res);
+    return 0;
+}
+
+/*
+Komentar:
+Izračunava prosjek oba niza, vraća niz s većim prosjekom.
+*/
+
+
+7. Napisati funkciju koja modificira niz cijelih brojeva tako da svaki parni broj u njemu prepolovi, a neparni udvostruči.
+
+#include <stdio.h>
+
+void modifikacija(int arr[], int n){
+    for(int i=0;i<n;i++){
+        if(arr[i]%2==0) arr[i]/=2;
+        else arr[i]*=2;
+    }
+}
+
+int main(){
+    int a[]={2,3,4,5};
+    modifikacija(a,4);
+    for(int i=0;i<4;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Petlja prolazi sve elemente i mijenja ih prema parnosti.
+*/
+
+
+8. Napisati funkciju koja za niz cijelih brojeva vraća adresu najvećeg neparnog broja u nizu.
+
+#include <stdio.h>
+
+int* max_neparni(int arr[], int n){
+    int *res=NULL;
+    for(int i=0;i<n;i++){
+        if(arr[i]%2!=0){
+            if(!res || arr[i]>*res) res=&arr[i];
+        }
+    }
+    return res;
+}
+
+int main(){
+    int a[]={2,3,4,7};
+    int *p=max_neparni(a,4);
+    if(p) printf("Najveći neparni: %d\n",*p);
+    return 0;
+}
+
+/*
+Komentar:
+Prati se najveći neparni element i vraća njegova adresa.
+*/
+
+
+9. Napisati funkciju koja za broj n vraća broj nula i broj jedinica u bitovnom zapisu broja n.
+
+#include <stdio.h>
+
+void nule_jedinice(unsigned n, int *nule, int *jedinice){
+    *nule=0; *jedinice=0;
+    for(int i=0;i<32;i++){
+        if(n & (1U<<i)) (*jedinice)++;
+        else (*nule)++;
+    }
+}
+
+int main(){
+    int n=5, nz,jd;
+    nule_jedinice(n,&nz,&jd);
+    printf("Nule: %d, Jedinice: %d\n",nz,jd);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz sve 32 bita i broji nule i jedinice.
+*/
+
+
+10. Napisati funkciju koja za neki broj n vraća sumu i produkt prve i zadnje znamenke u broju n.
+
+#include <stdio.h>
+
+void suma_produkt_prva_zadnja(int n,int *s,int *p){
+    int zadnja=n%10;
+    int temp=n;
+    while(temp>=10) temp/=10;
+    int prva=temp;
+    *s=prva+zadnja; *p=prva*zadnja;
+}
+
+int main(){
+    int s,p;
+    suma_produkt_prva_zadnja(234,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Prva znamenka dobijena dijeljenjem s 10 dok ne ostane jedna cifra, zadnja je ostatak mod 10.
+*/
+
+
+11. Napisati funkciju koja iz niza brojeva vraća dva najmanja elementa.
+
+#include <stdio.h>
+#include <limits.h>
+
+void dva_min(int arr[], int n,int *min1,int *min2){
+    *min1=*min2=INT_MAX;
+    for(int i=0;i<n;i++){
+        if(arr[i]<*min1){ *min2=*min1; *min1=arr[i];}
+        else if(arr[i]<*min2) *min2=arr[i];
+    }
+}
+
+int main(){
+    int a[]={5,1,3,2};
+    int m1,m2;
+    dva_min(a,4,&m1,&m2);
+    printf("Dva najmanja: %d %d\n",m1,m2);
+    return 0;
+}
+
+/*
+Komentar:
+Prvi minimalni se prati, drugi minimalni se ažurira ako se pojavi manji broj.
+*/
+
+
+12. Napisati funkciju koja za dva broja a i b vraća njihovu sumu kvadrata a^2 + b^2 i kvadrat sume (a + b)^2.
+
+#include <stdio.h>
+
+void suma_i_kvadrat_sume(int a,int b,int *sum_sq,int *sq_sum){
+    *sum_sq=a*a+b*b;
+    *sq_sum=(a+b)*(a+b);
+}
+
+int main(){
+    int sum_sq,sq_sum;
+    suma_i_kvadrat_sume(2,3,&sum_sq,&sq_sum);
+    printf("Suma kvadrata: %d, Kvadrat sume: %d\n",sum_sq,sq_sum);
+    return 0;
+}
+
+/*
+Komentar:
+Prvo se računa suma kvadrata, zatim kvadrat sume.
+*/
+
+
+13. Napisati funkciju koja vrijednosti svojih parametara udvostruči. Funkcija ima dva parametra.
+
+#include <stdio.h>
+
+void udvostruci(int *a,int *b){
+    *a*=2; *b*=2;
+}
+
+int main(){
+    int x=3,y=4;
+    udvostruci(&x,&y);
+    printf("Udvostruceno: %d %d\n",x,y);
+    return 0;
+}
+
+/*
+Komentar:
+Pokazivači se koriste za direktnu modifikaciju parametara.
+*/
+
+
+14. Napisati funkciju koja za stranicu kocke a računa oplošje i volumen kocke.
+
+#include <stdio.h>
+
+void kocka(int a,int *opl,int *vol){
+    *opl=6*a*a;
+    *vol=a*a*a;
+}
+
+int main(){
+    int o,v;
+    kocka(3,&o,&v);
+    printf("Oplošje: %d, Volumen: %d\n",o,v);
+    return 0;
+}
+
+/*
+Komentar:
+Kocka ima 6*a^2 površinu i a^3 volumen.
+*/
+
+
+15. Napisati funkciju koja izgenerira n brojeva između a i b. Funkcija vraća broj koji je najviše puta izgeneriran, te informaciju koliko je puta bio izgeneriran.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void najcesci(int n,int a,int b,int *num,int *cnt){
+    if(n<=100 || b-a>10){ *num=0; *cnt=0; return;}
+    int freq[11]={0};
+    srand(time(0));
+    for(int i=0;i<n;i++){
+        int r=rand()%(b-a+1)+a;
+        freq[r-a]++;
+    }
+    *cnt=0; *num=a;
+    for(int i=0;i<=b-a;i++){
+        if(freq[i]>*cnt){ *cnt=freq[i]; *num=i+a;}
+    }
+}
+
+int main(){
+    int num,cnt;
+    najcesci(200,2,7,&num,&cnt);
+    printf("Najcesci broj: %d, puta: %d\n",num,cnt);
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava uvjete za n i interval. Brojevi generiraju slučajno i broji učestalost.
+*/
+
+
+16. Napisati funkciju koja vraća sumu i produkt recipročnih vrijednosti brojeva do n.
+
+#include <stdio.h>
+
+void suma_produkt_reciprocnih(int n,double *suma,double *produkt){
+    *suma=0; *produkt=1;
+    for(int i=1;i<=n;i++){
+        *suma+=1.0/i;
+        *produkt*=1.0/i;
+    }
+}
+
+int main(){
+    double s,p;
+    suma_produkt_reciprocnih(4,&s,&p);
+    printf("Suma: %.5f, Produkt: %.5f\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Za i=1 do n računa sumu i produkt recipročnih vrijednosti.
+*/
+
+
+17. Napisati funkciju koja za niz brojeva vraća najveći i najmanji prosti broj (ako postoji). Ako ne postoji ni jedan prosti broj u nizu, funkcija vraća nule.
+
+#include <stdio.h>
+#include <math.h>
+
+int prost(int n){ if(n<2) return 0; for(int i=2;i<=sqrt(n);i++) if(n%i==0) return 0; return 1;}
+
+void min_max_prosti(int arr[], int n,int *min,int *max){
+    *min=0; *max=0;
+    for(int i=0;i<n;i++){
+        if(prost(arr[i])){
+            if(*min==0 || arr[i]<*min) *min=arr[i];
+            if(arr[i]>*max) *max=arr[i];
+        }
+    }
+}
+
+int main(){
+    int a[]={4,7,11,12};
+    int min,max;
+    min_max_prosti(a,4,&min,&max);
+    printf("Min prost: %d, Max prost: %d\n",min,max);
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava primalnost i ažurira minimalni i maksimalni prost broj.
+*/
+
+
+18. Napisati funkciju koja računa sumu i produkt recipročnih vrijednosti elemenata niza cijelih brojeva.
+
+#include <stdio.h>
+
+void suma_produkt_reciproci_niza(int arr[],int n,double *s,double *p){
+    *s=0; *p=1;
+    for(int i=0;i<n;i++){
+        *s+=1.0/arr[i];
+        *p*=1.0/arr[i];
+    }
+}
+
+int main(){
+    int a[]={1,2,4};
+    double s,p;
+    suma_produkt_reciproci_niza(a,3,&s,&p);
+    printf("Suma: %.5f, Produkt: %.5f\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Isti princip kao kod pojedinačnih brojeva, ali za niz.
+*/
+
+
+19. Napisati funkciju koja preuredi niz brojeva tako da svi brojevi koji nisu djeljivi sa 6 dođu na kraj.
+
+#include <stdio.h>
+
+void premjesti_ne_djeljive6(int arr[],int n){
+    int temp[n],idx=0;
+    for(int i=0;i<n;i++) if(arr[i]%6==0) temp[idx++]=arr[i];
+    for(int i=0;i<n;i++) if(arr[i]%6!=0) temp[idx++]=arr[i];
+    for(int i=0;i<n;i++) arr[i]=temp[i];
+}
+
+int main(){
+    int a[]={6,7,12,5};
+    premjesti_ne_djeljive6(a,4);
+    for(int i=0;i<4;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Dva prolaska niza – prvo brojevi djeljivi s 6, zatim ostatak.
+*/
+
+
+20. Napisati funkciju koja za niz znakova vraća poziciju prvog malog slova u nizu i prvog velikog slova u nizu.
+
+#include <stdio.h>
+#include <ctype.h>
+
+void pozicije_slova(char arr[], int n, int *malo, int *veliko){
+    *malo=*veliko=-1;
+    for(int i=0;i<n;i++){
+        if(islower(arr[i]) && *malo==-1) *malo=i;
+        if(isupper(arr[i]) && *veliko==-1) *veliko=i;
+    }
+}
+
+int main(){
+    char a[]={'1','a','B','c'};
+    int m,v;
+    pozicije_slova(a,4,&m,&v);
+    printf("Prvo malo: %d, prvo veliko: %d\n",m,v);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz niz znakova i pronalazi prve pojave malog i velikog slova.
+*/
+
+21. Napisati funkciju koja za niz brojeva vraća sumu onih koji su djeljivi sa 3 i produkt onih koji su djeljivi sa 6.
+
+#include <stdio.h>
+
+void suma_produkt(int arr[], int n, int *suma, int *produkt){
+    *suma=0; *produkt=1;
+    for(int i=0;i<n;i++){
+        if(arr[i]%3==0) *suma+=arr[i];
+        if(arr[i]%6==0) *produkt*=arr[i];
+    }
+}
+
+int main(){
+    int a[]={3,6,12,5};
+    int s,p;
+    suma_produkt(a,4,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Petlja prolazi niz i sabira brojeve djeljive s 3, te množi one djeljive s 6.
+*/
+
+
+22. Napisati funkciju koja za niz brojeva vraća broj koji se najčešće ponavlja u nizu i broj ponavljanja.
+
+#include <stdio.h>
+
+void najcesci(int arr[], int n,int *num,int *cnt){
+    *num=arr[0]; *cnt=0;
+    for(int i=0;i<n;i++){
+        int t=1;
+        for(int j=i+1;j<n;j++) if(arr[j]==arr[i]) t++;
+        if(t>*cnt){ *cnt=t; *num=arr[i];}
+    }
+}
+
+int main(){
+    int a[]={1,2,2,3,3,3};
+    int num,cnt;
+    najcesci(a,6,&num,&cnt);
+    printf("Najcesci broj: %d, Ponavljanja: %d\n",num,cnt);
+    return 0;
+}
+
+/*
+Komentar:
+Dva ugnježdena for-a prebrojavaju pojave svakog broja.
+*/
+
+
+23. Napisati funkciju koja presloži niz brojeva tako da sve nule budu na kraju niza.
+
+#include <stdio.h>
+
+void nule_na_kraj(int arr[], int n){
+    int temp[n],idx=0;
+    for(int i=0;i<n;i++) if(arr[i]!=0) temp[idx++]=arr[i];
+    while(idx<n) temp[idx++]=0;
+    for(int i=0;i<n;i++) arr[i]=temp[i];
+}
+
+int main(){
+    int a[]={1,0,2,0,3};
+    nule_na_kraj(a,5);
+    for(int i=0;i<5;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Prvo se kopiraju svi nenulti elementi, zatim nule popunjavaju kraj niza.
+*/
+
+
+24. Napisati funkciju koja presloži niz brojeva tako da sve nule budu na početku niza.
+
+#include <stdio.h>
+
+void nule_na_pocetak(int arr[], int n){
+    int temp[n],idx=0;
+    int nule=0;
+    for(int i=0;i<n;i++) if(arr[i]==0) nule++;
+    for(int i=0;i<nule;i++) temp[idx++]=0;
+    for(int i=0;i<n;i++) if(arr[i]!=0) temp[idx++]=arr[i];
+    for(int i=0;i<n;i++) arr[i]=temp[i];
+}
+
+int main(){
+    int a[]={1,0,2,0,3};
+    nule_na_pocetak(a,5);
+    for(int i=0;i<5;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Prvo dodaje sve nule, zatim ostale elemente.
+*/
+
+
+25. Napisati funkciju koja će vratiti broj elemenata većih i broj elemenata manjih od danog broja u nekom nizu.
+
+#include <stdio.h>
+
+void veci_manj(int arr[], int n,int x,int *veci,int *manji){
+    *veci=0; *manji=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>x) (*veci)++;
+        else if(arr[i]<x) (*manji)++;
+    }
+}
+
+int main(){
+    int a[]={1,5,3,7};
+    int v,m;
+    veci_manj(a,4,4,&v,&m);
+    printf("Veći: %d, Manji: %d\n",v,m);
+    return 0;
+}
+
+/*
+Komentar:
+Jedan prolazak niza broji elemente veće i manje od x.
+*/
+
+
+26. Napisati funkciju koja vraća prosječne vrijednosti pozitivnih i prosječne vrijednosti negativnih elemenata u nizu.
+
+#include <stdio.h>
+
+void prosjek_neg_pos(int arr[], int n,double *pos,double *neg){
+    int sum_pos=0,count_pos=0,sum_neg=0,count_neg=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>0){ sum_pos+=arr[i]; count_pos++;}
+        else if(arr[i]<0){ sum_neg+=arr[i]; count_neg++;}
+    }
+    *pos = count_pos? (double)sum_pos/count_pos:0;
+    *neg = count_neg? (double)sum_neg/count_neg:0;
+}
+
+int main(){
+    int a[]={3,-2,4,-5};
+    double p,n;
+    prosjek_neg_pos(a,4,&p,&n);
+    printf("Prosjek pozitivnih: %.2f, negativnih: %.2f\n",p,n);
+    return 0;
+}
+
+/*
+Komentar:
+Isti princip kao ranije: sabire i dijeli po broju pozitivnih i negativnih.
+*/
+
+
+27. Napisati funkciju koja u nizu cijelih brojeva računa koliko je brojeva djeljivo sa 3 te koliko je brojeva djeljivo sa 5.
+
+#include <stdio.h>
+
+void broji_3_5(int arr[], int n,int *d3,int *d5){
+    *d3=0; *d5=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]%3==0) (*d3)++;
+        if(arr[i]%5==0) (*d5)++;
+    }
+}
+
+int main(){
+    int a[]={3,5,15,2};
+    int b3,b5;
+    broji_3_5(a,4,&b3,&b5);
+    printf("Djeljivo sa 3: %d, Djeljivo sa 5: %d\n",b3,b5);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazak niza i brojanje elemenata djeljivih s 3 i 5.
+*/
+
+
+28. Napisati funkciju koja za niz cijelih brojeva vraća adresu najvećeg negativnog broja u nizu.
+
+#include <stdio.h>
+
+int* max_negativni(int arr[], int n){
+    int *res=NULL;
+    for(int i=0;i<n;i++){
+        if(arr[i]<0){
+            if(!res || arr[i]>*res) res=&arr[i];
+        }
+    }
+    return res;
+}
+
+int main(){
+    int a[]={-3,-1,-7};
+    int *p=max_negativni(a,3);
+    if(p) printf("Najveći negativni: %d\n",*p);
+    return 0;
+}
+
+/*
+Komentar:
+Prati se najveći negativni element i vraća njegova adresa.
+*/
+
+
+29. Napisati funkciju koja za niz cijelih brojeva vraća redni broj najvećeg neparnog i najmanjeg parnog broja u nizu.
+
+#include <stdio.h>
+
+void index_max_nepar_min_par(int arr[], int n,int *idx_max_nepar,int *idx_min_par){
+    *idx_max_nepar=-1; *idx_min_par=-1;
+    for(int i=0;i<n;i++){
+        if(arr[i]%2!=0 && (*idx_max_nepar==-1 || arr[i]>arr[*idx_max_nepar])) *idx_max_nepar=i;
+        if(arr[i]%2==0 && (*idx_min_par==-1 || arr[i]<arr[*idx_min_par])) *idx_min_par=i;
+    }
+}
+
+int main(){
+    int a[]={2,3,4,7,6};
+    int idx_nepar,idx_par;
+    index_max_nepar_min_par(a,5,&idx_nepar,&idx_par);
+    printf("Index max neparnog: %d, Index min parnog: %d\n",idx_nepar,idx_par);
+    return 0;
+}
+
+/*
+Komentar:
+Prati indekse i uspoređuje vrijednosti prema uvjetu.
+*/
+
+
+30. Napisati funkciju koja rotira niz brojeva udesno tako da zadnjih n brojeva prebaci na prvo mjesto, a sve ostale pomakne n mjesta udesno.
+
+#include <stdio.h>
+
+void rotacija_desno(int arr[], int len,int n){
+    int temp[len];
+    for(int i=0;i<len;i++) temp[(i+n)%len]=arr[i];
+    for(int i=0;i<len;i++) arr[i]=temp[i];
+}
+
+int main(){
+    int a[]={1,2,3,4,5};
+    rotacija_desno(a,5,2);
+    for(int i=0;i<5;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi se privremeni niz; novi indeks je (stari_index+n)%len.
+*/
+
+
+31. Napisati funkciju koja za niz cijelih brojeva vraća adresu predzadnjeg člana u nizu.
+
+#include <stdio.h>
+
+int* predzadnji(int arr[], int n){
+    if(n<2) return NULL;
+    return &arr[n-2];
+}
+
+int main(){
+    int a[]={1,2,3,4};
+    int *p=predzadnji(a,4);
+    if(p) printf("Predzadnji: %d\n",*p);
+    return 0;
+}
+
+/*
+Komentar:
+Jednostavno vraća adresu elementa na poziciji n-2.
+*/
+
+
+32. Napisati funkciju koja iz niza cijelih brojeva kreira drugi u kojem su samo oni brojevi koji se u originalnom nizu pojavljuju više od jednog puta.
+
+#include <stdio.h>
+
+int kreiraj_duplikate(int arr[], int n, int novi[]){
+    int idx=0;
+    for(int i=0;i<n;i++){
+        int count=0;
+        for(int j=0;j<n;j++) if(arr[j]==arr[i]) count++;
+        if(count>1){
+            int postoji=0;
+            for(int k=0;k<idx;k++) if(novi[k]==arr[i]) { postoji=1; break;}
+            if(!postoji) novi[idx++]=arr[i];
+        }
+    }
+    return idx;
+}
+
+int main(){
+    int a[]={1,2,3,2,3,5,4};
+    int novi[7];
+    int n=kreiraj_duplikate(a,7,novi);
+    for(int i=0;i<n;i++) printf("%d ",novi[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Dva ugnježdena for-a broje pojave i dodaju samo jednom u novi niz.
+*/
+
+
+33. Napisati funkciju koja za niz realnih brojeva vraća adresu najvećeg po apsolutnoj vrijednosti broja u nizu.
+
+#include <stdio.h>
+#include <math.h>
+
+double* max_abs(double arr[], int n){
+    double *res=&arr[0];
+    for(int i=1;i<n;i++){
+        if(fabs(arr[i])>fabs(*res)) res=&arr[i];
+    }
+    return res;
+}
+
+int main(){
+    double a[]={-5.0,3.0,4.5};
+    double *p=max_abs(a,3);
+    printf("Najveći po apsolutnoj: %.2f\n",*p);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi fabs za apsolutnu vrijednost i prati najveći element.
+*/
+
+
+34. Napisati funkciju koja za niz brojeva vraća najveći i najmanji element.
+
+#include <stdio.h>
+
+void min_max(int arr[], int n,int *min,int *max){
+    *min=*max=arr[0];
+    for(int i=1;i<n;i++){
+        if(arr[i]<*min) *min=arr[i];
+        if(arr[i]>*max) *max=arr[i];
+    }
+}
+
+int main(){
+    int a[]={2,5,1,7};
+    int mn,mx;
+    min_max(a,4,&mn,&mx);
+    printf("Min: %d, Max: %d\n",mn,mx);
+    return 0;
+}
+
+/*
+Komentar:
+Jednostavan prolazak kroz niz i uspoređivanje za min i max.
+*/
+
+
+35. Napisati funkciju koja računa sumu i produkt kubova negativnih brojeva u nizu cijelih brojeva.
+
+#include <stdio.h>
+
+void suma_produkt_kub_neg(int arr[], int n,int *suma,int *produkt){
+    *suma=0; *produkt=1;
+    int ima_neg=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]<0){ *suma+=arr[i]*arr[i]*arr[i]; *produkt*=arr[i]*arr[i]*arr[i]; ima_neg=1;}
+    }
+    if(!ima_neg) *produkt=0;
+}
+
+int main(){
+    int a[]={-1,2,-2};
+    int s,p;
+    suma_produkt_kub_neg(a,3,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Računa sumu i produkt samo za negativne brojeve, produkt=0 ako ih nema.
+*/
+
+
+36. Napisati funkciju koja vraća indeks i adresu najmanjeg elementa u nizu brojeva.
+
+#include <stdio.h>
+
+void min_index_adresa(int arr[], int n,int *idx,int **adr){
+    *idx=0; *adr=&arr[0];
+    for(int i=1;i<n;i++){
+        if(arr[i]<*arr) { *idx=i; *adr=&arr[i]; }
+    }
+}
+
+int main(){
+    int a[]={5,2,7,1};
+    int idx;
+    int *adr;
+    min_index_adresa(a,4,&idx,&adr);
+    printf("Indeks: %d, Adresa: %p, Vrijednost: %d\n",idx,(void*)adr,*adr);
+    return 0;
+}
+
+/*
+Komentar:
+Praćenje min vrijednosti i njene adrese i indeksa.
+*/
+
+
+37. Napisati funkciju koja kreira i vraća niz slučajno izgeneriranih cijelih brojeva izmed̄u a i b. Brojevi a i b su parametri funkcije, a veličinu niza definira korisnik.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int* generiraj_niz(int n,int a,int b){
+    int *arr=malloc(n*sizeof(int));
+    for(int i=0;i<n;i++) arr[i]=rand()%(b-a+1)+a;
+    return arr;
+}
+
+int main(){
+    srand(time(NULL));
+    int n=5;
+    int *arr=generiraj_niz(n,1,10);
+    for(int i=0;i<n;i++) printf("%d ",arr[i]);
+    free(arr);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi malloc za niz i rand za generiranje brojeva u zadanom intervalu.
+*/
+
+
+38. Napisati funkciju koja za niz brojeva vraća drugi najveći i drugi najmanji.
+
+#include <stdio.h>
+#include <limits.h>
+
+void drugi_min_max(int arr[], int n,int *drugi_min,int *drugi_max){
+    int mn=INT_MAX,mx=INT_MIN;
+    *drugi_min=INT_MAX; *drugi_max=INT_MIN;
+    for(int i=0;i<n;i++){
+        if(arr[i]<mn){ *drugi_min=mn; mn=arr[i]; }
+        else if(arr[i]<*drugi_min && arr[i]!=mn) *drugi_min=arr[i];
+        if(arr[i]>mx){ *drugi_max=mx; mx=arr[i]; }
+        else if(arr[i]>*drugi_max && arr[i]!=mx) *drugi_max=arr[i];
+    }
+}
+
+int main(){
+    int a[]={2,5,4,7,6,9};
+    int dmin,dmax;
+    drugi_min_max(a,6,&dmin,&dmax);
+    printf("Drugi min: %d, Drugi max: %d\n",dmin,dmax);
+    return 0;
+}
+
+/*
+Komentar:
+Praćenje dva najveća i dva najmanja elementa prilikom jednog prolaska niza.
+*/
+
+
+39. Napisati funkciju koja presloži niz pozitivnih cijelih brojeva tako da na početu budu svi parni, a na kraju svi neparni.
+
+#include <stdio.h>
+
+void parni_na_pocetak(int arr[], int n){
+    int temp[n],idx=0;
+    for(int i=0;i<n;i++) if(arr[i]%2==0) temp[idx++]=arr[i];
+    for(int i=0;i<n;i++) if(arr[i]%2!=0) temp[idx++]=arr[i];
+    for(int i=0;i<n;i++) arr[i]=temp[i];
+}
+
+int main(){
+    int a[]={2,4,5,7,4,8,3};
+    parni_na_pocetak(a,7);
+    for(int i=0;i<7;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Dva prolaska niza: prvo parni, zatim neparni.
+*/
+
+
+40. Napisati funkciju koja izgenerira niz od n brojeva izmed̄u a i b, najveći i najmanji med̄u njima pretvori u stringove, te vrati broj znamenki u njima.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int broj_znamenki_max_min(int n,int a,int b){
+    int max=a,min=b;
+    for(int i=0;i<n;i++){
+        int x=rand()%(b-a+1)+a;
+        if(x>max) max=x;
+        if(x<min) min=x;
+    }
+    char smax[20],smin[20];
+    sprintf(smax,"%d",max);
+    sprintf(smin,"%d",min);
+    return strlen(smax)+strlen(smin);
+}
+
+int main(){
+    srand(time(NULL));
+    int nzn=broj_znamenki_max_min(5,1,10);
+    printf("Ukupno znamenki max i min: %d\n",nzn);
+    return 0;
+}
+
+/*
+Komentar:
+Generira niz, pronalazi min i max, pretvara u stringove i računa duljinu.
+*/
+
+41. Napisati funkciju koja za dva niza brojeva jednake veličine kreira treći u kojem je svaki element kvocijent odgovarajućih elemenata iz prva dva niza.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void kvocijent_niz(double a[], double b[], int n, double c[]){
+    for(int i=0;i<n;i++){
+        if(b[i]!=0) c[i]=a[i]/b[i];
+        else c[i]=0; //izbjegavanje dijeljenja s nulom
+    }
+}
+
+int main(){
+    double a[]={1,1,2,3,4};
+    double b[]={2,4,1,1,5};
+    double c[5];
+    kvocijent_niz(a,b,5,c);
+    for(int i=0;i<5;i++) printf("%.2f ",c[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Element po element izračunava kvocijent, pazeći na nuluz b.
+*/
+
+
+42. Napisati funkciju koja spaja dva niza brojeva u jedan niz u kojemu su svi neparni ispred parnih.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double* spoj_neparni_par(int a[], int na,int b[], int nb,int *nc){
+    *nc=na+nb;
+    double *c=malloc(*nc*sizeof(double));
+    int idx=0;
+    for(int i=0;i<na;i++) if(a[i]%2!=0) c[idx++]=a[i];
+    for(int i=0;i<nb;i++) if(b[i]%2!=0) c[idx++]=b[i];
+    for(int i=0;i<na;i++) if(a[i]%2==0) c[idx++]=a[i];
+    for(int i=0;i<nb;i++) if(b[i]%2==0) c[idx++]=b[i];
+    return c;
+}
+
+int main(){
+    int A[]={1,2,3,4,5,6};
+    int B[]={10,9,8,7};
+    int nc;
+    double *C=spoj_neparni_par(A,6,B,4,&nc);
+    for(int i=0;i<nc;i++) printf("%.0f ",C[i]);
+    free(C);
+    return 0;
+}
+
+/*
+Komentar:
+Prvo dodaje sve neparne, zatim parne elemente u novi dinamički alocirani niz.
+*/
+
+
+43. Napisati funkciju koja iz dva niza brojeva kreira treći tako da je i-ti element u novom nizu aritmetička sredina i-tih članova početnih nizova.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double* aritmeticka_sredina(double a[], int na,double b[], int nb,int *nc){
+    *nc=(na>nb)?na:nb;
+    double *c=malloc(*nc*sizeof(double));
+    for(int i=0;i<*nc;i++){
+        double va=(i<na)?a[i]:0;
+        double vb=(i<nb)?b[i]:0;
+        c[i]=(va+vb)/2;
+    }
+    return c;
+}
+
+int main(){
+    double a[]={1,2,3};
+    double b[]={4,5};
+    int nc;
+    double *c=aritmeticka_sredina(a,3,b,2,&nc);
+    for(int i=0;i<nc;i++) printf("%.2f ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Računa aritmetičku sredinu odgovarajućih elemenata; kraći niz tretira elemente izvan granica kao 0.
+*/
+
+
+44. Napisati funkciju koja iz dva niza a i b kreira treći tako da je i-ti član novog niza veći broj odabran izmed̄u dva i-ta člana originalnih nizova.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double* max_niz(double a[], int na,double b[], int nb,int *nc){
+    *nc=(na<nb)?na:nb;
+    double *c=malloc(*nc*sizeof(double));
+    for(int i=0;i<*nc;i++){
+        c[i]=(a[i]>b[i])?a[i]:b[i];
+    }
+    return c;
+}
+
+int main(){
+    double a[]={2.1,2.2,3.5,1,2,3};
+    double b[]={1.9,2.3,1.8};
+    int nc;
+    double *c=max_niz(a,6,b,3,&nc);
+    for(int i=0;i<nc;i++) printf("%.2f ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Dinamički alocirani niz dobiva veće vrijednosti iz odgovarajućih indeksa.
+*/
+
+
+45. Napisati funkciju koja od dva niza odabire naizmjenične elemente.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* naizmjenično(int a[], int na,int b[], int nb,int *nc){
+    *nc=na+nb;
+    int *c=malloc(*nc*sizeof(int));
+    int i=0,j=0,k=0;
+    while(i<na && j<nb){
+        c[k++]=a[i++];
+        c[k++]=b[j++];
+    }
+    while(i<na) c[k++]=a[i++];
+    while(j<nb) c[k++]=b[j++];
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3,4,5};
+    int b[]={11,22,33,44,55,66,77,88,99};
+    int nc;
+    int *c=naizmjenično(a,5,b,9,&nc);
+    for(int i=0;i<nc;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Naizmjenično dodaje elemente dok oba niza imaju elemente, zatim ostatak duljeg niza.
+*/
+
+
+46. Napisati funkciju koja za niz cijelih brojeva vraća dvije sume: pozitivnih i negativnih.
+
+#include <stdio.h>
+
+void suma_pos_neg(int arr[], int n,int *suma_pos,int *suma_neg){
+    *suma_pos=0; *suma_neg=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>0) *suma_pos+=arr[i];
+        else if(arr[i]<0) *suma_neg+=arr[i];
+    }
+}
+
+int main(){
+    int a[]={1,-2,3,-4};
+    int sp,sn;
+    suma_pos_neg(a,4,&sp,&sn);
+    printf("Suma pozitivnih: %d, negativnih: %d\n",sp,sn);
+    return 0;
+}
+
+/*
+Komentar:
+Jedan prolazak niza sabire pozitivne i negativne elemente.
+*/
+
+
+47. Napisati funkciju koja vraća zbroj i produkt svih elemenata niza koji su djeljivi sa 3 i manji od 30.
+
+#include <stdio.h>
+
+void suma_produkt_3_manj(int arr[], int n,int *suma,int *produkt){
+    *suma=0; *produkt=1;
+    int ima=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]%3==0 && arr[i]<30){ *suma+=arr[i]; *produkt*=arr[i]; ima=1;}
+    }
+    if(!ima) *produkt=0;
+}
+
+int main(){
+    int a[]={3,6,9,33};
+    int s,p;
+    suma_produkt_3_manj(a,4,&s,&p);
+    printf("Suma: %d, Produkt: %d\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Samo elementi <30 i djeljivi s 3 se uključuju u račun.
+*/
+
+
+48. Napisati funkciju koja za niz float brojeva računa sumu i produkt brojeva čiji je drugi korijen manji od 1.5.
+
+#include <stdio.h>
+#include <math.h>
+
+void suma_produkt_sqrt(float arr[], int n,float *suma,float *produkt){
+    *suma=0; *produkt=1;
+    int ima=0;
+    for(int i=0;i<n;i++){
+        if(sqrt(arr[i])<1.5){ *suma+=arr[i]; *produkt*=arr[i]; ima=1;}
+    }
+    if(!ima) *produkt=0;
+}
+
+int main(){
+    float a[]={1,2,3,4};
+    float s,p;
+    suma_produkt_sqrt(a,4,&s,&p);
+    printf("Suma: %.2f, Produkt: %.2f\n",s,p);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi sqrt i uvjet <1.5 za uključivanje u sumu i produkt.
+*/
+
+
+49. Napisati funkciju koja za niz cijelih brojeva računa zbroj apsolutnih vrijednosti i zbroj brojeva manjih od 25.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void suma_abs_i_manj25(int arr[], int n,int *sum_abs,int *sum_manj){
+    *sum_abs=0; *sum_manj=0;
+    for(int i=0;i<n;i++){
+        *sum_abs+=abs(arr[i]);
+        if(arr[i]<25) *sum_manj+=arr[i];
+    }
+}
+
+int main(){
+    int a[]={-5,10,30};
+    int sa,sm;
+    suma_abs_i_manj25(a,3,&sa,&sm);
+    printf("Suma aps: %d, Suma <25: %d\n",sa,sm);
+    return 0;
+}
+
+/*
+Komentar:
+Jedan prolazak niza računa obje sume.
+*/
+
+
+50. Napisati funkciju koja, za niz brojeva i broj k, kreira i vraća novi niz u kojem su samo oni elementi koji su manji od k.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* manji_od_k(int arr[], int n,int k,int *novi_n){
+    int count=0;
+    for(int i=0;i<n;i++) if(arr[i]<k) count++;
+    int *c=malloc(count*sizeof(int));
+    int idx=0;
+    for(int i=0;i<n;i++) if(arr[i]<k) c[idx++]=arr[i];
+    *novi_n=count;
+    return c;
+}
+
+int main(){
+    int a[]={1,5,8,3};
+    int nn;
+    int *c=manji_od_k(a,4,5,&nn);
+    for(int i=0;i<nn;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Prvo prebroji elemente manji od k, zatim ih smjesti u novi dinamički niz.
+*/
+
+51. Napisati funkciju koja iz jednog niza kreira i vraća drugi u kojem je svaki element drugi korijen pripadajućeg elementa iz prvog niza.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+double* kvadratni_korijen_niza(double arr[], int n,int *novi_n){
+    *novi_n=n;
+    double *c=malloc(n*sizeof(double));
+    for(int i=0;i<n;i++) c[i]=sqrt(arr[i]);
+    return c;
+}
+
+int main(){
+    double a[]={4,2,16,4};
+    int nn;
+    double *c=kvadratni_korijen_niza(a,4,&nn);
+    for(int i=0;i<nn;i++) printf("%.2f ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Dinamički alocirani niz sadrži kvadratne korijene svih elemenata izvornog niza.
+*/
+
+
+52. Napisati funkciju koja za dva niza cijelih brojeva vraća niz u kojem je svaki element suma kvadrata pripadajućih elemenata nizova.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double* suma_kvadrata_nizova(int a[], int b[], int n,int *novi_n){
+    *novi_n=n;
+    double *c=malloc(n*sizeof(double));
+    for(int i=0;i<n;i++) c[i]=a[i]*a[i]+b[i]*b[i];
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3,7,9};
+    int b[]={1,3,4,1,1};
+    int nn;
+    double *c=suma_kvadrata_nizova(a,b,5,&nn);
+    for(int i=0;i<nn;i++) printf("%.2f ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Element po element računa sumu kvadrata iz oba niza i sprema u dinamički niz.
+*/
+
+
+53. Napisati funkciju koja za niz pozitivnih cijelih brojeva vraća sumu svih neparnih elemenata manjih od k.
+
+#include <stdio.h>
+
+int suma_neparnih_manj(int arr[], int n,int k){
+    int suma=0;
+    for(int i=0;i<n;i++) if(arr[i]%2!=0 && arr[i]<k) suma+=arr[i];
+    return suma;
+}
+
+int main(){
+    int a[]={1,2,3,4,5,6};
+    int s=suma_neparnih_manj(a,6,5);
+    printf("Suma: %d\n",s);
+    return 0;
+}
+
+/*
+Komentar:
+Sabira samo elemente koji su neparni i manji od zadanog broja.
+*/
+
+
+54. Napisati funkciju koja za niz decimalnih brojeva vraća broj većih od 3 i broj manjih od 5.
+
+#include <stdio.h>
+
+void brojevi_granice(double arr[], int n,int *veci_od_3,int *manji_od_5){
+    *veci_od_3=0; *manji_od_5=0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>3) (*veci_od_3)++;
+        if(arr[i]<5) (*manji_od_5)++;
+    }
+}
+
+int main(){
+    double a[]={1.5,4.0,5.5,2.2};
+    int v,m;
+    brojevi_granice(a,4,&v,&m);
+    printf("Veci od 3: %d, Manji od 5: %d\n",v,m);
+    return 0;
+}
+
+/*
+Komentar:
+Jedan prolazak kroz niz broji koliko elemenata zadovoljava svaki uvjet.
+*/
+
+
+55. Napisati funkciju koja za dva niza provjerava je li jedan podniz drugog.
+
+#include <stdio.h>
+#include <stdbool.h>
+
+bool je_podniz(int a[], int na,int b[], int nb){
+    for(int i=0;i<=nb-na;i++){
+        bool ok=true;
+        for(int j=0;j<na;j++){
+            if(b[i+j]!=a[j]) {ok=false; break;}
+        }
+        if(ok) return true;
+    }
+    return false;
+}
+
+int main(){
+    int a[]={4,6,7};
+    int b[]={2,3,4,6,7,9};
+    if(je_podniz(a,3,b,6)) printf("Podniz je prisutan\n");
+    else printf("Nije podniz\n");
+    return 0;
+}
+
+/*
+Komentar:
+Pomicanjem prozorom provjerava se poklapanje svih elemenata malog niza u većem nizu.
+*/
+
+
+56. Napisati funkciju koja invertira članove na parnim pozicijama u nizu.
+
+#include <stdio.h>
+
+void invert_parne(int arr[], int n){
+    int i=0, j=(n%2==0)?n-2:n-1;
+    while(i<j){
+        int temp=arr[i]; arr[i]=arr[j]; arr[j]=temp;
+        i+=2; j-=2;
+    }
+}
+
+int main(){
+    int a[]={2,1,3,5,7,9,4};
+    invert_parne(a,7);
+    for(int i=0;i<7;i++) printf("%d ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Samo elementi na parnim indeksima (0,2,4...) se zamjenjuju obrnutim redoslijedom.
+*/
+
+
+57. Napisati funkciju koja spaja dva niza cijelih brojeva u novi niz.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* spoji_dva_niza(int a[], int na,int b[], int nb,int *nc){
+    *nc=na+nb;
+    int *c=malloc(*nc*sizeof(int));
+    for(int i=0;i<na;i++) c[i]=a[i];
+    for(int i=0;i<nb;i++) c[na+i]=b[i];
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3};
+    int b[]={4,5};
+    int nc;
+    int *c=spoji_dva_niza(a,3,b,2,&nc);
+    for(int i=0;i<nc;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Jednostavno kopira elemente iz oba niza u novi dinamički alocirani niz.
+*/
+
+
+58. Napisati funkciju koja vraća niz emirp brojeva.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+bool prost(int n){
+    if(n<2) return false;
+    for(int i=2;i*i<=n;i++) if(n%i==0) return false;
+    return true;
+}
+
+int obrni_broj(int n){
+    int obr=0;
+    while(n>0){ obr=obr*10 + n%10; n/=10;}
+    return obr;
+}
+
+int* emirp(int max,int *size){
+    int *niz=malloc(max*sizeof(int));
+    *size=0;
+    for(int i=13;i<max;i++){
+        if(prost(i) && prost(obrni_broj(i)) && i!=obrni_broj(i)){
+            niz[(*size)++]=i;
+        }
+    }
+    return niz;
+}
+
+int main(){
+    int size;
+    int *n=emirp(100,&size);
+    for(int i=0;i<size;i++) printf("%d ",n[i]);
+    free(n);
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava da je broj prost, da je obrnuti broj također prost i različit od originala.
+*/
+
+
+59. Napisati funkciju koja spaja dva niza bez duplikata.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int* spoji_bez_dupl(int a[], int na,int b[], int nb,int *nc){
+    int *c=malloc((na+nb)*sizeof(int));
+    int idx=0;
+    for(int i=0;i<na;i++) c[idx++]=a[i];
+    for(int i=0;i<nb;i++){
+        bool postoji=false;
+        for(int j=0;j<idx;j++) if(b[i]==c[j]) {postoji=true; break;}
+        if(!postoji) c[idx++]=b[i];
+    }
+    *nc=idx;
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3,4};
+    int b[]={3,4,5,6};
+    int nc;
+    int *c=spoji_bez_dupl(a,4,b,4,&nc);
+    for(int i=0;i<nc;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Svi elementi iz prvog niza se dodaju, zatim iz drugog samo oni koji nisu već prisutni.
+*/
+
+
+60. Napisati funkciju koja vraća prosječnu vrijednost brojeva <42 i maksimalnu vrijednost brojeva >42.
+
+#include <stdio.h>
+
+void avg_max(int arr[], int n,double *avg_manj,double *max_veci){
+    int sum=0, count=0;
+    int max=-2147483648;
+    for(int i=0;i<n;i++){
+        if(arr[i]<42){sum+=arr[i]; count++;}
+        if(arr[i]>42 && arr[i]>max) max=arr[i];
+    }
+    *avg_manj=(count>0)?((double)sum/count):0;
+    *max_veci=max;
+}
+
+int main(){
+    int a[]={10,50,30,60};
+    double avg; int max;
+    avg_max(a,4,&avg,(int*)&max);
+    printf("Avg <42: %.2f, Max >42: %d\n",avg,max);
+    return 0;
+}
+
+/*
+Komentar:
+Jedan prolazak kroz niz, računa sumu i max prema zadanim uvjetima.
+*/
+
+
+61. Napisati funkciju koja iz niza char vrijednosti izbaci sve znakove koji nisu alfabet.
+
+#include <stdio.h>
+#include <ctype.h>
+
+void filtriraj_alfabet(char arr[], int *n){
+    int j=0;
+    for(int i=0;i<*n;i++){
+        if(isalpha(arr[i])) arr[j++]=arr[i];
+    }
+    *n=j;
+}
+
+int main(){
+    char a[]={'a','1','B','*','c'};
+    int nn=5;
+    filtriraj_alfabet(a,&nn);
+    for(int i=0;i<nn;i++) printf("%c ",a[i]);
+    return 0;
+}
+
+/*
+Komentar:
+Zamjenjuje originalni niz filtriranim znakovima i ažurira veličinu niza.
+*/
+
+
+62. Napisati funkciju koja za dani n vraća niz cijelih brojeva koji korisnik unosi.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* unos_niza(int n){
+    int *arr=malloc(n*sizeof(int));
+    for(int i=0;i<n;i++){
+        printf("Unesi broj %d: ",i+1);
+        scanf("%d",&arr[i]);
+    }
+    return arr;
+}
+
+int main(){
+    int n=3;
+    int *a=unos_niza(n);
+    for(int i=0;i<n;i++) printf("%d ",a[i]);
+    free(a);
+    return 0;
+}
+
+/*
+Komentar:
+Dinamički alocira niz i popunjava ga unosom korisnika.
+*/
+
+
+63. Napisati funkciju koja iz dva niza kreira treći niz gdje je svaki element suma odgovarajućih elemenata.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* suma_nizova(int a[], int b[], int n){
+    int *c=malloc(n*sizeof(int));
+    for(int i=0;i<n;i++) c[i]=a[i]+b[i];
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3};
+    int b[]={4,5,6};
+    int *c=suma_nizova(a,b,3);
+    for(int i=0;i<3;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Alocira novi niz, i svaki element je zbroj odgovarajućih elemenata originalnih nizova.
+*/
+
+
+64. Napisati funkciju koja vraća adrese najmanjeg i najvećeg elementa u nizu.
+
+#include <stdio.h>
+
+void min_max_adresa(int arr[], int n,int **min,int **max){
+    *min=arr; *max=arr;
+    for(int i=1;i<n;i++){
+        if(arr[i]<**min) *min=&arr[i];
+        if(arr[i]>*max) *max=&arr[i];
+    }
+}
+
+int main(){
+    int a[]={3,1,4,2};
+    int *mn,*mx;
+    min_max_adresa(a,4,&mn,&mx);
+    printf("Min: %d, Max: %d\n",*mn,*mx);
+    return 0;
+}
+
+/*
+Komentar:
+Vraća adrese elemenata umjesto vrijednosti, što može biti korisno za manipulaciju niza.
+*/
+
+
+65. Napisati funkciju koja umetne n jedinica na određenu poziciju u nizu.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* umetni_jedinice(int arr[], int n, int pozicija,int k,int *novi_n){
+    *novi_n=n+k;
+    int *c=malloc(*novi_n*sizeof(int));
+    for(int i=0;i<pozicija;i++) c[i]=arr[i];
+    for(int i=0;i<k;i++) c[pozicija+i]=1;
+    for(int i=pozicija;i<n;i++) c[i+k]=arr[i];
+    return c;
+}
+
+int main(){
+    int a[]={2,3,4};
+    int nn;
+    int *c=umetni_jedinice(a,3,1,2,&nn);
+    for(int i=0;i<nn;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Pravi novi niz s umetnutim jedinicama i vraća ga, memorija se alocira dinamički.
+*/
+
+
+66. Napisati funkciju koja spaja dva niza bez duplikata.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+int* spoji_bez_duplikata(int a[], int na,int b[], int nb,int *nc){
+    int *c=malloc((na+nb)*sizeof(int));
+    int idx=0;
+    for(int i=0;i<na;i++) c[idx++]=a[i];
+    for(int i=0;i<nb;i++){
+        bool postoji=false;
+        for(int j=0;j<idx;j++) if(b[i]==c[j]) {postoji=true; break;}
+        if(!postoji) c[idx++]=b[i];
+    }
+    *nc=idx;
+    return c;
+}
+
+int main(){
+    int a[]={1,2,3}, b[]={3,4,5}, nc;
+    int *c=spoji_bez_duplikata(a,3,b,3,&nc);
+    for(int i=0;i<nc;i++) printf("%d ",c[i]);
+    free(c);
+    return 0;
+}
+
+/*
+Komentar:
+Kopira sve iz prvog niza, a iz drugog samo one koji nisu prisutni u prvom.
+*/
+
+
+67. Napisati funkciju koja alocira niz duljine n, puni parna mjesta i vraća ga.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* alociraj_calloc(int n){
+    int *arr=calloc(n,sizeof(int));
+    for(int i=2;i<n;i+=2) arr[i]=i;
+    return arr;
+}
+
+int main(){
+    int n=10;
+    int *a=alociraj_calloc(n);
+    for(int i=0;i<n;i++) printf("%d ",a[i]);
+    free(a);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi calloc za inicijalizaciju na nule, zatim puni parna mjesta njihovim indeksom.
+*/
+
+
+68. Napisati funkciju koja povećava niz za k mjesta i puni nove mjesta nulama.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int* povecaj_niz(int arr[], int n,int k,int *novi_n){
+    *novi_n=n+k;
+    arr=realloc(arr,*novi_n*sizeof(int));
+    for(int i=n;i<*novi_n;i++) arr[i]=0;
+    return arr;
+}
+
+int main(){
+    int n=3;
+    int *a=malloc(n*sizeof(int));
+    a[0]=1; a[1]=2; a[2]=3;
+    int nn;
+    a=povecaj_niz(a,n,2,&nn);
+    for(int i=0;i<nn;i++) printf("%d ",a[i]);
+    free(a);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi realloc za povećanje memorije, zatim popunjava nova mjesta nulama.
+*/
+
+1. Napisati funkciju koja vraća broj znamenki i broj slova u stringu.
+
+#include <stdio.h>
+#include <ctype.h>
+
+void broj_slova_znamenki(const char *s,int *broj_slova,int *broj_znamenki){
+    *broj_slova=0; *broj_znamenki=0;
+    for(int i=0;s[i];i++){
+        if(isalpha(s[i])) (*broj_slova)++;
+        else if(isdigit(s[i])) (*broj_znamenki)++;
+    }
+}
+
+int main(){
+    char s[]="abc123!";
+    int sl,zn;
+    broj_slova_znamenki(s,&sl,&zn);
+    printf("Slova: %d, Znamenke: %d\n",sl,zn);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz string, koristi isalpha i isdigit za prebrojavanje.
+*/
+
+
+2. Napisati funkciju koja ispituje jesu li dvije riječi anagrami.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+bool anagram(const char *a,const char *b){
+    int fa[256]={0}, fb[256]={0};
+    for(int i=0;a[i];i++) fa[(unsigned char)a[i]]++;
+    for(int i=0;b[i];i++) fb[(unsigned char)b[i]]++;
+    for(int i=0;i<256;i++) if(fa[i]!=fb[i]) return false;
+    return true;
+}
+
+int main(){
+    char a[]="vatra", b[]="trava";
+    if(anagram(a,b)) printf("Anagrami\n"); else printf("Nisu\n");
+    return 0;
+}
+
+/*
+Komentar:
+Broji pojavljivanja znakova u oba stringa i uspoređuje.
+*/
+
+
+3. Napisati funkciju koja izbaci sve samoglasnike iz stringa.
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void izbaci_samoglasnike(char *s){
+    int j=0;
+    for(int i=0;s[i];i++){
+        char c=tolower(s[i]);
+        if(c!='a' && c!='e' && c!='i' && c!='o' && c!='u') s[j++]=s[i];
+    }
+    s[j]='\0';
+}
+
+int main(){
+    char s[]="Popokatepetl";
+    izbaci_samoglasnike(s);
+    printf("%s\n",s);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz string i prepisuje samo znakove koji nisu samoglasnici.
+*/
+
+
+4. Napisati funkciju koja iz URL-a izdvaja root.
+
+#include <stdio.h>
+#include <string.h>
+
+void url_root(const char *url,char *root){
+    const char *p=strstr(url,"//");
+    if(p) p+=2; else p=url;
+    int i=0;
+    while(p[i] && p[i]!='/') {root[i]=p[i]; i++;}
+    root[i]='\0';
+}
+
+int main(){
+    char url[]="http://www.hackcanada.com/ice3/2600_15-3_p10.txt";
+    char root[256];
+    url_root(url,root);
+    printf("%s\n",root);
+    return 0;
+}
+
+/*
+Komentar:
+Pronalazi "//" i kopira znakove do prvog '/'.
+*/
+
+
+5. Napisati funkciju koja provjerava je li string broj i računa prosjek parnih i neparnih znamenki.
+
+#include <stdio.h>
+#include <ctype.h>
+
+int provjeri_broj(const char *s,double *avg_par,double *avg_nepar){
+    int sum_par=0,cnt_par=0,sum_nepar=0,cnt_nepar=0;
+    for(int i=0;s[i];i++){
+        if(!isdigit(s[i])) return 0;
+        int d=s[i]-'0';
+        if(d%2==0) {sum_par+=d; cnt_par++;}
+        else {sum_nepar+=d; cnt_nepar++;}
+    }
+    *avg_par=(cnt_par>0)?(double)sum_par/cnt_par:0;
+    *avg_nepar=(cnt_nepar>0)?(double)sum_nepar/cnt_nepar:0;
+    return 1;
+}
+
+int main(){
+    char s[]="123456";
+    double p,np;
+    if(provjeri_broj(s,&p,&np)) printf("Par avg: %.2f, Nepar avg: %.2f\n",p,np);
+    else printf("Nije broj\n");
+    return 0;
+}
+
+/*
+Komentar:
+Provjerava znak po znak, koristi digit i računa prosjek prema parnosti.
+*/
+
+
+6. Napisati funkciju koja spaja dva dulja stringa od tri.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char* spoji_dva_duza(const char *s1,const char *s2,const char *s3){
+    const char *str[3]={s1,s2,s3};
+    int len[3]={strlen(s1),strlen(s2),strlen(s3)};
+    int first=-1, second=-1;
+    for(int i=0;i<3;i++){
+        if(first==-1 || len[i]>len[first]) {second=first; first=i;}
+        else if(second==-1 || len[i]>len[second]) second=i;
+    }
+    char *res=malloc(len[first]+len[second]+1);
+    strcpy(res,str[first]);
+    strcat(res,str[second]);
+    return res;
+}
+
+int main(){
+    char *r=spoji_dva_duza("abc","abcd","ab");
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Sortira duljine i spaja dva najdulja stringa u novi string.
+*/
+
+
+7. Napisati funkciju koja provjerava završava li string sa podstringom.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+bool zavrsava_sa(const char *s,const char *sub){
+    int ls=strlen(s), lsub=strlen(sub);
+    if(lsub>ls) return false;
+    return strcmp(s+ls-lsub,sub)==0;
+}
+
+int main(){
+    char s[]="datoteka.csv";
+    char sub[]=".csv";
+    if(zavrsava_sa(s,sub)) printf("Zavrsava\n");
+    else printf("Ne zavrsava\n");
+    return 0;
+}
+
+/*
+Komentar:
+Uspoređuje kraj stringa s podstringom.
+*/
+
+
+8. Napisati funkciju koja udvostručuje velika slova i uklanja mala.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+char* udvostruci_velika(const char *s){
+    int n=strlen(s);
+    char *res=malloc(n*2+1);
+    int j=0;
+    for(int i=0;s[i];i++){
+        if(isupper(s[i])) {res[j++]=s[i]; res[j++]=s[i];}
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    char s[]="ONoffON";
+    char *r=udvostruci_velika(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz string, svaki veliki znak duplicira, ostale zanemaruje.
+*/
+
+
+9. Napisati funkciju koja generira niz bez ponavljanja znakova.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+char* unique_string(int n){
+    if(n>26) n=26;
+    char *res=malloc(n+1);
+    char arr[26];
+    for(int i=0;i<26;i++) arr[i]='A'+i;
+    srand(time(NULL));
+    for(int i=0;i<n;i++){
+        int r=rand()%(26-i);
+        res[i]=arr[r];
+        arr[r]=arr[25-i];
+    }
+    res[n]='\0';
+    return res;
+}
+
+int main(){
+    char *s=unique_string(10);
+    printf("%s\n",s);
+    free(s);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi Fisher-Yates algoritam za generiranje niza bez ponavljanja.
+*/
+
+
+10. Napisati funkciju koja okreće riječi u rečenici.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char* okreni_rijeci(const char *s){
+    char *res=malloc(strlen(s)+1);
+    strcpy(res,s);
+    char *token=strtok(res," ");
+    char *out=malloc(strlen(s)+1);
+    out[0]='\0';
+    while(token){
+        int len=strlen(token);
+        for(int i=len-1;i>=0;i--) strncat(out,&token[i],1);
+        strcat(out," ");
+        token=strtok(NULL," ");
+    }
+    out[strlen(out)-1]='\0';
+    free(res);
+    return out;
+}
+
+int main(){
+    char s[]="Morski pas je gladan.";
+    char *r=okreni_rijeci(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Svaka riječ se obrće individualno, zadržava se razmak.
+*/
+
+11. Napisati funkciju koja dodaje 'p' nakon svakog samoglasnika u stringu.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+char* samoglasnik_p(const char *s){
+    int len=strlen(s);
+    char *res=malloc(len*3 +1); // maksimalno udvostručivanje + p
+    int j=0;
+    for(int i=0;s[i];i++){
+        char c=s[i];
+        res[j++]=c;
+        char lc=tolower(c);
+        if(lc=='a'||lc=='e'||lc=='i'||lc=='o'||lc=='u'){
+            res[j++]='p';
+            res[j++]=c;
+        }
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    char s[]="Morski pas";
+    char *r=samoglasnik_p(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz string, detektira samoglasnike, dodaje 'p' i sam samoglasnik.
+*/
+
+
+12. Napisati funkciju koja zamjenjuje po dvije susjedne riječi u rečenici.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char* zamijeni_susjedne(const char *s){
+    char *copy=malloc(strlen(s)+1);
+    strcpy(copy,s);
+    char *out=malloc(strlen(s)+1);
+    out[0]='\0';
+    char *token=strtok(copy," ");
+    char *prev=NULL;
+    while(token){
+        if(prev==NULL) {prev=token;}
+        else{
+            strcat(out,token);
+            strcat(out," ");
+            strcat(out,prev);
+            strcat(out," ");
+            prev=NULL;
+        }
+        token=strtok(NULL," ");
+    }
+    if(prev) {strcat(out,prev);}
+    free(copy);
+    return out;
+}
+
+int main(){
+    char s[]="Morski pas je gladan";
+    char *r=zamijeni_susjedne(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Koristi strtok za tokenizaciju i preuređuje riječi par po par.
+*/
+
+
+13. Napisati funkciju koja spaja riječi iz rečenice po duljini.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int cmp(const void *a,const void *b){
+    char *s1=*(char**)a;
+    char *s2=*(char**)b;
+    int l1=strlen(s1), l2=strlen(s2);
+    if(l1!=l2) return l2-l1;
+    return strcmp(s1,s2);
+}
+
+char* sortiraj_rijeci(const char *s){
+    char *copy=malloc(strlen(s)+1);
+    strcpy(copy,s);
+    int count=0;
+    char *token=strtok(copy," ");
+    char *rijeci[100];
+    while(token) {rijeci[count++]=token; token=strtok(NULL," ");}
+    qsort(rijeci,count,sizeof(char*),cmp);
+    char *out=malloc(strlen(s)+1);
+    out[0]='\0';
+    for(int i=0;i<count;i++){
+        strcat(out,rijeci[i]);
+        if(i!=count-1) strcat(out," ");
+    }
+    free(copy);
+    return out;
+}
+
+int main(){
+    char s[]="Da mi je biti morski pas";
+    char *r=sortiraj_rijeci(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Sortira riječi prema duljini, pa leksikografski u slučaju istih duljina.
+*/
+
+
+14. Napisati funkciju koja string bitovnog zapisa pretvara u broj.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int bitovni_string_u_broj(const char *s){
+    int val=0;
+    for(int i=0;s[i];i++){
+        val<<=1;
+        if(s[i]=='1') val|=1;
+    }
+    return val;
+}
+
+int main(){
+    char s[]="1101";
+    printf("%d\n",bitovni_string_u_broj(s));
+    return 0;
+}
+
+/*
+Komentar:
+Svaki znak se pomiče i dodaje jedinica ili nula.
+*/
+
+
+15. Napisati funkciju koja zamjenjuje praznine s drugim stringom.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* zamijeni_praznine(const char *s,const char *zamjena){
+    int len=strlen(s), lz=strlen(zamjena);
+    char *res=malloc(len*lz+1);
+    int j=0;
+    for(int i=0;s[i];i++){
+        if(s[i]==' '){
+            strcpy(res+j,zamjena);
+            j+=lz;
+        }else res[j++]=s[i];
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    char s[]="abc def";
+    char *r=zamijeni_praznine(s,"X");
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi string, svaka praznina zamijenjena drugim stringom.
+*/
+
+
+16. Napisati funkciju koja duplicira sve znakove koji nisu slova ili brojevi.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+char* dupliciraj_specijalne(const char *s){
+    int len=strlen(s);
+    char *res=malloc(len*2+1);
+    int j=0;
+    for(int i=0;s[i];i++){
+        res[j++]=s[i];
+        if(!isalnum(s[i])) res[j++]=s[i];
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    char s[]="24/07/gggg";
+    char *r=dupliciraj_specijalne(s);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi string, duplicira znakove koji nisu alfanumerički.
+*/
+
+
+17. Program koji provjerava prijestupnu godinu.
+
+#include <stdio.h>
+
+int prestupna(int god){
+    return (god%4==0 && god%100!=0) || (god%400==0);
+}
+
+int main(){
+    int d,m,g;
+    printf("Unesi datum dd mm yyyy: ");
+    scanf("%d %d %d",&d,&m,&g);
+    if(prestupna(g)) printf("Godina je prijestupna\n");
+    else printf("Godina nije prijestupna\n");
+    return 0;
+}
+
+/*
+Komentar:
+Standardna provjera prestupne godine.
+*/
+
+
+18. Funkcija koja puni string velikim slovima i broji 'X' i 'Y'.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void puni_string(int n,int *cntX,int *cntY){
+    char *s=malloc(n+1);
+    *cntX=0; *cntY=0;
+    srand(time(NULL));
+    for(int i=0;i<n;i++){
+        char c='A'+rand()%26;
+        s[i]=c;
+        if(c=='X') (*cntX)++;
+        if(c=='Y') (*cntY)++;
+    }
+    s[n]='\0';
+    printf("%s\n",s);
+    free(s);
+}
+
+int main(){
+    int x,y;
+    puni_string(20,&x,&y);
+    printf("X: %d, Y: %d\n",x,y);
+    return 0;
+}
+
+/*
+Komentar:
+Generira string i broji koliko puta se pojavljuju X i Y.
+*/
+
+
+19. Funkcija koja broji maksimalan niz uzastopnih istih znakova.
+
+#include <stdio.h>
+#include <string.h>
+
+int max_uzastopni(const char *s){
+    int maxlen=0,curlen=1;
+    for(int i=1;s[i];i++){
+        if(s[i]==s[i-1]) curlen++;
+        else curlen=1;
+        if(curlen>maxlen) maxlen=curlen;
+    }
+    return maxlen;
+}
+
+int main(){
+    char s[]="aaabbccccd";
+    printf("%d\n",max_uzastopni(s));
+    return 0;
+}
+
+/*
+Komentar:
+Prolazi kroz string, broji dužinu tekućeg niza ponavljanja, pamti maksimum.
+*/
+
+
+20. Funkcija koja ubacuje uneseni string između dva stringa.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* ubaci_izmedju(const char *s1,const char *s2){
+    char insert[100];
+    printf("Unesi string za ubaciti: ");
+    scanf("%s",insert);
+    int len=strlen(s1)+strlen(s2)+strlen(insert)+1;
+    char *res=malloc(len);
+    strcpy(res,s1);
+    strcat(res,insert);
+    strcat(res,s2);
+    return res;
+}
+
+int main(){
+    char s1[]="Hello", s2[]="World";
+    char *r=ubaci_izmedju(s1,s2);
+    printf("%s\n",r);
+    free(r);
+    return 0;
+}
+
+/*
+Komentar:
+Korisnik unosi string za ubacivanje, funkcija alocira prostor i spaja sve tri stringa.
+*/
+
+21. Napisati funkciju koja za dani niz znamenki i danu veličinu niza provjerava da li je nul-terminiran i ako nije, dodaje nul-terminator na kraj.
+
+#include <stdio.h>
+
+void ensure_null_terminated(char arr[], int n) {
+    // Funkcija provjerava da li zadnji element niza nije '\0'.
+    // Ako nije, postavlja '\0' na kraj.
+    if (arr[n - 1] != '\0') {
+        arr[n] = '\0'; // Pretpostavljamo da je prostor za n+1 element dostupan
+    }
+}
+
+int main() {
+    char niz[6] = {'1','2','3','4','5'};
+    ensure_null_terminated(niz,5);
+    printf("Niz nakon provjere: %s\n", niz);
+    return 0;
+}
+
+22. Napisati funkciju koja vraća broj riječi u stringu koje počinju velikim slovom, broj riječi koje počinju malim slovom i broj riječi koje počinju sa znamenkom.
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+void count_words(const char *s, int *upper, int *lower, int *digit) {
+    *upper = *lower = *digit = 0;
+    int start = 1;
+    while (*s) {
+        if (isspace(*s)) start = 1;
+        else if (start) {
+            if (isupper(*s)) (*upper)++;
+            else if (islower(*s)) (*lower)++;
+            else if (isdigit(*s)) (*digit)++;
+            start = 0;
+        }
+        s++;
+    }
+}
+
+int main() {
+    const char *s = "Hello world 123 Test";
+    int u,l,d;
+    count_words(s,&u,&l,&d);
+    printf("Velika: %d, Mala: %d, Znam: %d\n", u,l,d);
+    return 0;
+}
+
+23. Napisati funkciju koja za zadani string vraća poziciju prvog i zadnjeg pojavljivanja danog znaka. Ukoliko danog znaka nema u stringu vraća -1.
+
+#include <stdio.h>
+#include <string.h>
+
+void first_last_occurrence(const char *s, char c, int *first, int *last) {
+    *first = *last = -1;
+    for(int i=0;s[i];i++){
+        if(s[i]==c){
+            if(*first==-1) *first=i;
+            *last=i;
+        }
+    }
+}
+
+int main() {
+    const char *s = "abracadabra";
+    int f,l;
+    first_last_occurrence(s,'a',&f,&l);
+    printf("Prvo: %d, Zadnje: %d\n", f,l);
+    return 0;
+}
+
+24. Napisati funkciju koja će vratiti broj ponavljanja određenog znaka u stringu i poziciju zadnjeg pojavljivanja tog znaka.
+
+#include <stdio.h>
+#include <string.h>
+
+void count_and_last(const char *s, char c, int *count, int *last_pos){
+    *count = 0;
+    *last_pos = -1;
+    for(int i=0;s[i];i++){
+        if(s[i]==c){
+            (*count)++;
+            *last_pos=i;
+        }
+    }
+}
+
+int main(){
+    const char *s="tralalalalaaaa";
+    int cnt,pos;
+    count_and_last(s,'l',&cnt,&pos);
+    printf("Broj: %d, Zadnja pozicija: %d\n",cnt,pos);
+    return 0;
+}
+
+25. Napisati funkciju koja u neki string nakon točke ili zareza ubaci razmak ako ne postoji na tom mjestu.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+char* insert_space_after_punct(const char *s){
+    int len=strlen(s), new_len=len*2;
+    char *res=malloc(new_len);
+    int j=0;
+    for(int i=0;s[i];i++){
+        res[j++]=s[i];
+        if((s[i]=='.'||s[i]==',')&&(s[i+1]!=' '&&s[i+1])){
+            res[j++]=' ';
+        }
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    const char *s="Ovo je test.Ovo,je drugi test.";
+    char *res=insert_space_after_punct(s);
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+26. Napisati funkciju koja modificira string tako da nakon svake riječi ubaci oznaku za novi red.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+char* insert_newline_after_words(const char *s){
+    int len=strlen(s);
+    char *res=malloc(len*2);
+    int j=0;
+    for(int i=0;s[i];i++){
+        res[j++]=s[i];
+        if(isspace(s[i]) && s[i]!='\n'){
+            res[j++]='\n';
+        }
+    }
+    res[j]='\0';
+    return res;
+}
+
+int main(){
+    const char *s="Ovo je recenica";
+    char *res=insert_newline_after_words(s);
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+27. Napisati funkciju koja prima tri stringa, te vraća novi string koji je rezultat spajanja dva kraća stringa.
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char* concat_two_shorter(const char *a,const char *b,const char *c){
+    int la=strlen(a),lb=strlen(b),lc=strlen(c);
+    const char *s1,*s2;
+    if(la<=lb && la<=lc) s1=a;
+    else if(lb<=la && lb<=lc) s1=b;
+    else s1=c;
+    if((s1==a && lb<=lc) || (s1==b && la<=lc) || (s1==c && la<=lb)) s2=(s1==a)?((lb<=lc)?b:c):(s1==b)?((la<=lc)?a:c):((la<=lb)?a:b);
+    else s2=(s1==a)?((lb>lc)?c:b):(s1==b)?((la>lc)?c:a):((la>lb)?b:a);
+    int len=strlen(s1)+strlen(s2);
+    char *res=malloc(len+1);
+    strcpy(res,s1);
+    strcat(res,s2);
+    return res;
+}
+
+int main(){
+    char *res=concat_two_shorter("apple","banana","kiwi");
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+28. Napisati funkciju koja će vratiti broj ponavljanja određenog znaka u stringu i poziciju prvog pojavljivanja tog znaka.
+
+#include <stdio.h>
+#include <string.h>
+
+void count_and_first(const char *s, char c, int *count, int *first){
+    *count=0;
+    *first=-1;
+    for(int i=0;s[i];i++){
+        if(s[i]==c){
+            (*count)++;
+            if(*first==-1) *first=i;
+        }
+    }
+}
+
+int main(){
+    const char *s="tralalalalaaaa";
+    int cnt,f;
+    count_and_first(s,'l',&cnt,&f);
+    printf("Broj: %d, Prva pozicija: %d\n",cnt,f);
+    return 0;
+}
+
+29. Napisati funkciju koja za string oblika "xxx-xxx-xxx vrati informaciju, može li string predstavljati telefonski broj.
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int is_phone(const char *s){
+    int count=0;
+    if(s[0]!='0') return 0;
+    for(int i=0;s[i];i++){
+        if(isdigit(s[i])) count++;
+        else if(s[i]!='-') return 0;
+    }
+    return (count==9 || count==10);
+}
+
+int main(){
+    printf("%d\n",is_phone("021-333-444"));
+    printf("%d\n",is_phone("02a-aa1-11a"));
+    return 0;
+}
+
+30. Napisati funkciju koja iz dva stringa koji predstavljaju ime izvođača i naziv pjesme, kreira treći string koji ima oblik "izvođač-pjesma.mp3"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+char* create_song_filename(const char *artist,const char *song){
+    int la=strlen(artist),ls=strlen(song);
+    char *res=malloc(la+ls+6);
+    int i;
+    for(i=0;i<la;i++) res[i]=i==0?toupper(artist[i]):tolower(artist[i]);
+    res[i++]='-';
+    for(int j=0;j<ls;j++,i++) res[i]=j==0?toupper(song[j]):tolower(song[j]);
+    strcpy(res+i,".mp3");
+    return res;
+}
+
+int main(){
+    char *res=create_song_filename("metallica","nothingelsematters");
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+31. Napisati funkciju koja od dva stringa kreira treći tako da oba stringa okrene naopako i spoji.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* reverse_concat(const char *a,const char *b){
+    int la=strlen(a),lb=strlen(b);
+    char *res=malloc(la+lb+1);
+    for(int i=0;i<la;i++) res[i]=a[la-1-i];
+    for(int i=0;i<lb;i++) res[la+i]=b[lb-1-i];
+    res[la+lb]='\0';
+    return res;
+}
+
+int main(){
+    char *res=reverse_concat("Hello","world");
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+32. Napisati funkciju koja iz stringa koji je oblika "broj-broj-broj" pročita i vrati sumu i prosječnu vrijednost brojeva.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void sum_avg_numbers(const char *s,int *sum,double *avg){
+    *sum=0;
+    int count=0;
+    char buf[20];
+    int j=0;
+    for(int i=0;;i++){
+        if(s[i]=='-' || s[i]=='\0'){
+            buf[j]='\0';
+            *sum+=atoi(buf);
+            count++;
+            j=0;
+            if(s[i]=='\0') break;
+        } else buf[j++]=s[i];
+    }
+    *avg=(double)(*sum)/count;
+}
+
+int main(){
+    const char *s="021-220-2002";
+    int sum; double avg;
+    sum_avg_numbers(s,&sum,&avg);
+    printf("Suma: %d, Prosjek: %.2lf\n",sum,avg);
+    return 0;
+}
+
+33. Napisati funkciju koja generira string proizvoljne duljine (duljinu stringa unosi korisnik). String se može sastojati od slova i znamenki.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <ctype.h>
+
+char* random_string(int n){
+    char *s=malloc(n+1);
+    const char chars[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(int i=0;i<n;i++) s[i]=chars[rand()%62];
+    s[n]='\0';
+    return s;
+}
+
+int main(){
+    srand(time(NULL));
+    char *res=random_string(10);
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+34. Napisati funkciju koja za dani n zapisuje u string prvih n Fibonaccijevih brojeva.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+char* fib_string(int n){
+    char *res=malloc(n*10);
+    int a=1,b=1,pos=0;
+    for(int i=0;i<n;i++){
+        pos+=sprintf(res+pos,"%d",a);
+        int tmp=b; b=a+b; a=tmp;
+    }
+    return res;
+}
+
+int main(){
+    char *res=fib_string(10);
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+35. Napisati funkciju koja za string u kojem su brojevi odvojeni znakom ’-’ vraća koliko ima brojeva u stringu, te najveći broj među njima.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void count_max_numbers(const char *s,int *count,int *max){
+    *count=0; *max=0;
+    char buf[20]; int j=0;
+    for(int i=0;;i++){
+        if(s[i]=='-' || s[i]=='\0'){
+            buf[j]='\0';
+            int val=atoi(buf);
+            if(val>*max) *max=val;
+            (*count)++;
+            j=0;
+            if(s[i]=='\0') break;
+        } else buf[j++]=s[i];
+    }
+}
+
+int main(){
+    const char *s="225-11-23-2456-2";
+    int c,m;
+    count_max_numbers(s,&c,&m);
+    printf("Broj brojeva: %d, Najveci: %d\n",c,m);
+    return 0;
+}
+
+36. Napisati funkciju koja vraća ukupan broj pojavljivanja samoglasnika u stringu, te broj pojavljivanja najčešćeg samoglasnika u stringu.
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void vowels_count(const char *s,int *total,int *max_count){
+    int counts[5]={0};
+    *total=0; *max_count=0;
+    for(int i=0;s[i];i++){
+        char c=tolower(s[i]);
+        if(c=='a'){counts[0]++; (*total)++;}
+        else if(c=='e'){counts[1]++; (*total)++;}
+        else if(c=='i'){counts[2]++; (*total)++;}
+        else if(c=='o'){counts[3]++; (*total)++;}
+        else if(c=='u'){counts[4]++; (*total)++;}
+    }
+    for(int i=0;i<5;i++) if(counts[i]>*max_count) *max_count=counts[i];
+}
+
+int main(){
+    const char *s="This is an example sentence.";
+    int total,max;
+    vowels_count(s,&total,&max);
+    printf("Ukupno: %d, Max ponavljanje jednog: %d\n",total,max);
+    return 0;
+}
+
+37. Napisati funkciju koja provjerava da li je rečenica heterogram.
+
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int is_heterogram(const char *s){
+    int counts[26]={0};
+    for(int i=0;s[i];i++){
+        char c=tolower(s[i]);
+        if(c>='a' && c<='z'){
+            if(counts[c-'a']>0) return 0;
+            counts[c-'a']++;
+        }
+    }
+    return 1;
+}
+
+int main(){
+    const char *s="The big dwarf only jumps.";
+    printf("%d\n",is_heterogram(s));
+    return 0;
+}
+
+
+38. Provjera izograma (sva slova jednako puta)
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Funkcija provjerava da li je rečenica izogram
+int is_isogram(const char *s){
+    int freq[26]={0}; // frekvencija za svako slovo a-z
+    for(int i=0;s[i];i++){
+        if(isalpha(s[i])) freq[tolower(s[i])-'a']++; // povećava broj pojavljivanja slova
+    }
+    int count=-1;
+    for(int i=0;i<26;i++){
+        if(freq[i]){
+            if(count==-1) count=freq[i]; // prva frekvencija postavljena
+            else if(freq[i]!=count) return 0; // ako nije jednaka, nije izogram
+        }
+    }
+    return 1; // sve frekvencije jednake
+}
+
+int main(){
+    printf("%d\n",is_isogram("Caucasus")); // test
+    printf("%d\n",is_isogram("Abba"));     // test
+    return 0;
+}
+
+39. Broj slova koja se ne pojavljuju kao malo i veliko
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+// Funkcija broji slova koja se ne pojavljuju oba (malo i veliko)
+int count_letters_no_lower_upper(const char *s){
+    int lower[26]={0}, upper[26]={0};
+    for(int i=0;s[i];i++){
+        if(islower(s[i])) lower[s[i]-'a']=1; // znak postoji kao malo
+        else if(isupper(s[i])) upper[s[i]-'A']=1; // znak postoji kao veliko
+    }
+    int count=0;
+    for(int i=0;i<26;i++){
+        if(!(lower[i] && upper[i])) count++; // ako se ne pojavljuje oba, brojimo
+    }
+    return count;
+}
+
+int main(){
+    printf("%d\n",count_letters_no_lower_upper("Alpha, Beta, Theta"));
+    return 0;
+}
+
+40. Broj slova koja se pojavljuju i kao malo i veliko
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int count_letters_lower_and_upper(const char *s){
+    int lower[26]={0}, upper[26]={0};
+    for(int i=0;s[i];i++){
+        if(islower(s[i])) lower[s[i]-'a']=1;
+        else if(isupper(s[i])) upper[s[i]-'A']=1;
+    }
+    int count=0;
+    for(int i=0;i<26;i++){
+        if(lower[i] && upper[i]) count++; // slovo prisutno oba oblika
+    }
+    return count;
+}
+
+int main(){
+    printf("%d\n",count_letters_lower_and_upper("Abba Theta Terra"));
+    return 0;
+}
+
+41. Kreiranje akronima iz stringa
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Funkcija vraća string sastavljen od početnih velikih slova riječi
+char* create_acronym(const char *s){
+    int n=strlen(s);
+    char *res=malloc(n+1);
+    int idx=0;
+    int start=1; // flag da li je početak riječi
+    for(int i=0;i<n;i++){
+        if(isspace(s[i])) start=1; // nova riječ
+        else if(start){ res[idx++]=toupper(s[i]); start=0; } // dodaj početno veliko slovo
+    }
+    res[idx]='\0';
+    return res;
+}
+
+int main(){
+    char *ac=create_acronym("Asynchronous JavaScript and XML");
+    printf("%s\n",ac);
+    free(ac);
+    return 0;
+}
+
+42. Provjera rekurzivnog akronima
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+char* create_acronym(const char *s){
+    int n=strlen(s);
+    char *res=malloc(n+1);
+    int idx=0,start=1;
+    for(int i=0;i<n;i++){
+        if(isspace(s[i])) start=1;
+        else if(start){ res[idx++]=toupper(s[i]); start=0; }
+    }
+    res[idx]='\0';
+    return res;
+}
+
+int is_recursive_acronym(const char *s){
+    char *ac=create_acronym(s); // akronim cijelog stringa
+    char first_word[100];
+    int i=0,j=0;
+    while(s[i] && !isspace(s[i])) first_word[j++]=toupper(s[i++]); // prva riječ
+    first_word[j]='\0';
+    int res=(strcmp(ac,first_word)==0); // usporedi
+    free(ac);
+    return res;
+}
+
+int main(){
+    printf("%d\n",is_recursive_acronym("SPARQL Protocol And RDF Query Language"));
+    printf("%d\n",is_recursive_acronym("AJAX Asynchronous JavaScript and XML"));
+    return 0;
+}
+
+43. Spoj kraći, duži
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+char* join_short_long(const char *a, const char *b){
+    const char *first = strlen(a)<=strlen(b)?a:b;
+    const char *second = (first==a)?b:a;
+    int len=strlen(first)+strlen(second)+3;
+    char *res=malloc(len);
+    sprintf(res,"%s, %s",first,second);
+    return res;
+}
+
+int main(){
+    char *res=join_short_long("Hello","World!");
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+44. Provjera anagrama
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int is_anagram(const char *a, const char *b){
+    int freq[26]={0};
+    for(int i=0;a[i];i++) if(isalpha(a[i])) freq[tolower(a[i])-'a']++;
+    for(int i=0;b[i];i++) if(isalpha(b[i])) freq[tolower(b[i])-'a']--;
+    for(int i=0;i<26;i++) if(freq[i]!=0) return 0;
+    return 1;
+}
+
+int main(){
+    printf("%d\n",is_anagram("vatra","trava"));
+    printf("%d\n",is_anagram("hello","world"));
+    return 0;
+}
+
+45. Umetanje stringa između dva
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char* insert_between(const char *a,const char *b,const char *c){
+    int len=strlen(a)+strlen(b)+strlen(c)+3;
+    char *res=malloc(len);
+    sprintf(res,"%s %s %s",a,c,b); // umetni c između a i b
+    return res;
+}
+
+int main(){
+    char *res=insert_between("Veni","vici","vidi");
+    printf("%s\n",res);
+    free(res);
+    return 0;
+}
+
+46. Provjera pangrama
+#include <stdio.h>
+#include <ctype.h>
+
+int is_pangram(const char *s){
+    int freq[26]={0};
+    for(int i=0;s[i];i++){
+        if(isalpha(s[i])) freq[tolower(s[i])-'a']=1; // svaki znak samo označimo
+    }
+    for(int i=0;i<26;i++) if(freq[i]==0) return 0;
+    return 1;
+}
+
+int main(){
+    printf("%d\n",is_pangram("The quick brown fox jumps over the lazy dog"));
+    printf("%d\n",is_pangram("Hello world"));
+    return 0;
+}
+
+47. Provjera zadnja dva i prva dva slova
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Funkcija provjerava jesu li zadnja dva slova prvog stringa jednaka prva dva drugog stringa
+// Ignorira velika/mala slova
+int last2_first2(const char *a,const char *b){
+    int la=strlen(a), lb=strlen(b);  // dohvatimo duljinu stringova
+    if(la<2 || lb<2) return 0;       // ako bilo koji string nema dovoljno znakova, vraćamo 0 (false)
+    // uspoređujemo zadnja dva slova prvog stringa sa prva dva drugog stringa
+    // funkcija tolower() osigurava ignoriranje velikih/malih slova
+    return (tolower(a[la-2])==tolower(b[0]) && tolower(a[la-1])==tolower(b[1]));
+}
+
+int main(){
+    // Test funkcije: zadnja dva slova "Hello" su "lo", prva dva "loWorld" su "lo"
+    printf("%d\n",last2_first2("Hello","loWorld")); // Očekivano: 1 (true)
+    printf("%d\n",last2_first2("abc","def"));       // Očekivano: 0 (false)
+    return 0;
+}
+
+48. Brojevi iz stringa
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+// Funkcija čita sve znamenke iz stringa i sprema ih u niz integera
+int* extract_digits(const char *s,int *len){
+    int *res=malloc(strlen(s)*sizeof(int));  // alociramo maksimalni mogući broj elemenata
+    int idx=0;  // indeks u rezultirajućem nizu
+    for(int i=0;s[i];i++){  // prolazak kroz cijeli string
+        if(isdigit(s[i])) res[idx++]=s[i]-'0';  // ako je znak znamenka, spremi u niz kao integer
+    }
+    *len=idx;  // postavi duljinu rezultirajućeg niza
+    return res; // vrati niz
+}
+
+int main(){
+    int len;
+    int *arr=extract_digits("Kaladont123jabuka45",&len); // poziv funkcije
+    for(int i=0;i<len;i++) printf("%d ",arr[i]);         // ispis rezultata
+    free(arr); // oslobodi memoriju
+    return 0;
+}
+
+49. Provjera palindroma i dupli string
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Funkcija provjerava dva svojstva stringa:
+// 1) je li palindrome (isto čitan od naprijed i nazad)
+// 2) je li "dupli string" (string se sastoji od dvostrukog istog niza)
+void check_palindrome_double(const char *s){
+    int n=strlen(s);
+    int palindrome=1;
+    for(int i=0;i<n/2;i++){  // prolazak do polovice stringa
+        if(s[i]!=s[n-1-i]){   // uspoređujemo znakove s početka i kraja
+            palindrome=0;      // ako nisu jednaki, nije palindrome
+            break;
+        }
+    }
+    int double_string=0;
+    if(n%2==0 && strncmp(s,s+n/2,n/2)==0) double_string=1;  // ako je duljina parna i prvi dio jednak drugom dijelu
+    printf("Palindrome: %d, Double: %d\n",palindrome,double_string);
+}
+
+int main(){
+    check_palindrome_double("Ana nabra par banana."); // primjer palindroma i duplog stringa
+    check_palindrome_double("JaltaJalta");           // primjer duplog stringa
+    return 0;
+}
+
+50. Broj ponavljanja podstringa
+#include <stdio.h>
+#include <string.h>
+
+// Funkcija broji koliko puta se podstring sub pojavljuje u stringu s
+int count_substring(const char *s,const char *sub){
+    int count=0;
+    int len=strlen(sub);
+    for(int i=0;s[i];i++){              // prolazak kroz string
+        if(strncmp(&s[i],sub,len)==0)   // uspoređujemo substring duljine len
+            count++;                     // ako je jednako, povećavamo broj ponavljanja
+    }
+    return count;  // vraća broj ponavljanja
+}
+
+int main(){
+    // Test funkcije: substring "Homer" pojavljuje se dva puta
+    printf("%d\n",count_substring("The author of the Iliad is either Homer or, if not Homer, somebody else of the same name.","Homer"));
+    return 0;
+}
+
+51. Iz stringa formira broj
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+// Funkcija iz stringa uzima samo znamenke i vraća broj
+int extract_number(const char *s){
+    char buf[100]={0};  // buffer za znamenke
+    int idx=0;          // indeks za buffer
+    for(int i=0;s[i];i++){
+        if(isdigit(s[i])) buf[idx++]=s[i];  // spremamo samo znamenke
+    }
+    return atoi(buf); // pretvaramo string znamenki u integer
+}
+
+int main(){
+    printf("%d\n",extract_number("6 puta 9 je 42.")); // Očekivano: 6942
+    return 0;
+}
+
+52. Računanje godina iz datuma
+#include <stdio.h>
+#include <stdlib.h>
+
+// Funkcija računa starost osobe prema datumu rođenja i trenutnoj godini
+int calculate_age(const char *date,int current_year){
+    int d,m,y;
+    sscanf(date,"%d.%d.%d",&d,&m,&y); // parsiramo datum dd.mm.yyyy
+    return current_year-y;            // vraćamo razliku godina
+}
+
+int main(){
+    printf("%d\n",calculate_age("15.08.2000",2025)); // Očekivano: 25
+    return 0;
+}
+
+53. Udvostručenje brojeva u stringu
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+// Funkcija udvostručuje sve znamenke u stringu, ostale znakove ostavlja
+char* double_digits(const char *s){
+    int n=strlen(s);
+    char *res=malloc(n*3); // maksimalna moguća duljina (svaka znamenka postaje 2 znaka)
+    int idx=0;
+    for(int i=0;i<n;i++){
+        if(isdigit(s[i])){
+            res[idx++]=s[i]; res[idx++]=s[i]; // udvostručimo znamenku
+        } else res[idx++]=s[i];              // ostale znakove samo kopiramo
+    }
+    res[idx]='\0'; // završni nul-terminator
+    return res;
+}
+
+int main(){
+    char *s="24/07/gggg";
+    char *new_s=double_digits(s);
+    printf("%s\n",new_s); // Očekivano: "2244/0077/gggg"
+    free(new_s);
+    return 0;
+}
+
+
+54. Napisati funkciju koja računa sumu i umnožak kubova članova niza. Za kubiranje koristiti predprocesorsku direktivu.
+
+#include <stdio.h>
+#define KUB(x) ((x)*(x)*(x)) // Direktiva za izračun kubne vrijednosti
+
+void suma_i_produkt_kubova(int* niz, int vel, long long* suma, long long* produkt) {
+    *suma = 0;
+    *produkt = 1;
+    for(int i = 0; i < vel; i++) {
+        long long k = KUB(niz[i]); // računanje kub vrijednosti trenutnog elementa
+        *suma += k;                // zbrajanje kubova
+        *produkt *= k;             // množenje kubova
+    }
+}
+
+int main() {
+    int niz[] = {1, 2, 3, 4};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    long long suma, produkt;
+    suma_i_produkt_kubova(niz, vel, &suma, &produkt);
+    printf("Suma kubova: %lld\n", suma);
+    printf("Produkt kubova: %lld\n", produkt);
+    return 0;
+}
+
+55. Napisati funkciju koja računa najveće i najmanje oplošje niza kocaka (kocka zadana jednom stranicom). Za oplošje koristiti predprocesorsku direktivu.
+
+#include <stdio.h>
+#define OPLOSCJE(a) (6*(a)*(a)) // Direktiva za izračun oplošja kocke
+
+void min_max_oplosje(int* niz, int vel, int* min_op, int* max_op) {
+    if(vel == 0) return;
+    *min_op = OPLOSCJE(niz[0]);
+    *max_op = OPLOSCJE(niz[0]);
+    for(int i = 1; i < vel; i++) {
+        int o = OPLOSCJE(niz[i]); // izračun oplošja trenutne kocke
+        if(o < *min_op) *min_op = o; // ažuriranje minimalnog oplošja
+        if(o > *max_op) *max_op = o; // ažuriranje maksimalnog oplošja
+    }
+}
+
+int main() {
+    int kocke[] = {2, 3, 4};
+    int vel = sizeof(kocke)/sizeof(kocke[0]);
+    int min_op, max_op;
+    min_max_oplosje(kocke, vel, &min_op, &max_op);
+    printf("Minimalno oplošje: %d\n", min_op);
+    printf("Maksimalno oplošje: %d\n", max_op);
+    return 0;
+}
+
+56. Napisati funkciju koja postojeći niz proširuje tako da između svaka dva elementa ubaci njihovu aritmetičku sredinu. Funkcija vraća novi niz.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+double* ubaci_aritmeticke_sredine(int* niz, int vel, int* nova_vel) {
+    *nova_vel = vel*2 - 1; // nova veličina niza nakon umetanja sredina
+    double* novi = (double*)malloc((*nova_vel)*sizeof(double)); // alociranje memorije
+    for(int i = 0; i < vel-1; i++) {
+        novi[i*2] = niz[i]; // originalni element
+        novi[i*2+1] = (niz[i] + niz[i+1])/2.0; // umetanje aritmetičke sredine
+    }
+    novi[*nova_vel-1] = niz[vel-1]; // zadnji element niza
+    return novi;
+}
+
+int main() {
+    int niz[] = {1, 2, 3, 4, 6};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    int nova_vel;
+    double* novi = ubaci_aritmeticke_sredine(niz, vel, &nova_vel);
+    for(int i = 0; i < nova_vel; i++)
+        printf("%.1f ", novi[i]);
+    free(novi); // oslobađanje memorije
+    return 0;
+}
+
+57. Napisati funkciju koja popravlja string tako da iza svakog znaka interpunkcije ubaci prazninu, ako ne postoji i ako to nije zadnji znak.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+char* ubaci_razmak_ispod_interpunkcije(const char* s) {
+    int len = strlen(s);
+    char* novi = (char*)malloc(len*2 + 1); // predviđamo maksimalnu dužinu
+    int j = 0;
+    for(int i = 0; i < len; i++) {
+        novi[j++] = s[i]; 
+        if((s[i] == ',' || s[i] == '.' || s[i] == ';' || s[i] == '!') && s[i+1] != ' ' && s[i+1] != '\0') {
+            novi[j++] = ' '; // ubacivanje razmaka nakon interpunkcije
+        }
+    }
+    novi[j] = '\0';
+    return novi;
+}
+
+int main() {
+    const char* s = "Tri,dva,jedan, nula!";
+    char* novi = ubaci_razmak_ispod_interpunkcije(s);
+    printf("%s\n", novi);
+    free(novi); // oslobađanje memorije
+    return 0;
+}
+
+58. Napisati funkciju koja na mjestu pojavljivanja znamenke u stringu ubacuje tekstualni naziv znamenke.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+char* zamijeni_znamenke_tekstom(const char* s) {
+    const char* imena[] = {"nula","jedan","dva","tri","četiri","pet","šest","sedam","osam","devet"};
+    int len = strlen(s);
+    char* novi = (char*)malloc(len*5 + 1); // dovoljno prostora za zamjene
+    int j = 0;
+    for(int i = 0; i < len; i++) {
+        if(isdigit(s[i])) {
+            const char* ime = imena[s[i]-'0'];
+            for(int k = 0; ime[k]; k++) {
+                novi[j++] = ime[k]; // ubacivanje teksta znamenke
+            }
+            novi[j++] = ' '; // razmak između riječi
+        } else {
+            novi[j++] = s[i]; // kopiranje ostalih znakova
+        }
+    }
+    novi[j] = '\0';
+    return novi;
+}
+
+int main() {
+    const char* s = "3 2 1 kreni!";
+    char* novi = zamijeni_znamenke_tekstom(s);
+    printf("%s\n", novi);
+    free(novi);
+    return 0;
+}
+
+59. Napisati funkciju koja će iz slučajno generiranih brojeva iz intervala [10, 1000] kreirati niz i to tako da, ako je novi broj veći od prethodno izgeneriranog broja, novi broj stavlja na kraj niza, a ako je manji na početak niza. Funkcija vraća novi niz.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int* generiraj_niz_s_redoslijedom(int n) {
+    int* niz = (int*)malloc(n*sizeof(int));
+    int vel = 0;
+    srand(time(NULL));
+    for(int i = 0; i < n; i++) {
+        int br = rand()%991 + 10; // broj iz [10,1000]
+        if(vel == 0) {
+            niz[vel++] = br;
+        } else {
+            if(br > niz[vel-1]) {
+                niz[vel++] = br; // veći ide na kraj
+            } else {
+                for(int j = vel; j > 0; j--) {
+                    niz[j] = niz[j-1]; // pomakni elemente udesno
+                }
+                niz[0] = br; // manji ide na početak
+                vel++;
+            }
+        }
+    }
+    return niz;
+}
+
+int main() {
+    int n = 10;
+    int* niz = generiraj_niz_s_redoslijedom(n);
+    for(int i = 0; i < n; i++)
+        printf("%d ", niz[i]);
+    printf("\n");
+    free(niz);
+    return 0;
+}
+
+5. Napisati strukturu kvadar. Napisati funkciju koja računa oplošje i volumen kvadra.
+
+#include <stdio.h>
+
+// Struktura kvadar sa dimenzijama: a, b, c
+typedef struct {
+    double a;
+    double b;
+    double c;
+} Kvadar;
+
+// Funkcija koja prima kvadar i vraća oplošje i volumen
+void kvadar_oplosje_volumen(Kvadar k, double* oplošje, double* volumen) {
+    // Oplošje: 2*(ab + bc + ac)
+    *oplošje = 2*(k.a*k.b + k.b*k.c + k.a*k.c);
+    // Volumen: a*b*c
+    *volumen = k.a * k.b * k.c;
+}
+
+int main() {
+    Kvadar k = {2.0, 3.0, 4.0}; // primjer kvadra
+    double oplošje, volumen;
+    kvadar_oplosje_volumen(k, &oplošje, &volumen);
+    printf("Oplošje kvadra: %.2f\n", oplošje);
+    printf("Volumen kvadra: %.2f\n", volumen);
+    return 0;
+}
+
+6. Predložiti strukturu za vrijeme. Napisati funkciju koja vraća razliku vremena. Ispisati tu razliku u formatu hh:mm:ss.
+
+#include <stdio.h>
+
+// Struktura za vrijeme (sati, minute, sekunde)
+typedef struct {
+    int h;
+    int m;
+    int s;
+} Vrijeme;
+
+// Funkcija koja računa razliku vremena: v2 - v1
+Vrijeme razlika_vremena(Vrijeme v1, Vrijeme v2) {
+    int sek1 = v1.h*3600 + v1.m*60 + v1.s;
+    int sek2 = v2.h*3600 + v2.m*60 + v2.s;
+    int raz = sek2 - sek1;
+    if(raz < 0) raz += 24*3600; // podrška za prelazak preko ponoći
+    Vrijeme rez;
+    rez.h = raz/3600;
+    raz %= 3600;
+    rez.m = raz/60;
+    rez.s = raz%60;
+    return rez;
+}
+
+int main() {
+    Vrijeme v1 = {14, 30, 15};
+    Vrijeme v2 = {16, 45, 50};
+    Vrijeme r = razlika_vremena(v1, v2);
+    printf("Razlika: %02d:%02d:%02d\n", r.h, r.m, r.s);
+    return 0;
+}
+
+7. Napisati funkciju koja za niz pravokutnika zadanih sa dvije stranice, vraća one koji imaju najmanju i najveću površinu.
+
+#include <stdio.h>
+
+// Struktura pravokutnik sa stranicama a i b
+typedef struct {
+    double a;
+    double b;
+} Pravokutnik;
+
+// Funkcija koja pronalazi najmanju i najveću površinu
+void min_max_povrsina(Pravokutnik* niz, int vel, Pravokutnik* minP, Pravokutnik* maxP) {
+    if(vel <= 0) return;
+    double min = niz[0].a * niz[0].b;
+    double max = min;
+    *minP = niz[0];
+    *maxP = niz[0];
+    for(int i=1; i<vel; i++) {
+        double pov = niz[i].a * niz[i].b; // površina trenutnog pravokutnika
+        if(pov < min) {
+            min = pov;
+            *minP = niz[i];
+        }
+        if(pov > max) {
+            max = pov;
+            *maxP = niz[i];
+        }
+    }
+}
+
+int main() {
+    Pravokutnik niz[] = {{2,3}, {4,5}, {1,6}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Pravokutnik minP, maxP;
+    min_max_povrsina(niz, vel, &minP, &maxP);
+    printf("Najmanja povrsina: %.2f x %.2f\n", minP.a, minP.b);
+    printf("Najveca povrsina: %.2f x %.2f\n", maxP.a, maxP.b);
+    return 0;
+}
+
+8. Definirati strukturu slika koja opisuje sliku sa imenom i prezimenom autora, imenom slike, dimenzijom i cijenom. Napisati funkciju koja za niz slika pročitanih iz datoteke, vraća ime i prezime najzastupljenijeg autora u kolekciji.
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char ime_autora[50];
+    char prezime_autora[50];
+    char ime_slike[50];
+    double dimenzija;
+    double cijena;
+} Slika;
+
+// Funkcija koja pronalazi najzastupljenijeg autora u nizu slika
+void najzastupljeniji_autor(Slika* slike, int vel, char* ime, char* prezime) {
+    int max_count = 0;
+    for(int i=0;i<vel;i++){
+        int count = 0;
+        for(int j=0;j<vel;j++){
+            if(strcmp(slike[i].ime_autora, slike[j].ime_autora)==0 &&
+               strcmp(slike[i].prezime_autora, slike[j].prezime_autora)==0) {
+                count++;
+            }
+        }
+        if(count > max_count) {
+            max_count = count;
+            strcpy(ime, slike[i].ime_autora);
+            strcpy(prezime, slike[i].prezime_autora);
+        }
+    }
+}
+
+int main() {
+    Slika slike[] = {
+        {"Ivan","Horvat","Slika1",10.5,150},
+        {"Ana","Kovac","Slika2",12,200},
+        {"Ivan","Horvat","Slika3",15,180},
+        {"Ana","Kovac","Slika4",8,100},
+        {"Ivan","Horvat","Slika5",11,220}
+    };
+    int vel = sizeof(slike)/sizeof(slike[0]);
+    char ime[50], prezime[50];
+    najzastupljeniji_autor(slike, vel, ime, prezime);
+    printf("Najzastupljeniji autor: %s %s\n", ime, prezime);
+    return 0;
+}
+
+9. Definirati strukturu seminar. Seminar se sastoji od imena autora, imena seminara, godine izdavanja, ocjena i datoteke u kojoj se nalazi sam rad. Napisati funkciju koja za niz seminara nalazi (i vraća) one čije u čijem je naslovu određena riječ (riječ je parametar funkcije). Napomena: Funkcija može vratiti više rezultata.
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char ime_autora[50];
+    char naslov[100];
+    int godina;
+    int ocjena;
+    char datoteka[50];
+} Seminar;
+
+// Funkcija koja pronalazi seminare koji sadrže zadanu riječ u naslovu
+int seminari_sa_rijeci(Seminar* niz, int vel, const char* rijec, Seminar* rezultat) {
+    int count = 0;
+    for(int i=0;i<vel;i++){
+        if(strstr(niz[i].naslov, rijec)!=NULL) {
+            rezultat[count++] = niz[i];
+        }
+    }
+    return count; // vraća broj pronađenih seminara
+}
+
+int main() {
+    Seminar niz[] = {
+        {"Ivan","Matematika 1",2020,5,"mat1.pdf"},
+        {"Ana","Fizika 2",2019,4,"fiz2.pdf"},
+        {"Marko","Matematika 2",2021,5,"mat2.pdf"}
+    };
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Seminar rezultat[vel];
+    int count = seminari_sa_rijeci(niz, vel, "Matematika", rezultat);
+    printf("Seminari s rijeci 'Matematika':\n");
+    for(int i=0;i<count;i++){
+        printf("%s - %s\n", rezultat[i].ime_autora, rezultat[i].naslov);
+    }
+    return 0;
+}
+
+10. Definirati strukturu završni rad. Završni rad se sastoji od imena autora, imena završnog rada, godine izdavanja, ocjena i datoteke u kojoj se nalazi sam rad. Napisati funkciju koja za niz završnih radova nalazi (i vraća) one koji su dobili određenu ocjenu (ocjena je parametar funkcije). Napomena: Funkcija može vratiti više rezultata.
+
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char ime_autora[50];
+    char naslov[100];
+    int godina;
+    int ocjena;
+    char datoteka[50];
+} ZavrsniRad;
+
+// Funkcija koja pronalazi radove s odredenom ocjenom
+int radovi_sa_ocjenom(ZavrsniRad* niz, int vel, int ocjena, ZavrsniRad* rezultat) {
+    int count = 0;
+    for(int i=0;i<vel;i++){
+        if(niz[i].ocjena == ocjena) {
+            rezultat[count++] = niz[i];
+        }
+    }
+    return count;
+}
+
+int main() {
+    ZavrsniRad niz[] = {
+        {"Ivan","Programiranje",2022,5,"prog.pdf"},
+        {"Ana","Algoritmi",2021,4,"algo.pdf"},
+        {"Marko","Baze podataka",2020,5,"baze.pdf"}
+    };
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    ZavrsniRad rezultat[vel];
+    int count = radovi_sa_ocjenom(niz, vel, 5, rezultat);
+    printf("Radovi s ocjenom 5:\n");
+    for(int i=0;i<count;i++){
+        printf("%s - %s\n", rezultat[i].ime_autora, rezultat[i].naslov);
+    }
+    return 0;
+}
+
+11. Definirati strukturu trokut. Napisati funkciju koja za niz trokuta računa i vraća trokut najvećeg opsega.
+
+#include <stdio.h>
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+} Trokut;
+
+// Funkcija koja pronalazi trokut s najvećim opsegom u nizu trokuta
+Trokut najveci_opseg(Trokut* niz, int vel) {
+    Trokut max = niz[0];
+    double max_opseg = niz[0].a + niz[0].b + niz[0].c;
+    for(int i=1; i<vel; i++){
+        double opseg = niz[i].a + niz[i].b + niz[i].c;
+        if(opseg > max_opseg){
+            max_opseg = opseg;
+            max = niz[i];
+        }
+    }
+    return max;
+}
+
+int main() {
+    Trokut niz[] = {{3,4,5},{5,5,5},{2,2,3}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Trokut t = najveci_opseg(niz, vel);
+    printf("Trokut s najvećim opsegom: a=%.2f, b=%.2f, c=%.2f\n", t.a, t.b, t.c);
+    return 0;
+}
+
+12. Definirati strukturu trokut. Napisati funkciju koja za niz trokuta računa i vraća trokut najveće površine i trokut najvećeg opsega.
+
+#include <stdio.h>
+#include <math.h>
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+} Trokut;
+
+// Funkcija za izračun površine trokuta po Heronovoj formuli
+double povrsina(Trokut t) {
+    double s = (t.a + t.b + t.c)/2.0;
+    return sqrt(s*(s-t.a)*(s-t.b)*(s-t.c));
+}
+
+// Funkcija koja vraća trokut s najvećom površinom i trokut s najvećim opsegom
+void max_povrsina_opseg(Trokut* niz, int vel, Trokut* maxP, Trokut* maxO) {
+    *maxP = niz[0];
+    *maxO = niz[0];
+    double maxPovrs = povrsina(niz[0]);
+    double maxOpseg = niz[0].a + niz[0].b + niz[0].c;
+    for(int i=1;i<vel;i++){
+        double opseg = niz[i].a + niz[i].b + niz[i].c;
+        double povr = povrsina(niz[i]);
+        if(povr > maxPovrs){
+            maxPovrs = povr;
+            *maxP = niz[i];
+        }
+        if(opseg > maxOpseg){
+            maxOpseg = opseg;
+            *maxO = niz[i];
+        }
+    }
+}
+
+int main() {
+    Trokut niz[] = {{3,4,5},{5,5,5},{2,2,3}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Trokut maxP, maxO;
+    max_povrsina_opseg(niz, vel, &maxP, &maxO);
+    printf("Trokut s najvećom površinom: a=%.2f, b=%.2f, c=%.2f\n", maxP.a, maxP.b, maxP.c);
+    printf("Trokut s najvećim opsegom: a=%.2f, b=%.2f, c=%.2f\n", maxO.a, maxO.b, maxO.c);
+    return 0;
+}
+
+13. Definirati strukturu kvadrat. Napisati funkciju koja za niz kvadrata računa i vraća kvadrat najveće površine i kvadrat najvećeg opsega.
+
+#include <stdio.h>
+
+typedef struct {
+    double stranica;
+} Kvadrat;
+
+// Funkcija koja vraća kvadrat s najvećom površinom i kvadrat s najvećim opsegom
+void max_kvadrat(Kvadrat* niz, int vel, Kvadrat* maxP, Kvadrat* maxO) {
+    *maxP = *maxO = niz[0];
+    double maxPovrs = niz[0].stranica * niz[0].stranica;
+    double maxOpseg = 4 * niz[0].stranica;
+    for(int i=1;i<vel;i++){
+        double povrs = niz[i].stranica * niz[i].stranica;
+        double opseg = 4 * niz[i].stranica;
+        if(povrs > maxPovrs){
+            maxPovrs = povrs;
+            *maxP = niz[i];
+        }
+        if(opseg > maxOpseg){
+            maxOpseg = opseg;
+            *maxO = niz[i];
+        }
+    }
+}
+
+int main() {
+    Kvadrat niz[] = {{3},{5},{2}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Kvadrat maxP, maxO;
+    max_kvadrat(niz, vel, &maxP, &maxO);
+    printf("Kvadrat s najvećom površinom: stranica=%.2f\n", maxP.stranica);
+    printf("Kvadrat s najvećim opsegom: stranica=%.2f\n", maxO.stranica);
+    return 0;
+}
+
+14. Definirati strukturu trokut. Napisati funkciju koja za niz trokuta vraća najveću stranicu med̄u svim trokutima.
+
+#include <stdio.h>
+
+typedef struct {
+    double a;
+    double b;
+    double c;
+} Trokut;
+
+// Funkcija koja pronalazi najveću stranicu među svim trokutima u nizu
+double najveci_stranica(Trokut* niz, int vel) {
+    double max = niz[0].a;
+    for(int i=0;i<vel;i++){
+        if(niz[i].a > max) max = niz[i].a;
+        if(niz[i].b > max) max = niz[i].b;
+        if(niz[i].c > max) max = niz[i].c;
+    }
+    return max;
+}
+
+int main() {
+    Trokut niz[] = {{3,4,5},{5,5,5},{2,2,3}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    double maxS = najveci_stranica(niz, vel);
+    printf("Najveća stranica među svim trokutima: %.2f\n", maxS);
+    return 0;
+}
+
+15. Definirati strukturu datum koja predstavlja datum. Napisati funkciju za unošenje niza datuma, koja provjerava da li je datum korektno unesen, te vraća broj korektno unesenih, te broj pojavljivanja datuma iz ljetnih mjeseci (lipanj, srpanj i kolovoz).
+
+#include <stdio.h>
+
+typedef struct {
+    int dan;
+    int mjesec;
+    int godina;
+} Datum;
+
+// Funkcija koja provjerava je li datum korektan
+int ispravni_datum(Datum d) {
+    if(d.mjesec<1 || d.mjesec>12) return 0;
+    int max_dani[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+    // Provjera prijestupne godine
+    if((d.godina%4==0 && d.godina%100!=0) || (d.godina%400==0))
+        max_dani[2] = 29;
+    if(d.dan<1 || d.dan>max_dani[d.mjesec]) return 0;
+    return 1;
+}
+
+// Funkcija za unos niza datuma i brojanje ispravnih i ljetnih datuma
+void unos_datuma(Datum* niz, int n, int* ispravno, int* ljetni) {
+    *ispravno = 0;
+    *ljetni = 0;
+    for(int i=0;i<n;i++){
+        printf("Unesite datum (dd mm yyyy): ");
+        scanf("%d %d %d",&niz[i].dan,&niz[i].mjesec,&niz[i].godina);
+        if(ispravni_datum(niz[i])){
+            (*ispravno)++;
+            if(niz[i].mjesec==6 || niz[i].mjesec==7 || niz[i].mjesec==8)
+                (*ljetni)++;
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Unesite broj datuma: ");
+    scanf("%d",&n);
+    Datum niz[n];
+    int ispravno, ljetni;
+    unos_datuma(niz, n, &ispravno, &ljetni);
+    printf("Broj ispravno unesenih datuma: %d\n", ispravno);
+    printf("Broj ljetnih datuma: %d\n", ljetni);
+    return 0;
+}
+
+16. Napisati strukturu koja opisuje kvadar. Napisati funkciju koja za niz kvadara vraća one koji imaju najmanji volumen. Napomena: Dva ili više kvadara mogu imati jednaki volumen.
+
+#include <stdio.h>
+
+typedef struct {
+    double a, b, c;
+} Kvadar;
+
+// Funkcija koja pronalazi kvadare s najmanjim volumenom
+int najmanji_volumen(Kvadar* niz, int vel, Kvadar* rezultati) {
+    double minVol = niz[0].a*niz[0].b*niz[0].c;
+    rezultati[0] = niz[0];
+    int count = 1;
+    for(int i=1;i<vel;i++){
+        double vol = niz[i].a*niz[i].b*niz[i].c;
+        if(vol < minVol){
+            minVol = vol;
+            rezultati[0] = niz[i];
+            count = 1;
+        } else if(vol == minVol){
+            rezultati[count++] = niz[i];
+        }
+    }
+    return count;
+}
+
+int main() {
+    Kvadar niz[] = {{2,3,4},{1,2,3},{2,2,3},{1,2,3}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Kvadar rezultati[vel];
+    int cnt = najmanji_volumen(niz, vel, rezultati);
+    printf("Kvadari s najmanjim volumenom:\n");
+    for(int i=0;i<cnt;i++)
+        printf("a=%.2f, b=%.2f, c=%.2f\n", rezultati[i].a, rezultati[i].b, rezultati[i].c);
+    return 0;
+}
+
+17. Napisati funkciju koja za radijus kružnice računa i vraća površinu i opseg kružnice.
+
+#include <stdio.h>
+#define PI 3.141592653589793
+
+// Funkcija koja računa površinu i opseg kružnice
+void kruznica(double r, double* povrsina, double* opseg){
+    *povrsina = PI*r*r;
+    *opseg = 2*PI*r;
+}
+
+int main() {
+    double r;
+    printf("Unesite radijus kružnice: ");
+    scanf("%lf",&r);
+    double p, o;
+    kruznica(r, &p, &o);
+    printf("Površina: %.2f, Opseg: %.2f\n", p, o);
+    return 0;
+}
+
+18. Definirati strukturu razlomak, te napisati funkcije za 4 osnovne operacije sa razlomcima. Napomena: razlomak koji funkcija vraća mora biti skraćen.
+
+#include <stdio.h>
+
+typedef struct {
+    int brojnik;
+    int nazivnik;
+} Razlomak;
+
+// Funkcija za izračunavanje najvećeg zajedničkog djelitelja
+int gcd(int a, int b){
+    while(b!=0){
+        int t=b;
+        b=a%b;
+        a=t;
+    }
+    return a;
+}
+
+// Funkcija koja skraćuje razlomak
+Razlomak skrati(Razlomak r){
+    int g=gcd(r.brojnik, r.nazivnik);
+    r.brojnik/=g;
+    r.nazivnik/=g;
+    return r;
+}
+
+// Funkcije za osnovne operacije
+Razlomak zbroj(Razlomak r1, Razlomak r2){
+    Razlomak r;
+    r.brojnik = r1.brojnik*r2.nazivnik + r2.brojnik*r1.nazivnik;
+    r.nazivnik = r1.nazivnik*r2.nazivnik;
+    return skrati(r);
+}
+
+Razlomak razlika(Razlomak r1, Razlomak r2){
+    Razlomak r;
+    r.brojnik = r1.brojnik*r2.nazivnik - r2.brojnik*r1.nazivnik;
+    r.nazivnik = r1.nazivnik*r2.nazivnik;
+    return skrati(r);
+}
+
+Razlomak produkt(Razlomak r1, Razlomak r2){
+    Razlomak r;
+    r.brojnik = r1.brojnik*r2.brojnik;
+    r.nazivnik = r1.nazivnik*r2.nazivnik;
+    return skrati(r);
+}
+
+Razlomak kolicnik(Razlomak r1, Razlomak r2){
+    Razlomak r;
+    r.brojnik = r1.brojnik*r2.nazivnik;
+    r.nazivnik = r1.nazivnik*r2.brojnik;
+    return skrati(r);
+}
+
+int main(){
+    Razlomak r1 = {1,2}, r2={3,4};
+    Razlomak z=r1, o=r2;
+    Razlomak sum=zbroj(r1,r2);
+    Razlomak diff=razlika(r1,r2);
+    Razlomak prod=produkt(r1,r2);
+    Razlomak quot=kolicnik(r1,r2);
+    printf("Zbroj: %d/%d\n", sum.brojnik, sum.nazivnik);
+    printf("Razlika: %d/%d\n", diff.brojnik, diff.nazivnik);
+    printf("Produkt: %d/%d\n", prod.brojnik, prod.nazivnik);
+    printf("Količnik: %d/%d\n", quot.brojnik, quot.nazivnik);
+    return 0;
+}
+
+19. Definirati strukturu stol. Stol je odred̄en sa svojom duljinom, širinom i visinom. Napisati funkciju koja za niz stolova vraća one stolove koji imaju najveću pisaću površinu. Napomena: Funkcija treba, osim niza stolova, vratiti i duljinu novonastalog niza stolova.
+
+#include <stdio.h>
+
+typedef struct {
+    double duljina;
+    double sirina;
+    double visina;
+} Stol;
+
+// Funkcija koja vraća stolove s najvećom pisaćom površinom
+int stolovi_najveca_povrs(Stol* niz, int vel, Stol* rezultati){
+    double maxPovrs = niz[0].duljina*niz[0].sirina;
+    rezultati[0] = niz[0];
+    int count = 1;
+    for(int i=1;i<vel;i++){
+        double povrs = niz[i].duljina*niz[i].sirina;
+        if(povrs > maxPovrs){
+            maxPovrs = povrs;
+            rezultati[0] = niz[i];
+            count = 1;
+        } else if(povrs == maxPovrs){
+            rezultati[count++] = niz[i];
+        }
+    }
+    return count;
+}
+
+int main(){
+    Stol niz[]={{120,60,75},{100,50,70},{120,60,80}};
+    int vel = sizeof(niz)/sizeof(niz[0]);
+    Stol rezultati[vel];
+    int cnt = stolovi_najveca_povrs(niz, vel, rezultati);
+    printf("Stolovi s najvećom pisaćom površinom:\n");
+    for(int i=0;i<cnt;i++)
+        printf("D=%.2f, Š=%.2f, V=%.2f\n", rezultati[i].duljina, rezultati[i].sirina, rezultati[i].visina);
+    return 0;
+}
+

@@ -1,0 +1,12 @@
+Hollerith's Tabulating machine, used punch cards
+
+Z3 by Konrad Zuse => 1st machine that worked on the binary system
+
+Turing Machine by Alan Turing
+
+Transistors (1947), Integrated Circuit (1958)
+
+Microsoft with their BASIC compiler (bill gates & paul allen)
+
+Grammar:
+    https://learnenglish.britishcouncil.org/grammar/c1-grammar/advanced-passives-review
