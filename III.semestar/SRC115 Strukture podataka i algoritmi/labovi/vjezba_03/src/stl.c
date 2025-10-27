@@ -9,7 +9,6 @@ Object3D read_stl_bin(FILE *file) {
   if (fseek(file, HEADER, SEEK_SET))
     exit(70);
 
-  // init object
   Object3D object = {NULL, 0};
   int check = fread(&object.n, sizeof(object.n), 1, file);
   if (check < 1) {
@@ -33,4 +32,8 @@ FILE *write_stl_bin(Object3D object);
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
 FILE *write_stl_text(Object3D object);
 // Funkciju koja briše Objekt3D strukturu
-void free_object3d(Object3D object);
+void free_object3d(Object3D *object) {
+  free(object->arr);
+  object->arr = NULL;
+  object->n = 0;
+}

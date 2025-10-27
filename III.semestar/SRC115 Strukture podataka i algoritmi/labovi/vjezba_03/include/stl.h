@@ -31,6 +31,6 @@ FILE *write_stl_bin(Object3D object);
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
 FILE *write_stl_text(Object3D object);
 // Funkciju koja briše Objekt3D strukturu
-void free_object3d(Object3D object);
+void free_object3d(Object3D *object);
 
 #endif
