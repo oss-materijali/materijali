@@ -12,7 +12,7 @@ typedef struct {
 
 int main(void) {
   FILE *file;
-  file = fopen("04.bin", "rb");
+  file = fopen("03.bin", "rb");
   if (!file) {
     perror("");
     return 1;
