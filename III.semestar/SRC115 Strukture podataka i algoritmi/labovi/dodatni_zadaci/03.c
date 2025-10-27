@@ -26,7 +26,7 @@ int main(void) {
   }
 
   FILE *file;
-  file = fopen("01.bin", "wb");
+  file = fopen("04.bin", "wb");
   if (!file) {
     perror("");
     return 1;
