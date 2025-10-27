@@ -1,8 +1,8 @@
 #ifndef STL
 #define STL
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
   float x, y, z; // 4 bytes * 3 = 12
@@ -27,9 +27,9 @@ typedef struct {
 // Funkciju koja čita binarnu STL datoteku i vraća ispunjenu Objekt3D strukturu
 Object3D read_stl_bin(FILE *file);
 // Funkciju koja Objekt3D strukturu zapisuje u binarnu STL datoteku
-FILE *write_stl_bin(Object3D object);
+void write_stl_bin(Object3D *object, char *file_name);
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
-FILE *write_stl_text(Object3D object);
+void write_stl_text(Object3D object);
 // Funkciju koja briše Objekt3D strukturu
 void free_object3d(Object3D *object);
 

@@ -10,24 +10,17 @@ Translation:
 */
 
 int main(void) {
-  FILE *file = fopen("prbin.stl", "rb");
-  if (!file) {
+  // read stl bin to obj
+  FILE *stl_rb = fopen("prbin.stl", "rb");
+  if (!stl_rb) {
     perror("");
     return 1;
   }
 
-  Object3D obj = read_stl_bin(file);
+  Object3D obj = read_stl_bin(stl_rb);
 
-  // for (unsigned int i = obj.n-2; i < obj.n; i++) {
-  //   printf("(%.2f, %.2f, %.2f)[%.2f %.2f %.2f;%.2f %.2f %.2f;%.2f %.2f %.2f] "
-  //          "c: %hu\n",
-  //          obj.arr[i].normal.x, obj.arr[i].normal.y, obj.arr[i].normal.z,
-  //          obj.arr[i].vertices[0].x, obj.arr[i].vertices[0].y,
-  //          obj.arr[i].vertices[0].z, obj.arr[i].vertices[1].x,
-  //          obj.arr[i].vertices[1].y, obj.arr[i].vertices[1].z,
-  //          obj.arr[i].vertices[2].x, obj.arr[i].vertices[2].y,
-  //          obj.arr[i].vertices[2].z, obj.arr[i].color);
-  // }
+  // write obj to stl bin
+  write_stl_bin(&obj, "newbin.stl");
 
   free_object3d(&obj);
   return 0;

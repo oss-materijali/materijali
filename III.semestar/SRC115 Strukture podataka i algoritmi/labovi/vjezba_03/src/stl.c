@@ -28,9 +28,37 @@ Object3D read_stl_bin(FILE *file) {
 }
 
 // Funkciju koja Objekt3D strukturu zapisuje u binarnu STL datoteku
-FILE *write_stl_bin(Object3D object);
+// I decided against copying the entire object
+void write_stl_bin(Object3D *object, char* file_name) {
+  FILE *file = fopen(file_name, "wb");
+  if (!file) {
+    perror("newbin.stl: ");
+    exit(90);
+  }
+
+  char zeros[HEADER] = {0}; // C inits rest to also 0
+  int check = fwrite(zeros, sizeof(zeros[0]), 1, file);
+  if (check < 1) {
+    puts("Error writing header.");
+    exit(91);
+  }
+
+  check = fwrite(&(object->n), sizeof(object->n), 1, file);
+  if (check < 1) {
+    puts("Error writing number of triangles.");
+    exit(92);
+  }
+
+  check = fwrite(object->arr, sizeof(Triangle), object->n, file);
+  if (check < 1) {
+    puts("Error in writing all triangles.");
+    exit(93);
+  }
+
+  fclose(file);
+}
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
-FILE *write_stl_text(Object3D object);
+void write_stl_text(Object3D object);
 // Funkciju koja briše Objekt3D strukturu
 void free_object3d(Object3D *object) {
   free(object->arr);
