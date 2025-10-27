@@ -29,7 +29,7 @@ Object3D read_stl_bin(FILE *file);
 // Funkciju koja Objekt3D strukturu zapisuje u binarnu STL datoteku
 void write_stl_bin(Object3D *object, char *file_name);
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
-void write_stl_text(Object3D object);
+void write_stl_text(Object3D object, char *file_name);
 // Funkciju koja briše Objekt3D strukturu
 void free_object3d(Object3D *object);
 
