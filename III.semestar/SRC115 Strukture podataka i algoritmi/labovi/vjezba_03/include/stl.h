@@ -1,6 +1,7 @@
 #ifndef STL
 #define STL
 
+#include <cstdlib>
 #include <stdio.h>
 
 typedef struct {
@@ -20,7 +21,7 @@ typedef struct {
 
 typedef struct {
   Triangle *arr;
-  int n;
+  unsigned int n;
 } Object3D;
 
 // Funkciju koja čita binarnu STL datoteku i vraća ispunjenu Objekt3D strukturu
