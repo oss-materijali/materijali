@@ -38,8 +38,12 @@ int main(void) {
     puts("Error reading n.");
     return 4;
   }
-  n += 1; // added a coordinate, but didnt change original n in the file (not
-          // specified in the task)
+
+  // added a coordinate, but didnt change original n in the file
+  // (not specified in the task)
+  // WARN: you can only run this program on the previous file ONE TIME beucase
+  // of this
+  n += 1;
 
   // read
   if (fseek(file, 0, SEEK_END))
