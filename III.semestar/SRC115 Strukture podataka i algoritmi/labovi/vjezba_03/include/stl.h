@@ -1,7 +1,7 @@
 #ifndef STL
 #define STL
 
-#include <cstdlib>
+#include <stdlib.h>
 #include <stdio.h>
 
 typedef struct {
@@ -25,7 +25,7 @@ typedef struct {
 } Object3D;
 
 // Funkciju koja čita binarnu STL datoteku i vraća ispunjenu Objekt3D strukturu
-Object3D *read_stl_bin(FILE *file);
+Object3D read_stl_bin(FILE *file);
 // Funkciju koja Objekt3D strukturu zapisuje u binarnu STL datoteku
 FILE *write_stl_bin(Object3D object);
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku

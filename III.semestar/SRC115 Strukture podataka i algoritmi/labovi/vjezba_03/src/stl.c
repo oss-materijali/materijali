@@ -1,13 +1,28 @@
 #include "../include/stl.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define HEADER 80
 
 // Funkciju koja čita binarnu STL datoteku i vraća ispunjenu Objekt3D strukturu
-Object3D *read_stl_bin(FILE *file) {
-  if (fseek(file, HEADER, SEEK_SET)) {
+Object3D read_stl_bin(FILE *file) {
+  if (fseek(file, HEADER, SEEK_SET))
     exit(70);
+
+  // init object
+  Object3D object = {NULL, 0};
+  int check = fread(&object.n, sizeof(object.n), 1, file);
+  if (check < 1) {
+    puts("error reading number of triangles from the bin file");
+    exit(71);
+  }
+
+  object.arr = (Triangle *)malloc(object.n * sizeof(Triangle));
+
+  check = fread(object.arr, sizeof(Triangle), object.n, file);
+  if (check < 1) {
+    puts("error reading triangles to array");
+    exit(72);
   }
 
   return object;
