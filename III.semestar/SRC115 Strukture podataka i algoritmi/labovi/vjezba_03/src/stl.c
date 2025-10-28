@@ -4,6 +4,14 @@
 
 #define HEADER 80
 
+#define SOLID_START "solid"
+#define SOLID_END "endsolid"
+#define FACET_START "facet normal"
+#define FACET_END "endfacet"
+#define LOOP_START "outer loop"
+#define LOOP_END "endloop"
+#define VERTEX "vertex"
+
 // Funkciju koja čita binarnu STL datoteku i vraća ispunjenu Objekt3D strukturu
 Object3D read_stl_bin(FILE *file) {
   if (fseek(file, HEADER, SEEK_SET))
@@ -32,7 +40,7 @@ Object3D read_stl_bin(FILE *file) {
 void write_stl_bin(Object3D *object, char *file_name) {
   FILE *file = fopen(file_name, "wb");
   if (!file) {
-    perror("newbin.stl: ");
+    perror("");
     exit(90);
   }
 
@@ -59,7 +67,20 @@ void write_stl_bin(Object3D *object, char *file_name) {
 }
 
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
-void write_stl_text(Object3D object, char *file_name);
+void write_stl_text(Object3D object, char *file_name) {
+  FILE *file = fopen(file_name, "wt");
+  if (!file) {
+    perror("");
+    exit(50);
+  }
+  char optional_object_name[] = "new_object";
+  fprintf(file, "%s %s\n", SOLID_START, optional_object_name); // header
+  for (int i = 0; i < object.n; i++) {
+    fprintf(file, "\t%s %.5f %.5f %.5f", FACET_START, object.arr[i].normal.x,
+            object.arr[i].normal.y, object.arr[i].normal.z); // normal vector
+  }
+}
+
 // Funkciju koja briše Objekt3D strukturu
 void free_object3d(Object3D *object) {
   free(object->arr);
