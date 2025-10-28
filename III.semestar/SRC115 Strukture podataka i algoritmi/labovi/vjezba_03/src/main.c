@@ -21,6 +21,7 @@ int main(void) {
 
   // write obj to stl bin
   write_stl_bin(&obj, "newbin.stl");
+  write_stl_text(&obj, "newtxt.stl");
 
   free_object3d(&obj);
   return 0;

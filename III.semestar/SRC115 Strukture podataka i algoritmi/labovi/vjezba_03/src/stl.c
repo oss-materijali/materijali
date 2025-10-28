@@ -67,18 +67,63 @@ void write_stl_bin(Object3D *object, char *file_name) {
 }
 
 // Funkcija koja Objekt3D strukturu zapisuje u tekstualnu STL datoteku
-void write_stl_text(Object3D object, char *file_name) {
+void write_stl_text(Object3D *object, char *file_name) {
   FILE *file = fopen(file_name, "wt");
   if (!file) {
     perror("");
     exit(50);
   }
   char optional_object_name[] = "new_object";
-  fprintf(file, "%s %s\n", SOLID_START, optional_object_name); // header
-  for (int i = 0; i < object.n; i++) {
-    fprintf(file, "\t%s %.5f %.5f %.5f", FACET_START, object.arr[i].normal.x,
-            object.arr[i].normal.y, object.arr[i].normal.z); // normal vector
+  int check =
+      fprintf(file, "%s %s\n", SOLID_START, optional_object_name); // header
+  if (check < 0) {
+    puts("Error writing start of object.");
+    exit(56);
   }
+  for (int i = 0; i < object->n; i++) {
+    check = fprintf(file, "\t%s %.5f %.5f %.5f\n", FACET_START,
+                    object->arr[i].normal.x, object->arr[i].normal.y,
+                    object->arr[i].normal.z); // normal vector
+    if (check < 0) {
+      puts("Error writing normal vector.");
+      exit(51);
+    }
+
+    check = fprintf(file, "\t\t%s\n", LOOP_START); // outer loop
+    if (check < 0) {
+      puts("Error writing start of loop.");
+      exit(52);
+    }
+
+    for (int j = 0; j < 3; j++) { // single vertex * 3
+      check =
+          fprintf(file, "\t\t\t%s %.5f %.5f %.5f\n", VERTEX,
+                  object->arr[i].vertices[j].x, object->arr[i].vertices[j].y,
+                  object->arr[i].vertices[j].z);
+      if (check < 0) {
+        puts("Error writing vertex.");
+        exit(53);
+      }
+    }
+    check = fprintf(file, "\t\t%s\n", LOOP_END); // endloop
+    if (check < 0) {
+      puts("Error writing end of loop");
+      exit(54);
+    }
+    check = fprintf(file, "\t%s\n", FACET_END); // endfacet
+    if (check < 0) {
+      puts("Error writing end of facet");
+      exit(55);
+    }
+  } // writing triangles finished
+
+  check = fprintf(file, "%s %s\n", SOLID_END, optional_object_name); // header
+  if (check < 0) {
+    puts("Error writing end of object.");
+    exit(57);
+  }
+
+  fclose(file);
 }
 
 // Funkciju koja briše Objekt3D strukturu
