@@ -1,0 +1,8 @@
+**/.clang*
+**/.vscode/
+**/.direnv
+**/.envrc
+**/*.nix
+**/flake.lock
+**/debug/
+**/.zed/
