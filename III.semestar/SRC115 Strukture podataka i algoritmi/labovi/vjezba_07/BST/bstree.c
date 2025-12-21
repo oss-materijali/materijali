@@ -10,43 +10,61 @@ BSTree NewBSTree()
 
 void AddNode(BSTree *bst, char *word)
 {
-	// Rekurzivno se traži mjesto za novi èvor u stablu. Ako rijeè postoji u stablu, ne dodaje se.
-	// bst parametar je dvostruki pokazivaè.
-
+	// Rekurzivno se traï¿½i mjesto za novi ï¿½vor u stablu. Ako rijeï¿½ postoji u stablu, ne dodaje se.
+	// bst parametar je dvostruki pokazivaï¿½.
+	BSTree *tmp = bst;
+	while (1)
+	{
+		if (*bst = NULL)
+		{
+			Node *new = malloc(sizeof(Node));
+			new->word = word;
+			new->left = NULL;
+			new->right = NULL;
+			*tmp = new;
+			return; // adds leaf
+		}
+		int word_cmp = strcmp(word, (*tmp)->word);
+		if (word_cmp < 0)
+		{
+			tmp = &((*tmp)->left);
+		}
+		else if (word_cmp > 0)
+		{
+			tmp = &((*tmp)->left);
+		}
+	}
 }
 
 int BSTHeight(BSTree bst)
 {
-	// Rekurzivno se prolazi cijelo stablo da bi se pronašla najduža grana (visina stabla).
-	
+	// Rekurzivno se prolazi cijelo stablo da bi se pronaï¿½la najduï¿½a grana (visina stabla).
+
 	return 0;
 }
 
 void PrintBSTree(BSTree bst)
 {
-	// Ispisuje rijeèi u stablu na ekran po abecednom redu.
-	// In-order šetnja po stablu (lijevo dijete, èvor, desno dijete)
-
+	// Ispisuje rijeï¿½i u stablu na ekran po abecednom redu.
+	// In-order ï¿½etnja po stablu (lijevo dijete, ï¿½vor, desno dijete)
 }
 
 void SaveBSTree(BSTree bst, FILE *fd)
 {
-	// Snima rijeè po rijeè iz stabla u tekstualnu datoteku. Rijeèi su odvojene razmakom.
-	// Pre-order šetnja po stablu (ttenutni èvor pa djeca)
-
+	// Snima rijeï¿½ po rijeï¿½ iz stabla u tekstualnu datoteku. Rijeï¿½i su odvojene razmakom.
+	// Pre-order ï¿½etnja po stablu (ttenutni ï¿½vor pa djeca)
 }
 
 void DeleteBSTree(BSTree bst)
 {
-	// Briše stablo (string word i sam èvor) iz memorije.
-	// Post-order šetnja po stablu (prvo djeca pa trenutni èvor)
-
+	// Briï¿½e stablo (string word i sam ï¿½vor) iz memorije.
+	// Post-order ï¿½etnja po stablu (prvo djeca pa trenutni ï¿½vor)
 }
 
 BSTree LoadBSTree(FILE *fd)
 {
-	// Uèitava rijeè po rijeè iz tekstualne datoteke i dodaje ih u stablo preko AddNode() funkcije.
-	// Rijeè duplicirati sa strdup().
+	// Uï¿½itava rijeï¿½ po rijeï¿½ iz tekstualne datoteke i dodaje ih u stablo preko AddNode() funkcije.
+	// Rijeï¿½ duplicirati sa strdup().
 
 	return NULL;
 }
