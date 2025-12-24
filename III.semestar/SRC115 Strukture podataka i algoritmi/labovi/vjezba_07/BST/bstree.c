@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <malloc.h>
+#include <ctype.h>
 #include "bstree.h"
 
 BSTree NewBSTree()
@@ -16,7 +17,7 @@ void AddNode(BSTree *bst, char *word)
 	BSTree *tmp = bst;
 	while (1)
 	{
-		if (*bst = NULL)
+		if (*tmp == NULL)
 		{
 			Node *new = malloc(sizeof(Node));
 			new->word = word;
@@ -33,6 +34,10 @@ void AddNode(BSTree *bst, char *word)
 		else if (word_cmp > 0)
 		{
 			tmp = &((*tmp)->left);
+		}
+		else
+		{
+			return;
 		}
 	}
 }
@@ -91,8 +96,6 @@ void DeleteBSTree(BSTree bst)
 	free(bst);
 }
 
-int readWord(FILE *fd, char *buffer);
-
 BSTree LoadBSTree(FILE *fd)
 {
 	// U�itava rije� po rije� iz tekstualne datoteke i dodaje ih u stablo preko AddNode() funkcije.
@@ -103,7 +106,7 @@ BSTree LoadBSTree(FILE *fd)
 
 	while (readWord(fd, buffer))
 	{
-		AddNode(&bst, buffer);
+		AddNode(&bst, strdup(buffer));
 	}
 
 	return bst;
