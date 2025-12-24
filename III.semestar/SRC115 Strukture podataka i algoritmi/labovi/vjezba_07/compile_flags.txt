@@ -3,4 +3,4 @@
 -g
 -Wall
 -Wextra
--I./include
+-I./BST
