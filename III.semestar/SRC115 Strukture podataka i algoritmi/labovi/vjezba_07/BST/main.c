@@ -50,11 +50,11 @@ void main()
 
 	fclose(fd);
 
-	// Ispiši stablo, visinu i broj èvorova
+	// Ispiï¿½i stablo, visinu i broj ï¿½vorova
 	PrintBSTree(bst);
 	printf("\nH = %d, N = %d\n", BSTHeight(bst), wc);
 	
-	// Snimi i izbriši
+	// Snimi i izbriï¿½i
 	if((fd = fopen("stablo.txt", "wt")) == NULL)
 	{
 		printf("Error opening file for writing.\n");
@@ -65,7 +65,7 @@ void main()
 
 	DeleteBSTree(bst);
 
-	// Uèitaj stablo
+	// Uï¿½itaj stablo
 	if((fd = fopen("stablo.txt", "rt")) == NULL)
 	{
 		printf("Error opening file for reading.\n");
@@ -74,7 +74,7 @@ void main()
 	bst = LoadBSTree(fd);	
 	fclose(fd);
 
-	// Ispiši visinu i izbriši
+	// Ispiï¿½i visinu i izbriï¿½i
 	printf("\nH = %d\n", BSTHeight(bst));
 	DeleteBSTree(bst);
 }
