@@ -2,12 +2,13 @@
 #include <ctype.h>
 #include "bstree.h"
 
+/*
 int readWord(FILE *fd, char *buffer)
 {
 	int c;
-	
+
 	do {
-		c = fgetc(fd);				
+		c = fgetc(fd);
 		if(c == EOF)
 			return 0;
 	} while(!isalpha(c));
@@ -23,8 +24,9 @@ int readWord(FILE *fd, char *buffer)
 	*buffer = '\0';
 	return 1;
 }
+*/
 
-void main()
+int main()
 {
 	int wc;
 	FILE *fd;
@@ -34,16 +36,16 @@ void main()
 
 	// Kreiraj stablo
 	fd = fopen("liar.txt", "rt");
-	if(fd == NULL)
+	if (fd == NULL)
 	{
 		printf("Error opening file.\n");
-		return;
+		return 1;
 	}
 
 	wc = 0;
-	while(readWord(fd, buffer))
+	while (readWord(fd, buffer))
 	{
-		//printf("%s\n", buffer);
+		// printf("%s\n", buffer);
 		AddNode(&bst, strdup(buffer));
 		wc++;
 	}
@@ -53,28 +55,30 @@ void main()
 	// Ispi�i stablo, visinu i broj �vorova
 	PrintBSTree(bst);
 	printf("\nH = %d, N = %d\n", BSTHeight(bst), wc);
-	
+
 	// Snimi i izbri�i
-	if((fd = fopen("stablo.txt", "wt")) == NULL)
+	if ((fd = fopen("stablo.txt", "wt")) == NULL)
 	{
 		printf("Error opening file for writing.\n");
-		return;
+		return 1;
 	}
-	SaveBSTree(bst, fd);	
+	SaveBSTree(bst, fd);
 	fclose(fd);
 
 	DeleteBSTree(bst);
 
 	// U�itaj stablo
-	if((fd = fopen("stablo.txt", "rt")) == NULL)
+	if ((fd = fopen("stablo.txt", "rt")) == NULL)
 	{
 		printf("Error opening file for reading.\n");
-		return;
+		return 1;
 	}
-	bst = LoadBSTree(fd);	
+	bst = LoadBSTree(fd);
 	fclose(fd);
 
 	// Ispi�i visinu i izbri�i
 	printf("\nH = %d\n", BSTHeight(bst));
 	DeleteBSTree(bst);
+
+	return 0;
 }
