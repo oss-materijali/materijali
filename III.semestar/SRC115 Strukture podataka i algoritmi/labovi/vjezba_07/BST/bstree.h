@@ -25,4 +25,7 @@ void DeleteBSTree(BSTree bst);
 
 BSTree LoadBSTree(FILE *fd);
 
+// Dodano jer je potrebna na 2 mjesta
+int readWord(FILE *fd, char *buffer);
+
 #endif
