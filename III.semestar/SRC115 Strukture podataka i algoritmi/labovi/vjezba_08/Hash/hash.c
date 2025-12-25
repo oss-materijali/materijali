@@ -12,8 +12,12 @@ HashTable *NewTable(int size)
 	// kreira novu hash tablicu (alocira samu strukturu i niz pokaziva�a)
 
 	HashTable *new = malloc(sizeof(HashTable));
+	if (!new)
+		return NULL;
 
 	new->table = malloc(sizeof(Bin) * size);
+	if (!new->table)
+		return NULL;
 	new->size = size;
 	new->load = 0;
 
@@ -48,7 +52,9 @@ void Insert(HashTable *ht, char *word)
 
 	// table[i] -> old -> NULL
 	Bin *new = malloc(sizeof(Bin));
-	new->word = strdup(word);
+	if (!new)
+		return;
+	new->word = word;
 	new->next = ht->table[index];
 	ht->table[index] = new;
 
