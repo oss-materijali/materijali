@@ -47,7 +47,7 @@ void fillTable(HashTable *dict)
 	fclose(fd);
 }
 
-void main()
+int main()
 {
 	int i, size;
 	HashTable *dict;
@@ -62,4 +62,6 @@ void main()
 		printf("Size = %d, load factor = %f, time = %f\n", dict->size, (float)dict->load / dict->size, (et-st)/CLOCKS_PER_SEC);
 		DeleteTable(dict);
 	}
+
+	return 0;
 }

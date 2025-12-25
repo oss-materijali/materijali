@@ -2,4 +2,4 @@
 -g
 -Wall
 -Wextra
--I./include
+-I./Hash
